@@ -1,0 +1,23 @@
+.plot {
+  width: 7px;
+  height: 7px;
+ 
+  margin:0;
+  padding:0;
+}
+
+.GridMap table {
+  border-collapse: collapse;
+  background-color: black;
+} 
+.GridMap{
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+body{
+text-align: center;
+}
