@@ -1,7 +1,6 @@
 .plot {
   width: 7px;
   height: 7px;
- 
   margin:0;
   padding:0;
 }
@@ -11,13 +10,13 @@
   background-color: black;
 } 
 .GridMap{
-  display:flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  margin: 0;
-  padding: 0;
+  text-align: center;
+  display: grid;
+  place-items: center;
 }
+
 body{
-text-align: center;
+  text-align: center;
+  background-color: #49586f;
+  color: #c9d1d9;
 }
