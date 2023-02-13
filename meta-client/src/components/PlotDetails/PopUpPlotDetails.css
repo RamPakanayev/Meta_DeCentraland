@@ -1,0 +1,45 @@
+.PopUpPlotDetails {
+  background-color: #fff;
+  border-radius: 5px;
+  padding: 20px;
+  max-width: 400px;
+  width: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
+}
+
+.PopUpPlotDetails h2 {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0 0 20px;
+}
+
+.PopUpPlotDetails p {
+  margin: 0 0 10px;
+}
+
+.PopUpPlotDetails .close-btn {
+  background-color: #fff;
+  border: none;
+  color: #0072ff;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.PopUpPlotDetails .close-btn:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 500px) {
+  .PopUpPlotDetails {
+    max-width: 300px;
+  }
+}

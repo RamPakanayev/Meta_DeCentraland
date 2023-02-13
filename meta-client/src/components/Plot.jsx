@@ -1,6 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
+import PopUpPlotDetails from './PlotDetails/PopUpPlotDetails';
 
 const Plot = ({ id, type, owner, game, price, x, y }) => {
+  const [showDetails, setShowDetails] = useState(false);
+
+  const handleClick = () => {
+    setShowDetails(!showDetails);
+  };
+
   let color;
   if (type === 'park') {
     color = 'green';
@@ -9,9 +16,12 @@ const Plot = ({ id, type, owner, game, price, x, y }) => {
   } else {
     color = 'rgb(196, 196, 197)';
   }
+
   return (
-    <div className={`plot plot-${type}`} style={{ backgroundColor: color, gridColumn: x, gridRow: y }}>
-    
+    <div className={`plot plot-${type}`} style={{ backgroundColor: color, gridColumn: x, gridRow: y }} onClick={handleClick}>
+      {showDetails ? (
+        <PopUpPlotDetails owner={owner} game={game} price={price} onClose={handleClick} />
+      ) : null}
     </div>
   );
 };

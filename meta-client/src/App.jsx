@@ -1,6 +1,7 @@
-import Footer from "./components/Footer";
+import Footer from "./components/Footer/Footer";
 import Grid from "./components/Grid";
-import Header from "./components/Header";
+import Header from "./components/Header/Header";
+
 
 
 function App() {
