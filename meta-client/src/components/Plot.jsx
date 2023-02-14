@@ -47,7 +47,7 @@ const Plot = ({ id, type, owner, game, price, x, y }) => {
   return (
     <div className="plot" style={plotStyle} onClick={handleClick}>
       {showDetails ? (
-        <PopUpPlotDetails owner={owner} game={game} price={price} onClose={handleClose} />
+        <PopUpPlotDetails id={id} owner={owner} game={game} price={price} onClose={handleClose} x={x} y={y}/>
       ) : null}
     </div>
   );
