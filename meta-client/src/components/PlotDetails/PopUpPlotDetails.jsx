@@ -16,17 +16,17 @@ const PopUpPlotDetails = ({ owner, game, price, onClose }) => {
       padding: '20px',
       border: '1px solid gray',
       borderRadius: '5px',
+
     },
-    
   };
 
   return (
     <Modal isOpen={true} onRequestClose={onClose} style={customStyles}>
+      <button onClick={onClose} style={{float: 'right'}}>X</button>
       <h2>Plot Details</h2>
       <p>Owner: {owner}</p>
       <p>Game: {game || 'None'}</p>
       <p>Price: {price}</p>
-      <button onClick={onClose}>Close</button>
     </Modal>
   );
 };

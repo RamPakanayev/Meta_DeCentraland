@@ -1,22 +1,12 @@
+body{
+  text-align: center;
+  background-color: #49586f;
+  color: #c9d1d9;
+}
+
 .plot {
   width: 7px;
   height: 7px;
   margin:0;
   padding:0;
-}
-
-.GridMap table {
-  border-collapse: collapse;
-  background-color: black;
-} 
-.GridMap{
-  text-align: center;
-  display: grid;
-  place-items: center;
-}
-
-body{
-  text-align: center;
-  background-color: #49586f;
-  color: #c9d1d9;
 }
