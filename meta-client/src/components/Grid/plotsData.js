@@ -23,7 +23,7 @@ const generatePlots = () => {
       const y = Math.floor(i / 100);
       const type = getPlotType(x, y);
       const owner = null;
-      const game = i % 3 === 0 ? 'Memory Game' : null; // Attach a game to every third plot
+      const game = null;
       const price = Math.floor(Math.random() * 101) + 100; // Set a random price between 100 and 200
       return { id, type, owner, game, price, x, y };
     });

@@ -1,17 +1,6 @@
 import React, { useState } from 'react';
 import PopUpPlotDetails from './PlotDetails/PopUpPlotDetails';
 
-const getColor = (type) => {
-  switch (type) {
-    case 'park':
-      return 'green';
-    case 'road':
-      return 'rgb(58, 56, 56)';
-    default:
-      return 'rgb(196, 196, 197)';
-  }
-};
-
 const Plot = ({ id, type, owner, game, price, x, y }) => {
   const [showDetails, setShowDetails] = useState(false);
   const [purchased, setPurchased] = useState(false);
@@ -28,6 +17,21 @@ const Plot = ({ id, type, owner, game, price, x, y }) => {
     }
   };
 
+  const handleClose = () => {
+    setShowDetails(false);
+  };
+
+  const getColor = (type) => {
+    switch (type) {
+      case 'park':
+        return 'green';
+      case 'road':
+        return 'rgb(58, 56, 56)';
+      default:
+        return 'rgb(196, 196, 197)';
+    }
+  };
+
   const color = purchased ? 'red' : getColor(type);
 
   const plotStyle = {
@@ -40,14 +44,33 @@ const Plot = ({ id, type, owner, game, price, x, y }) => {
     padding: 0,
   };
 
-  const handleClose = () => {
-    setShowDetails(false);
+  const handleSetPrice = (event) => {
+    // code to set price
+  };
+
+  const handleTransferOwnership = (event) => {
+    // code to transfer ownership
+  };
+
+  const handleAttachGame = (event) => {
+    // code to attach game
   };
 
   return (
     <div className="plot" style={plotStyle} onClick={handleClick}>
       {showDetails ? (
-        <PopUpPlotDetails id={id} owner={owner} game={game} price={price} onClose={handleClose} x={x} y={y}/>
+        <PopUpPlotDetails 
+          id={id} 
+          owner={owner} 
+          game={game} 
+          price={price} 
+          onClose={handleClose} 
+          onSetPrice={handleSetPrice}
+          onTransferOwnership={handleTransferOwnership}
+          onAttachGame={handleAttachGame}
+          x={x} 
+          y={y} 
+        />
       ) : null}
     </div>
   );
