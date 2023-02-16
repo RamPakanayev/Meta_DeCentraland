@@ -1,0 +1,39 @@
+.entry-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.entry-page__title {
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.entry-page__buttons {
+  display: flex;
+}
+
+.entry-page__button {
+  background-color: #f0f0f0;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  margin-right: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.entry-page__button:hover {
+  background-color: #d5d5d5;
+}
+
+.entry-page__button--selected {
+  background-color: #2ecc71;
+  color: #f0f0f0;
+}
+
+.entry-page__button--selected:hover {
+  background-color: #27ae60;
+}

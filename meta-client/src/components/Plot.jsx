@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PopUpPlotDetails from './PlotDetails/PopUpPlotDetails';
 
-const Plot = ({ id, type, owner, game, price, x, y, onBuy, onPlay }) => {
+const Plot = ({ id, type, owner, game, price, x, y, onBuy, onPlay, userType }) => {
   const [showDetails, setShowDetails] = useState(false);
   const [purchased, setPurchased] = useState(false);
 
@@ -54,16 +54,17 @@ const Plot = ({ id, type, owner, game, price, x, y, onBuy, onPlay }) => {
   return (
     <div className="plot" style={plotStyle} onClick={handleClick}>
       {showDetails ? (
-        <PopUpPlotDetails 
-          id={id} 
-          owner={owner} 
-          game={game} 
-          price={price} 
-          onClose={handleClose} 
+        <PopUpPlotDetails
+          id={id}
+          owner={owner}
+          game={game}
+          price={price}
+          onClose={handleClose}
           onPurchase={handlePurchase}
           onPlay={handlePlay}
-          x={x} 
-          y={y} 
+          x={x}
+          y={y}
+          userType={userType}
         />
       ) : null}
     </div>

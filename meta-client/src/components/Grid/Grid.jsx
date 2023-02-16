@@ -3,7 +3,7 @@ import Plot from '../Plot';
 import generatePlots from './plotsData';
 import './Grid.css';
 
-const Grid = () => {
+const Grid = ({ userType }) => {
   const plots = generatePlots();
   const plotTable = [];
 
@@ -14,7 +14,7 @@ const Grid = () => {
       const index = i * 100 + j;
       row.push(
         <td key={`${j}-${i}`}>
-          <Plot {...plots[index]} />
+          <Plot {...plots[index]} userType={userType} />
         </td>
       );
     }

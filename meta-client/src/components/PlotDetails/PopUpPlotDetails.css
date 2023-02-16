@@ -7,6 +7,7 @@
   line-height: 1.9;
   max-width: 900px;
   margin: auto;
+  width:900px;
 }
 
 .close-btn {
@@ -48,6 +49,10 @@ hr {
   margin-top: 20px;
   display: flex;
   justify-content: center;
+}
+
+.popup-buttons.guest {
+  display: none;
 }
 
 .popup-buy-btn,

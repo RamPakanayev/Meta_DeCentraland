@@ -3,10 +3,8 @@ import Popup from 'reactjs-popup';
 import './PopUpPlotDetails.css';
 
 const PopUpPlotDetails = ({ id, owner, game, price, onClose, userType, x, y, onSetPrice, onTransferOwnership, onAttachGame }) => {
-  const isGuest = userType === 'guest';
-
   return (
-    <Popup open={true} onClose={onClose} className="popup-content">
+    <Popup open={true} onClose={onClose} className={`popup-content ${userType === 'guest' ? 'popup-content--guest' : ''}`}>
       <button className="close-btn" onClick={onClose}>
         X
       </button>
@@ -19,7 +17,7 @@ const PopUpPlotDetails = ({ id, owner, game, price, onClose, userType, x, y, onS
       <p className="popup-text">Price: {price}</p>
       <p className="popup-text">X: {x}</p>
       <p className="popup-text">Y: {y}</p>
-      {isGuest ? null : (
+      {userType==='guest' ? null : (
         <div className="popup-buttons">
           <button className="popup-buy-btn">Buy</button>
           <button className="popup-sell-btn">Sell</button>
@@ -31,5 +29,6 @@ const PopUpPlotDetails = ({ id, owner, game, price, onClose, userType, x, y, onS
     </Popup>
   );
 };
+
 
 export default PopUpPlotDetails;
