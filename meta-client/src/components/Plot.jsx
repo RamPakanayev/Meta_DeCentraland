@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PopUpPlotDetails from './PlotDetails/PopUpPlotDetails';
 
-const Plot = ({ id, type, owner, game, price, x, y }) => {
+const Plot = ({ id, type, owner, game, price, x, y, onBuy, onPlay }) => {
   const [showDetails, setShowDetails] = useState(false);
   const [purchased, setPurchased] = useState(false);
 
@@ -14,6 +14,7 @@ const Plot = ({ id, type, owner, game, price, x, y }) => {
   const handlePurchase = () => {
     if (type !== 'park' && type !== 'road') {
       setPurchased(true);
+      onBuy(id);
     }
   };
 
@@ -44,16 +45,10 @@ const Plot = ({ id, type, owner, game, price, x, y }) => {
     padding: 0,
   };
 
-  const handleSetPrice = (event) => {
-    // code to set price
-  };
-
-  const handleTransferOwnership = (event) => {
-    // code to transfer ownership
-  };
-
-  const handleAttachGame = (event) => {
-    // code to attach game
+  const handlePlay = () => {
+    if (game) {
+      onPlay(game);
+    }
   };
 
   return (
@@ -65,9 +60,8 @@ const Plot = ({ id, type, owner, game, price, x, y }) => {
           game={game} 
           price={price} 
           onClose={handleClose} 
-          onSetPrice={handleSetPrice}
-          onTransferOwnership={handleTransferOwnership}
-          onAttachGame={handleAttachGame}
+          onPurchase={handlePurchase}
+          onPlay={handlePlay}
           x={x} 
           y={y} 
         />

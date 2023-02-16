@@ -1,7 +1,7 @@
 .popup-content {
   background-color: #292b2d;
   color: #f0f0f0;
-  border-radius: 10%;
+  border-radius: 5%;
   padding: 20px;
   font-size: 16px;
   line-height: 1.9;
@@ -51,7 +51,8 @@ hr {
 }
 
 .popup-buy-btn,
-.popup-sell-btn {
+.popup-sell-btn,
+.btn {
   background-color: #2ecc71;
   color: #f0f0f0;
   border: none;
@@ -63,7 +64,7 @@ hr {
 }
 
 .popup-buy-btn:hover,
-.popup-sell-btn:hover {
+.popup-sell-btn:hover{
   background-color: #27ae60;
 }
 
@@ -82,4 +83,16 @@ hr {
 
 .popup-sell-btn:active {
   background-color: #96281b;
+}
+
+.btn {
+  background-color: #3498db;
+}
+
+.btn:hover {
+  background-color: #2980b9;
+}
+
+.btn:active {
+  background-color: #1f618d;
 }
