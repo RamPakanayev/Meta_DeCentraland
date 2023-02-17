@@ -1,0 +1,10 @@
+
+.grid20 table {
+  border-collapse: collapse;
+  background-color: black;
+} 
+.grid20{
+  text-align: center;
+  display: grid;
+  place-items: center;
+}
