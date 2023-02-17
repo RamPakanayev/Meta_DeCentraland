@@ -1,4 +1,5 @@
 const generatePlots = () => {
+  // utility function to determine the plot type based on its position
   const getPlotType = (x, y) => {
     if (
       (x > 3 && x < 16 && y > 4 && y < 16) ||
@@ -22,10 +23,12 @@ const generatePlots = () => {
       // Rows 4-17 on the sides are roads
       return 'road';
     } else {
+      // Everything else is a regular plot
       return 'regular';
     }
   };
 
+  // create an array of plot objects
   const plots = Array(400)
     .fill()
     .map((_, i) => {

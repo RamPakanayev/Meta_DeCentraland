@@ -3,7 +3,9 @@ import Plot from '../Plot';
 import generatePlots from './plotsData20';
 import './Grid20.css';
 
+
 const Grid20 = ({ userType }) => {
+  // generate the plots and create a table of Plot components
   const plots = generatePlots();
   const plotTable = [];
 
@@ -18,11 +20,13 @@ const Grid20 = ({ userType }) => {
         </td>
       );
     }
+
     plotTable.push(<tr key={i}>{row}</tr>);
   }
 
+  // render the grid with the table of Plot components
   return (
-    <div className="GridMap">
+    <div className="grid20">
       <table>
         <tbody>{plotTable}</tbody>
       </table>
@@ -31,3 +35,4 @@ const Grid20 = ({ userType }) => {
 };
 
 export default Grid20;
+

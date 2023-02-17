@@ -1,9 +1,9 @@
 
-.GridMap table {
+.grid20 table {
   border-collapse: collapse;
   background-color: black;
 } 
-.GridMap{
+.grid20{
   text-align: center;
   display: grid;
   place-items: center;
