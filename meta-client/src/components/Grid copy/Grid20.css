@@ -1,0 +1,10 @@
+
+.GridMap table {
+  border-collapse: collapse;
+  background-color: black;
+} 
+.GridMap{
+  text-align: center;
+  display: grid;
+  place-items: center;
+}
