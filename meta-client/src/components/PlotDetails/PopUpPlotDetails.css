@@ -1,103 +1,104 @@
 .popup-content {
-  background-color: #292b2d;
-  color: #f0f0f0;
-  border-radius: 5%;
+  font-family: Arial, sans-serif;
+  max-width: 500px;
   padding: 20px;
-  font-size: 16px;
-  line-height: 1.9;
-  max-width: 900px;
-  margin: auto;
-  width:900px;
+  background-color: white;
+}
+
+.popup-content--guest {
+  color: #666;
+}
+
+.popup-content--buyer {
+  color: #2ecc71;
+}
+
+.popup-content--seller {
+  color: #3498db;
 }
 
 .close-btn {
-  float: right;
-  font-size: 24px;
-  font-weight: bold;
+  position: absolute;
+  top: 10px;
+  right: 10px;
   background-color: transparent;
-  color: #f0f0f0;
   border: none;
+  font-size: 20px;
   cursor: pointer;
 }
 
-.close-btn:hover {
-  color: #e74c3c;
-}
-
 .popup-title {
-  font-size: 44px;
   margin-top: 0;
-  margin-bottom: 0;
-  text-align: center;
-}
-
-hr {
-  border-top: 1px solid #f0f0f0;
-  margin-top: 10px;
   margin-bottom: 10px;
+  font-size: 24px;
+  color: #000;
 }
 
 .popup-text {
-  font-size: 24px;
-  margin-top: 5px;
-  margin-bottom: 5px;
-  margin-left: 3%;
-  text-align: left;
+  margin: 0;
+  color: #000;
+  font-size: 16px;
 }
 
 .popup-buttons {
   margin-top: 20px;
-  display: flex;
-  justify-content: center;
-}
-
-.popup-buttons.guest {
-  display: none;
 }
 
 .popup-buy-btn,
 .popup-sell-btn,
-.btn {
-  background-color: #2ecc71;
-  color: #f0f0f0;
-  border: none;
+.popup-price-btn,
+.popup-transfer-btn,
+.popup-game-btn {
   padding: 10px 20px;
-  margin-right: 10px;
-  border-radius: 5px;
-  font-size: 18px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: bold;
   cursor: pointer;
+  margin-right: 10px;
+  background-color: #fff;
+  color: #000;
+  transition: background-color 0.2s ease-in-out;
 }
 
 .popup-buy-btn:hover,
-.popup-sell-btn:hover{
-  background-color: #27ae60;
+.popup-sell-btn:hover,
+.popup-price-btn:hover,
+.popup-transfer-btn:hover,
+.popup-game-btn:hover {
+  background-color: #d6eaf8;
 }
 
 .popup-buy-btn:active,
-.popup-sell-btn:active {
-  background-color: #229954;
+.popup-sell-btn:active,
+.popup-price-btn:active,
+.popup-transfer-btn:active,
+.popup-game-btn:active {
+  background-color: #1a5276;
+  color: #fff;
+}
+
+.popup-buy-btn {
+  background-color: #3498db;
+  color: #fff;
 }
 
 .popup-sell-btn {
-  background-color: #e74c3c;
+  background-color: #e67e22;
+  color: #fff;
 }
 
-.popup-sell-btn:hover {
-  background-color: #c0392b;
+.popup-price-btn {
+  background-color: #f1c40f;
+  color: #333;
 }
 
-.popup-sell-btn:active {
-  background-color: #96281b;
+.popup-transfer-btn {
+  background-color: #9b59b6;
+  color: #fff;
 }
 
-.btn {
-  background-color: #3498db;
-}
-
-.btn:hover {
-  background-color: #2980b9;
-}
-
-.btn:active {
-  background-color: #1f618d;
+.popup-game-btn {
+  background-color: #2ecc71;
+  color: #fff;
 }
