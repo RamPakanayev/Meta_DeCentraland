@@ -1,21 +1,13 @@
 .popup-content {
   font-family: Arial, sans-serif;
   max-width: 500px;
+  width: 100%;
   padding: 20px;
-  background-color: rgb(255, 255, 255);
+  background-color: white;
+  box-sizing: border-box;
+  max-width:50%;
   color: black;
-}
-
-.popup-content--guest {
-  color: #666;
-}
-
-.popup-content--buyer {
-  color: #2ecc71;
-}
-
-.popup-content--seller {
-  color: #3498db;
+  text-align: center;
 }
 
 .close-btn {
@@ -31,7 +23,7 @@
 .popup-title {
   margin-top: 0;
   margin-bottom: 10px;
-  font-size: 24px;
+  font-size: 34px;
 }
 
 .popup-text {
@@ -39,9 +31,43 @@
   font-size: 16px;
 }
 
+.popup-table {
+  margin-top: 20px;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 50px;
+  width: 60%;
+  height: 300px;
+  
+}
+
+.popup-table th,
+.popup-table td {
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+  font-size: 18px;
+}
+
+.popup-table th {
+  text-align: center;
+  background-color: #f1f1f1;
+  font-weight: bold;
+  width: 50%;
+}
+
+.popup-table td:first-child {
+  font-weight: bold;
+}
+
+.popup-table td:last-child {
+  text-align: center;
+}
+
 .popup-buttons {
   margin-top: 20px;
   display: flex;
+  flex-direction: row;
   justify-content: center;
   flex-wrap: wrap;
 }
@@ -57,9 +83,9 @@
   font-size: 16px;
   font-weight: bold;
   cursor: pointer;
-  margin-right: 10px;
-  margin-bottom: 10px;
+  margin: 0 10px 10px 0;
   color: #fff;
+  flex: 1;
 }
 
 .popup-buy-btn:hover,

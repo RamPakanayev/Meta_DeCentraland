@@ -27,11 +27,28 @@ const PopUpPlotDetails = ({
       <h2 className="popup-title">Plot Details</h2>
       <hr />
       <br />
-      <p className="popup-text">Plot ID: {id}</p>
-      <p className="popup-text">Owner: {owner || 'None'}</p>
-      <p className="popup-text">Game: {game || 'None'}</p>
-      <p className="popup-text">Price: {price}</p>
-      <p className="popup-text">Coordinates: ({x}, {y})</p>
+      <table className="popup-table">
+  <tr>
+    <th>Plot ID</th>
+    <td>{id}</td>
+  </tr>
+  <tr>
+    <th>Owner</th>
+    <td>{owner || 'None'}</td>
+  </tr>
+  <tr>
+    <th>Game</th>
+    <td>{game || 'None'}</td>
+  </tr>
+  <tr>
+    <th>Price</th>
+    <td>{price}</td>
+  </tr>
+  <tr>
+    <th>Coordinates</th>
+    <td>({x}, {y})</td>
+  </tr>
+</table>
       {isBuyer && (
         <div className="popup-buttons">
           <button className="popup-buy-btn" onClick={onBuy}>Buy</button>
