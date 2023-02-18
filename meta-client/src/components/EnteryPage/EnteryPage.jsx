@@ -10,8 +10,11 @@ const EntryPage = ({ onUserTypeChange }) => {
         <button className="entry-page__button" onClick={() => onUserTypeChange('guest')}>
           Guest
         </button>
-        <button className="entry-page__button" onClick={() => onUserTypeChange('buyer-seller')}>
-          Buyer/Seller
+        <button className="entry-page__button" onClick={() => onUserTypeChange('buyer')}>
+          Buyer
+        </button>
+        <button className="entry-page__button" onClick={() => onUserTypeChange('seller')}>
+          Seller
         </button>
       </div>
     </div>
