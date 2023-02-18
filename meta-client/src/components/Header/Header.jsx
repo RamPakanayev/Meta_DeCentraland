@@ -10,7 +10,6 @@ const Header = ({ onHomeClick }) => {
           <li>
             <a href="#" onClick={onHomeClick}>
               Home
-              {console.log(onHomeClick)}
             </a>
           </li>
           <li>
