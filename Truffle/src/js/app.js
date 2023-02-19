@@ -25,7 +25,7 @@ App = {
 
   initWeb3: async function() {
     // Modern dapp browsers...
-if (window.ethereum) {
+  if (window.ethereum) {
   App.web3Provider = window.ethereum;
   try {
     // Request account access
@@ -51,14 +51,14 @@ web3 = new Web3(App.web3Provider);
   initContract: function() {
 $.getJSON('Procurement.json', function(data) {
   // Get the necessary contract artifact file and instantiate it with @truffle/contract
-  var AdoptionArtifact = data;
-  App.contracts.Procurement = TruffleContract(AdoptionArtifact);
+  var ProcurementArtifact = data;
+  App.contracts.Procurement = TruffleContract(ProcurementArtifact);
 
   // Set the provider for our contract
   App.contracts.Procurement.setProvider(App.web3Provider);
 
-  // Use our contract to retrieve and mark the adopted pets
-  return App.markAdopted();
+  // Use our contract to retrieve and mark the purchased lands
+  return App.markPurchased();
 });
 
     return App.bindEvents();
@@ -68,13 +68,13 @@ $.getJSON('Procurement.json', function(data) {
     $(document).on('click', '.btn-adopt', App.handleAdopt);
   },
 
-  markAdopted: function() {
-var adoptionInstance;
+  markPurchased: function() {
+var procurementInstance;
 
 App.contracts.Procurement.deployed().then(function(instance) {
-  adoptionInstance = instance;
+  procurementInstance = instance;
 
-  return adoptionInstance.getBuyers.call();
+  return procurementInstance.getBuyers.call();
 }).then(function(adopters) {
   for (i = 0; i < adopters.length; i++) {
     if (adopters[i] !== '0x0000000000000000000000000000000000000000') {
@@ -91,7 +91,7 @@ App.contracts.Procurement.deployed().then(function(instance) {
 
     var petId = parseInt($(event.target).data('id'));
 
-var adoptionInstance;
+var procurementInstance;
 
 web3.eth.getAccounts(function(error, accounts) {
   if (error) {
@@ -101,12 +101,12 @@ web3.eth.getAccounts(function(error, accounts) {
   var account = accounts[0];
 
   App.contracts.Procurement.deployed().then(function(instance) {
-    adoptionInstance = instance;
+    procurementInstance = instance;
 
     // Execute adopt as a transaction by sending account
-    return adoptionInstance.buy(petId, {from: account});
+    return procurementInstance.buy(petId, {from: account});
   }).then(function(result) {
-    return App.markAdopted();
+    return App.markPurchased();
   }).catch(function(err) {
     console.log(err.message);
   });

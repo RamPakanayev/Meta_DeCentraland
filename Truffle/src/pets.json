@@ -5,7 +5,8 @@
     "picture": "images/scottish-terrier.jpeg",
     "age": 3,
     "breed": "Scottish Terrier",
-    "location": "Lisco, Alabama"
+    "location": "Lisco, Alabama",
+    "current owner:" "None"
   },
   {
     "id": 1,
