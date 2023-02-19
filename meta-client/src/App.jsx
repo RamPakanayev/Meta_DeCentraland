@@ -28,7 +28,7 @@ function App() {
       {/* render the header with a callback to handle the home button click */}
       <Header onHomeClick={handleHomeClick} />
       {/* render the entry page or the grid based on the showGrid state */}
-      {showGrid ? <Grid userType={userType} /> : <EntryPage onUserTypeChange={handleUserTypeChange} />}
+      {showGrid ? <Grid20 userType={userType} /> : <EntryPage onUserTypeChange={handleUserTypeChange} />}
       {/* render the footer */}
       <Footer />
     </div>
