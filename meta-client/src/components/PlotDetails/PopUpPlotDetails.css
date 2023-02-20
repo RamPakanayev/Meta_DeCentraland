@@ -75,6 +75,14 @@
 .popup-table td:last-child {
   text-align: center;
 }
+.red-text {
+  color: red;
+}
+
+.green-text {
+  color: green;
+}
+
 
 .popup-buttons {
   margin-top: 20px;
