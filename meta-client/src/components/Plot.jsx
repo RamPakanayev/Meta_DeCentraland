@@ -1,14 +1,45 @@
 import React, { useState } from 'react';
 import PopUpPlotDetails from './PlotDetails/PopUpPlotDetails';
+import { ethers } from 'ethers';
+
+function metamaskConnection() {
+  if (window.ethereum) {
+    window.ethereum
+      .request({ method: 'eth_requestAccounts' })
+      .then((res) => {
+        // Return the address of the wallet
+        const address = res[0];//[0] for getting the balance inside the address
+        console.log('1) ' + res);
+        // console.log('2) ' +address);
+
+        // Retrieve the balance of the wallet
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        provider
+          .getBalance(address)
+          .then((balance) => {
+            console.log('3) Wallet balance:', ethers.utils.formatEther(balance));
+          })
+          .catch((error) => {
+            console.error('Error retrieving wallet balance:', error);
+          });
+      })
+      .catch((error) => {
+        console.error('Error connecting to Metamask:', error);
+      });
+  } else {
+    alert('Please install the Metamask extension.');
+  }
+}
 
 const Plot = ({ id, type, owner, game, price, x, y, onBuy, onPlay, userType }) => {
   const [showDetails, setShowDetails] = useState(false);
   const [purchased, setPurchased] = useState(false);
 
   const handleClick = () => {
-    if (type === 'regular') {
-      setShowDetails(!showDetails);
-    }
+    setShowDetails(!showDetails);
+
+    // Call Metamask function to connect
+    metamaskConnection();
   };
 
   const handlePurchase = () => {
