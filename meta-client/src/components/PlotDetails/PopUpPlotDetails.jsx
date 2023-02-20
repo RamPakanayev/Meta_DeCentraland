@@ -98,13 +98,6 @@ const PopUpPlotDetails = ({
             <th>Coordinates</th>
             <td>({x}, {y})</td>
           </tr>
-          {/* New row */}
-          <tr>
-            <th>For Sale</th>
-            <td className={forSale ? 'green-text' : 'red-text'}>
-              {forSale ? 'Yes' : 'No'}
-            </td>
-          </tr>
         </tbody>
       </table>
       <div className="popup-buttons">
