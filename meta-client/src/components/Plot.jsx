@@ -1,26 +1,45 @@
 import React, { useState } from 'react';
 import PopUpPlotDetails from './PlotDetails/PopUpPlotDetails';
 import { ethers } from 'ethers';
-
 function metamaskConnection() {
   if (window.ethereum) {
     window.ethereum
       .request({ method: 'eth_requestAccounts' })
       .then((res) => {
-        // Return the address of the wallet
-        const address = res[0];//[0] for getting the balance inside the address
-        console.log('1) ' + res);
-        // console.log('2) ' +address);
-
-        // Retrieve the balance of the wallet
+        const address = res[0];
+        console.log('Address:', address);
         const provider = new ethers.providers.Web3Provider(window.ethereum);
         provider
           .getBalance(address)
           .then((balance) => {
-            console.log('3) Wallet balance:', ethers.utils.formatEther(balance));
+            console.log('Wallet balance:', ethers.utils.formatEther(balance));
           })
           .catch((error) => {
             console.error('Error retrieving wallet balance:', error);
+          });
+        provider
+          .getTransactionCount(address)
+          .then((count) => {
+            console.log('Transaction count:', count);
+          })
+          .catch((error) => {
+            console.error('Error retrieving transaction count:', error);
+          });
+        provider
+          .estimateGas({ from: address, to: address, value: ethers.utils.parseEther('0.01') })
+          .then((estimate) => {
+            console.log('Gas estimation:', estimate.toString());
+          })
+          .catch((error) => {
+            console.error('Error estimating gas:', error);
+          });
+        provider
+          .getLogs({ address: address })
+          .then((logs) => {
+            console.log('Logs:', logs);
+          })
+          .catch((error) => {
+            console.error('Error retrieving logs:', error);
           });
       })
       .catch((error) => {
