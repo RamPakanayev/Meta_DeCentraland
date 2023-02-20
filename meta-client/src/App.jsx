@@ -4,6 +4,7 @@ import Header from './components/Header/Header';
 import EntryPage from './components/EnteryPage/EnteryPage';
 import Grid20 from './components/Grid copy/Grid20';
 import Grid from './components/Grid/Grid'
+import generatePlots from './components/Grid/plotsData';
 
 
 function App() {
@@ -23,10 +24,20 @@ function App() {
     setUserType('');
   };
 
+  
+  // get the plot data
+  const plots = generatePlots();
+
+  // create the artifact JSON file
+  const jsonFile = new Blob([JSON.stringify(plots, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(jsonFile);
+
+
   return (
     <div className="App">
       <Header onHomeClick={handleHomeClick} />
       <Grid20/>
+      <a href={url} download="Meta_DeCentraland_Plots.json">Download JSON</a>
       <Footer />
     </div>
   );
