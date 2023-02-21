@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect ,useState } from 'react';
 import Footer from './components/Footer/Footer';
 import Header from './components/Header/Header';
 import EntryPage from './components/EnteryPage/EnteryPage';
@@ -11,6 +11,29 @@ function App() {
   // state variables to manage the visibility of the grid and the user type
   const [showGrid, setShowGrid] = useState(false);
   const [userType, setUserType] = useState('');
+  const [backendData, setBackendData]= useState([])
+
+  //to render array from server 
+  // useEffect(()=>{
+  //   fetch("/api").then(
+  //     response => response.json()  
+  //   ).then(
+  //     data=>{
+  //       setBackendData(data)
+  //     }
+  //   )
+  // },[])
+
+  //to render a json file from server
+  useEffect(() => {
+    fetch("/api").then((response) => {
+      if (!response.ok) throw new Error(response.statusText);
+      return response.json();
+    }).then((json) => {
+      setBackendData(json.data);
+    }).catch((error) => console.log(error));
+  }, []);
+
 
   // event handler to update the user type when the user selects a type
   const handleUserTypeChange = (type) => {
@@ -39,6 +62,21 @@ function App() {
       <Grid20/>
       <a href={url} download="Meta_DeCentraland_Plots.json">Download JSON</a>
       <Footer />
+      {/* {(backendData.users==='undefined')?(
+        <p>Loading...</p>
+        ):(
+          backendData.users.map((user,i)=>(
+            <p key={i}>{user}</p>
+          ))
+        )
+      } */}
+      {backendData.map((item)=>{
+        return<> <p key={item.id}>{item.id}</p>
+         <p key={item.id}>{item.type}</p>
+         <p key={item.id}>{item.owner}</p>
+         <p key={item.id}>{item.price}</p>
+         </>
+      })}
     </div>
   );
 }

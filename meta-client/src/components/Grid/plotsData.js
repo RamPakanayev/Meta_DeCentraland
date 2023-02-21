@@ -1,5 +1,6 @@
 // plotsData.js
 const generatePlots = () => {
+  console.log("render");
   const getPlotType = (x, y) => {
     if (
       (x > 15 && x < 35 && y > 25 && y < 65) ||
