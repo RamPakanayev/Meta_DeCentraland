@@ -25,15 +25,30 @@ function App() {
   // },[])
 
   //to render a json file from server
-  useEffect(() => {
-    fetch("/api").then((response) => {
-      if (!response.ok) throw new Error(response.statusText);
-      return response.json();
-    }).then((json) => {
-      setBackendData(json.data);
-    }).catch((error) => console.log(error));
-  }, []);
+  // useEffect(() => {
+  //   fetch("/api").then((response) => {
+  //     if (!response.ok) throw new Error(response.statusText);
+  //     return response.json();
+  //   }).then((json) => {
+  //     setBackendData(json.data);
+  //   }).catch((error) => console.log(error));
+  // }, []);
 
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await fetch('/api');
+        if (!response.ok) {
+          throw new Error(response.statusText);
+        }
+        const json = await response.json();
+        setBackendData(json.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchData();
+  }, []);
 
   // event handler to update the user type when the user selects a type
   const handleUserTypeChange = (type) => {
@@ -70,13 +85,16 @@ function App() {
           ))
         )
       } */}
-      {backendData.map((item)=>{
+      {backendData.length===0?(
+        <p>Loading...</p>
+      ):(backendData.map((item)=>{
         return<> <p key={item.id}>{item.id}</p>
          <p key={item.id}>{item.type}</p>
          <p key={item.id}>{item.owner}</p>
-         <p key={item.id}>{item.price}</p>
+         <p key={item.id}>{item.type}</p>
          </>
-      })}
+      }))
+      }
     </div>
   );
 }
