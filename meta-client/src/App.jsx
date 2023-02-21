@@ -5,6 +5,7 @@ import EntryPage from './components/EnteryPage/EnteryPage';
 import Grid20 from './components/Grid copy/Grid20';
 import Grid from './components/Grid/Grid'
 import generatePlots from './components/Grid/plotsData';
+import Map from './components/Map';
 
 
 function App() {
@@ -12,6 +13,7 @@ function App() {
   const [showGrid, setShowGrid] = useState(false);
   const [userType, setUserType] = useState('');
   const [backendData, setBackendData]= useState([])
+  
 
   //to render array from server 
   // useEffect(()=>{
@@ -74,27 +76,20 @@ function App() {
   return (
     <div className="App">
       <Header onHomeClick={handleHomeClick} />
-      <Grid20/>
+      {/* <Grid20 backendData={backendData}/> */}
+      <Map backendData={backendData}/>
       <a href={url} download="Meta_DeCentraland_Plots.json">Download JSON</a>
       <Footer />
-      {/* {(backendData.users==='undefined')?(
-        <p>Loading...</p>
-        ):(
-          backendData.users.map((user,i)=>(
-            <p key={i}>{user}</p>
-          ))
-        )
-      } */}
-      {backendData.length===0?(
+
+      {/* {backendData.length===0?(
         <p>Loading...</p>
       ):(backendData.map((item)=>{
-        return<> <p key={item.id}>{item.id}</p>
-         <p key={item.id}>{item.type}</p>
-         <p key={item.id}>{item.owner}</p>
-         <p key={item.id}>{item.type}</p>
+        return<> 
+         <p key={item.id}>{item.id}</p>
+         <p key={item.id}>{item.price}</p>
          </>
       }))
-      }
+      } */}
     </div>
   );
 }
