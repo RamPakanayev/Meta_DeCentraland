@@ -4,9 +4,9 @@ import generatePlots from './plotsData20';
 import './Grid20.css';
 
 
-const Grid20 = ({ userType }) => {
+const Grid20 = ({ userType, backendData }) => {
   // generate the plots and create a table of Plot components
-  const plots = generatePlots();
+  const plots = generatePlots(backendData);
   const plotTable = [];
 
   for (let i = 0; i < 20; i++) {
@@ -16,7 +16,7 @@ const Grid20 = ({ userType }) => {
       const index = i * 20 + j;
       row.push(
         <td key={`${j}-${i}`}>
-          <Plot {...plots[index]} userType={userType} />
+          <Plot {...plots[index]} userType={userType} backendData={backendData} />
         </td>
       );
     }

@@ -1,4 +1,4 @@
-const generatePlots = () => {
+const generatePlots = (backendData) => {
   // utility function to determine the plot type based on its position
   const getPlotType = (x, y) => {
     if (

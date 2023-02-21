@@ -50,7 +50,7 @@ function metamaskConnection() {
   }
 }
 
-const Plot = ({ id, type, owner, game, price, x, y, onBuy, onPlay, userType }) => {
+const Plot = ({ id, type, owner, game, price, x, y, onBuy, onPlay, userType, backendData }) => {
   const [showDetails, setShowDetails] = useState(false);
   const [purchased, setPurchased] = useState(false);
 
@@ -93,6 +93,7 @@ const Plot = ({ id, type, owner, game, price, x, y, onBuy, onPlay, userType }) =
     height: '7px',
     margin: 0,
     padding: 0,
+    cursor: type === 'regular' ? 'pointer' : 'default' // Disable the cursor for non-regular plots
   };
 
   const handlePlay = () => {
@@ -102,7 +103,7 @@ const Plot = ({ id, type, owner, game, price, x, y, onBuy, onPlay, userType }) =
   };
 
   return (
-    <div className="plot" style={plotStyle} onClick={handleClick}>
+    <div className="plot" style={plotStyle} onClick={type === 'regular' ? handleClick : null}>
       {showDetails ? (
         <PopUpPlotDetails
           id={id}
@@ -115,10 +116,12 @@ const Plot = ({ id, type, owner, game, price, x, y, onBuy, onPlay, userType }) =
           x={x}
           y={y}
           userType={userType}
+          backendData={backendData}
         />
       ) : null}
     </div>
   );
 };
+
 
 export default Plot;

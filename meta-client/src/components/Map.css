@@ -1,0 +1,9 @@
+.Map table {
+  border-collapse: collapse;
+  background-color: rgb(0, 0, 0);
+} 
+.Map {
+  text-align: center;
+  display: grid;
+  place-items: center;
+}
