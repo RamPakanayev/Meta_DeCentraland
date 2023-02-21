@@ -3,20 +3,20 @@ import Plot from './Plot';
 import './Map.css';
 
 const Map = ({ backendData }) => {
-  const num=100;//can be num or 100
+  const num=100;//can be 20 or 100
   const generatePlots = () => {
     const plots = Array(num*num)
       .fill()
       .map((_, i) => {
         const id = i + 1;
-        const x = i % num;
-        const y = Math.floor(i / num);
-        const plotbackendData = backendData.find((plot) => plot.x === x && plot.y === y);
-        const type = plotbackendData ? plotbackendData.type : 'regular';
-        const owner = plotbackendData ? plotbackendData.owner : null;
-        const game = plotbackendData ? plotbackendData.game : null;
-        const price = plotbackendData ? plotbackendData.price : Math.floor(Math.random() * 101) + 100;
-        const forSale = plotbackendData ? plotbackendData.forSale : 'yes';
+        const plotbackendData = backendData.find((plot) => plot.id === id);
+        const x = plotbackendData ? plotbackendData.x : 'x';
+        const y = plotbackendData ? plotbackendData.y : 'y';
+        const type = plotbackendData ? plotbackendData.type : 'none';
+        const owner = plotbackendData ? plotbackendData.owner : 'none';
+        const game = plotbackendData ? plotbackendData.game : 'none';
+        const price = plotbackendData ? plotbackendData.price : 'none';
+        const forSale = plotbackendData ? plotbackendData.forSale : 'none';
         return { id, type, owner, game, price, x, y, forSale };
       });
 

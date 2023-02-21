@@ -50,7 +50,7 @@ function App() {
       }
     }
     fetchData();
-  }, []);
+  }, []);//when adding function and states for button you may mention states inside the [] in the line
 
   // event handler to update the user type when the user selects a type
   const handleUserTypeChange = (type) => {
