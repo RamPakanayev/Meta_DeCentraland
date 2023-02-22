@@ -1,9 +1,13 @@
 var FlatNFT = artifacts.require("FlatNFT");
 var Marketplace = artifacts.require("Marketplace");
 
+var accounts;
+web3.eth.getAccounts().then(function(response) { accounts = response; console.log(accounts[0]); });
+
+
 async function logNftLists(marketplace) {
     let listedNfts = await marketplace.getListedNfts.call()
-    const accountAddress = 'FIRST_ACCOUNT_ADDRESS'
+    const accountAddress = accounts[0];
     let myNfts = await marketplace.getMyNfts.call({from: accountAddress})
     let myListedNfts = await marketplace.getMyListedNfts.call({from: accountAddress})
     console.log(`listedNfts: ${listedNfts.length}`)
@@ -19,15 +23,15 @@ const main = async (cb) => {
     console.log('MINT AND LIST 3 NFTs')
     let listingFee = await marketplace.getListingFee()
     listingFee = listingFee.toString()
-    let txn1 = await flats.safeMint(flats.address, "URI1")
+    let txn1 = await flats.safeMint(accounts[0] , "URI1") // By default, Truffle uses the first account available to execute functions.
     let tokenId1 = txn1.logs[2].args[0].toNumber()
     await marketplace.listNft(flats.address, tokenId1, 1, {value: listingFee})
     console.log(`Minted and listed ${tokenId1}`)
-    let txn2 = await flats.safeMint(flats.address, "URI1")
+    let txn2 = await flats.safeMint(accounts[0] , "URI1")
     let tokenId2 = txn2.logs[2].args[0].toNumber()
     await marketplace.listNft(flats.address, tokenId2, 1, {value: listingFee})
     console.log(`Minted and listed ${tokenId2}`)
-    let txn3 = await flats.safeMint(flats.address, "URI1")
+    let txn3 = await flats.safeMint(accounts[0] , "URI1")
     let tokenId3 = txn3.logs[2].args[0].toNumber()
     await marketplace.listNft(flats.address, tokenId3, 1, {value: listingFee})
     console.log(`Minted and listed ${tokenId3}`)
