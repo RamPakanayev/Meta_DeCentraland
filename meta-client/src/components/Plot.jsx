@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PopUpPlotDetails from './PlotDetails/PopUpPlotDetails';
-import { ethers } from 'ethers';
+// import { ethers } from 'ethers';
 import Web3 from 'web3';
 
 // import Web3 from 'web3';
