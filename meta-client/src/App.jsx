@@ -5,7 +5,7 @@ import EntryPage from './components/EnteryPage/EnteryPage';
 import Grid20 from './components/Grid copy/Grid20';
 import Grid from './components/Grid/Grid'
 import generatePlots from './components/Grid/plotsData';
-import Map from './components/Map';
+import Map from './components/Map/Map';
 
 
 function App() {
