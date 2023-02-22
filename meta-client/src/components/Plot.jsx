@@ -1,54 +1,39 @@
 import React, { useState } from 'react';
 import PopUpPlotDetails from './PlotDetails/PopUpPlotDetails';
 import { ethers } from 'ethers';
-function metamaskConnection() {
-  if (window.ethereum) {
-    window.ethereum
-      .request({ method: 'eth_requestAccounts' })
-      .then((res) => {
-        const address = res[0];
-        console.log('Address:', address);
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        provider
-          .getBalance(address)
-          .then((balance) => {
-            console.log('Wallet balance:', ethers.utils.formatEther(balance));
-          })
-          .catch((error) => {
-            console.error('Error retrieving wallet balance:', error);
-          });
-        provider
-          .getTransactionCount(address)
-          .then((count) => {
-            console.log('Transaction count:', count);
-          })
-          .catch((error) => {
-            console.error('Error retrieving transaction count:', error);
-          });
-        provider
-          .estimateGas({ from: address, to: address, value: ethers.utils.parseEther('0.01') })
-          .then((estimate) => {
-            console.log('Gas estimation:', estimate.toString());
-          })
-          .catch((error) => {
-            console.error('Error estimating gas:', error);
-          });
-        provider
-          .getLogs({ address: address })
-          .then((logs) => {
-            console.log('Logs:', logs);
-          })
-          .catch((error) => {
-            console.error('Error retrieving logs:', error);
-          });
-      })
-      .catch((error) => {
-        console.error('Error connecting to Metamask:', error);
-      });
-  } else {
-    alert('Please install the Metamask extension.');
+import Web3 from 'web3';
+
+// import Web3 from 'web3';
+
+
+
+async function metamaskConnection() {
+  try {
+    if (window.ethereum) {
+      const res = await window.ethereum.request({ method: 'eth_requestAccounts' });
+      const address = res[0];
+      console.log('Address:', address);
+      const web3 = new Web3(window.ethereum);
+      const balance = await web3.eth.getBalance(address);
+      console.log('Wallet balance:', web3.utils.fromWei(balance, 'ether'));
+      const count = await web3.eth.getTransactionCount(address);
+      console.log('Transaction count:', count);
+      const estimate = await web3.eth.estimateGas({ from: address, to: address, value: web3.utils.toWei('0.01', 'ether') });
+      console.log('Gas estimation:', estimate.toString());
+      const logs = await web3.eth.getPastLogs({ fromBlock: '0x0', address: address });
+      console.log('Logs:', logs);
+    } else {
+      const messageEl = document.createElement('div');
+      messageEl.textContent = 'Please install the Metamask extension.';
+      messageEl.style.color = 'red';
+      document.body.appendChild(messageEl);
+    }
+  } catch (error) {
+    console.error('Error connecting to Metamask:', error);
   }
 }
+
+
 
 const Plot = ({ id, type, owner, game, price, x, y, onBuy, onPlay, userType, backendData }) => {
   const [showDetails, setShowDetails] = useState(false);
