@@ -4,7 +4,7 @@ import './Map.css';
 import generatePlots from './generateplots';
 import Loading from 'react-loading-components';
 
-const Map = ({ backendData }) => {
+const Map = ({ backendData,marketPlace }) => {
   const num=100;//can be 20 or 100
   const plots = generatePlots(backendData,num);
 
@@ -24,7 +24,7 @@ const Map = ({ backendData }) => {
      
         row.push(
           <td key={`${j}-${i}`}>
-            <Plot {...plot} onClick={() => handlePlotClick(plot.id)} backendData={backendData} />
+            <Plot {...plot} onClick={() => handlePlotClick(plot.id)} backendData={backendData} marketPlace={marketPlace}/>
           </td>)
      
     }

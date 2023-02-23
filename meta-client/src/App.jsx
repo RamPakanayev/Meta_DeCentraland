@@ -6,6 +6,7 @@ import Grid20 from './components/Grid copy/Grid20';
 import Grid from './components/Grid/Grid'
 import generatePlots from './components/Grid/plotsData';
 import Map from './components/Map/Map';
+import Web3 from 'web3';
 
 
 function App() {
@@ -13,8 +14,23 @@ function App() {
   const [showGrid, setShowGrid] = useState(false);
   const [userType, setUserType] = useState('');
   const [backendData, setBackendData]= useState([])
-  
+  const [marketPlace, setMarketPlace] = useState(false);
 
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response1 = await fetch('/api/Marketplace');
+        if (!response1.ok) {
+          throw new Error(response1.statusText);
+        }
+        const json = await response1.json();
+        setMarketPlace(json.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchData();
+  }, []);
   //to render array from server 
   // useEffect(()=>{
   //   fetch("/api").then(
@@ -77,7 +93,7 @@ function App() {
     <div className="App">
       <Header onHomeClick={handleHomeClick} />
       {/* <Grid20 backendData={backendData}/> */}
-      <Map backendData={backendData}/>
+      <Map backendData={backendData}  marketPlace={marketPlace}/>
       <a href={url} download="Meta_DeCentraland_Plots.json">Download JSON</a>
       <Footer />
 
