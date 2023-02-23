@@ -15,6 +15,7 @@ function App() {
   const [userType, setUserType] = useState('');
   const [backendData, setBackendData]= useState([])
   const [marketPlace, setMarketPlace] = useState(false);
+  const [flatNFT, setFlatNFT] = useState(null);
 
   useEffect(() => {
     async function fetchData() {
@@ -31,6 +32,25 @@ function App() {
     }
     fetchData();
   }, []);
+
+  useEffect(() => {
+    async function fetchFlatNFT() {
+      try {
+        const response2 = await fetch('/api/flatNFT');
+        if (!response2.ok) {
+          throw new Error(response2.statusText);
+        }
+        const json = await response2.json();
+        setFlatNFT(json);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchFlatNFT();
+  }, []);
+
+
+
   //to render array from server 
   // useEffect(()=>{
   //   fetch("/api").then(
@@ -81,8 +101,8 @@ function App() {
   };
 
   
-  // get the plot data
-  const plots = generatePlots();
+  // get the plots data
+  const plots = generatePlots(flatNFT);
 
   // create the artifact JSON file
   const jsonFile = new Blob([JSON.stringify(plots, null, 2)], { type: 'application/json' });
@@ -92,20 +112,10 @@ function App() {
   return (
     <div className="App">
       <Header onHomeClick={handleHomeClick} />
-      {/* <Grid20 backendData={backendData}/> */}
+      {/* <Grid backendData={backendData}/> */}
       <Map backendData={backendData}  marketPlace={marketPlace}/>
       <a href={url} download="Meta_DeCentraland_Plots.json">Download JSON</a>
       <Footer />
-
-      {/* {backendData.length===0?(
-        <p>Loading...</p>
-      ):(backendData.map((item)=>{
-        return<> 
-         <p key={item.id}>{item.id}</p>
-         <p key={item.id}>{item.price}</p>
-         </>
-      }))
-      } */}
     </div>
   );
 }
