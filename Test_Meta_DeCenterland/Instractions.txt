@@ -1,0 +1,12 @@
+Step 1: Use the following command if you have issues with signature:
+    Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+
+Step 2 Testing:
+Launch Ganache for local testing
+Use the following command for testing:
+    truffle migrate --network development // migrates to Ganache
+    truffle exec scripts/run.js //tests NFT and marketplace
+
+Step 3: ???
+
+Step 4: Profit
