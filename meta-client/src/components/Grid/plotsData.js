@@ -1,5 +1,5 @@
 // plotsData.js
-const generatePlots = () => {
+const generatePlots = (flatNft) => {
   console.log("render");
   const getPlotType = (x, y) => {
     if (
@@ -28,6 +28,7 @@ const generatePlots = () => {
       // Rows 2-97 on the sides are roads
       return 'road';
     } else {
+
       return 'regular';
     }
   };
@@ -39,12 +40,17 @@ const generatePlots = () => {
       const x = i % 100;
       const y = Math.floor(i / 100);
       const type = getPlotType(x, y);
+      const nftId = null
+      
+      //ill need to deploy the flat and the marketplace json files and attach the nft id for each plot 
+      // const nftId =  (type==='regular')? do mint : null;
       const owner = null;
       const game = null;
       const price = Math.floor(Math.random() * 101) + 100; // Set a random price between 100 and 200
       return { id, type, owner, game, price, x, y };
     });
 
+    //maybe map again the whole 
   return plots;
 };
 

@@ -1,15 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Popup from 'reactjs-popup';
 import './PopUpPlotDetails.css';
+import Web3 from 'web3'
 
 const PopUpPlotDetails = ({
   id,
-  owner,
-  game,
-  price,
-  x,
-  y,
   onClose,
   onBuy,
   onSell,
@@ -21,32 +17,184 @@ const PopUpPlotDetails = ({
 }) => {
   const [showAccess, setShowAccess] = useState(false);
   const [showBack, setShowBack] = useState(false);
+  // const [showContract, setShowContract] = useState(false);
 
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     try {
+  //       const response1 = await fetch('/api/Marketplace');
+  //       if (!response1.ok) {
+  //         throw new Error(response1.statusText);
+  //       }
+  //       const json = await response1.json();
+  //       setShowContract(json.data);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   }
+  //   fetchData();
+  // }, []);
+
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     try {
+  //       const response = await fetch('/api/PixelZ');
+  //       if (!response.ok) {
+  //         throw new Error(response.statusText);
+  //       }
+  //       const json = await response.json();
+  //       setShowContract(json.data);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   }
+  //   fetchData();
+  // }, []);
+
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     try {
+  //       const response = await fetch('/api/Migrations');
+  //       if (!response.ok) {
+  //         throw new Error(response.statusText);
+  //       }
+  //       const json = await response.json();
+  //       setShowContract(json.data);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   }
+  //   fetchData();
+  // }, []);
+
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     try {
+  //       const response = await fetch('/api/FlatNFT');
+  //       if (!response.ok) {
+  //         throw new Error(response.statusText);
+  //       }
+  //       const json = await response.json();
+  //       setShowContract(json.data);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   }
+  //   fetchData();
+  // }, []);
+
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     try {
+  //       const response = await fetch('/api/ConvertLib');
+  //       if (!response.ok) {
+  //         throw new Error(response.statusText);
+  //       }
+  //       const json = await response.json();
+  //       setShowContract(json.data);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   }
+  //   fetchData();
+  // }, []);
+///////////////////////////////after will be in utils///////////////////////////////////////////////
   const handleAccess = () => {
     setShowAccess(true);
+    console.log('accsess');
   };
 
   const handleBack = () => {
     setShowAccess(false);
     setShowBack(false);
+    console.log('back');
   };
 
   const handleSell = () => {
     setShowBack(true);
+    console.log('sell');
   };
 
   const handleSetPrice = () => {
     setShowBack(true);
+    console.log('set price');
   };
 
   const handleTransferOwnership = () => {
     setShowBack(true);
+    console.log('Transfer Ownership');
   };
 
   const handleAttachGame = () => {
     setShowBack(true);
+    console.log('Attach Game');
   };
   
+  const handleNftBuy = async () => {
+    console.log('Buy NFT');
+    // if(!showContract){
+    //   console.log('ABI is missing');
+    //   return;
+    // }
+    // const web3 = new Web3(Web3.givenProvider);
+    // const marketplaceContractAddress = showContract;
+    // const marketplaceContract = new web3.eth.Contract(showContract.abi, marketplaceContractAddress);
+    // const selectedPlot = backendData.find((plot) => plot.id === id);
+    // const { nftContract, tokenId, price } = selectedPlot;
+
+    // // Estimate the gas cost for the transaction
+    // const gasPrice = await web3.eth.getGasPrice();
+    // const gasLimit = 300000;
+    // const estimatedGas = await marketplaceContract.methods.buyNft(nftContract, tokenId).estimateGas({
+    //   from: web3.eth.defaultAccount,
+    //   value: price,
+    //   gasPrice,
+    //   gasLimit,
+    // });
+
+    // // Prompt the user to confirm the transaction
+    // const confirmed = window.confirm(`Are you sure you want to buy this NFT for ${price} ether?`);
+    // if (confirmed) {
+    //   try {
+    //     // Send the transaction to the network
+    //     const receipt = await marketplaceContract.methods.buyNft(nftContract, tokenId).send({
+    //       from: web3.eth.defaultAccount,
+    //       value: price,
+    //       gas: estimatedGas,
+    //       gasPrice,
+    //     });
+
+    //     // Update the owner of the plot in the backend data
+    //     const updatedBackendData = backendData.map((plot) => {
+    //       if (plot.id === id) {
+    //         return {
+    //           ...plot,
+    //           owner: web3.eth.defaultAccount,
+    //           forSale: false,
+    //         };
+    //       } else {
+    //         return plot;
+    //       }
+    //     });
+
+    //     // Update the state of the app
+    //     onBuy(id, updatedBackendData);
+    //     alert('Successfully purchased NFT');
+    //   } catch (error) {
+    //     console.error(error);
+    //     alert('Failed to purchase NFT');
+    //   }
+    // }
+      
+  };
+
+  const handlePlay = async () => {
+    console.log('Play Game');
+  };
+///////////////////////////////after will be in utils///////////////////////////////////////////////
+
+
+
   const renderButtons = () => {
     if (showAccess) {
       return (
@@ -61,8 +209,8 @@ const PopUpPlotDetails = ({
     } else {
       return (
         <>
-          <button className="popup-play-btn" onClick={onBuy}>Play</button>
-          <button className="popup-buy-btn" onClick={onBuy}>Buy</button>
+          <button className="popup-play-btn" onClick={handlePlay}>Play</button>
+          <button className="popup-buy-btn" onClick={handleNftBuy}>Buy</button>
           <button className="popup-access-btn" onClick={handleAccess}>Access</button>
         </>
       );
@@ -120,19 +268,5 @@ const PopUpPlotDetails = ({
   );
 };
 
-PopUpPlotDetails.propTypes = {
-  id: PropTypes.number.isRequired,
-  owner: PropTypes.string,
-  game: PropTypes.string,
-  price: PropTypes.number.isRequired,
-  x: PropTypes.number.isRequired,
-  y: PropTypes.number.isRequired,
-  onClose: PropTypes.func.isRequired,
-  onBuy: PropTypes.func.isRequired,
-  onSell: PropTypes.func.isRequired,
-  onSetPrice: PropTypes.func.isRequired,
-  onTransferOwnership: PropTypes.func.isRequired,
-  onAttachGame: PropTypes.func.isRequired,
-};
 
 export default PopUpPlotDetails
