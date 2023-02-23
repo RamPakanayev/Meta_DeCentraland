@@ -6,14 +6,13 @@ import Grid20 from './components/Grid copy/Grid20';
 import Grid from './components/Grid/Grid'
 import generatePlots from './components/Grid/plotsData';
 import Map from './components/Map/Map';
-import Web3 from 'web3';
 
 
 function App() {
   // state variables to manage the visibility of the grid and the user type
   const [showGrid, setShowGrid] = useState(false);
   const [userType, setUserType] = useState('');
-  const [backendData, setBackendData]= useState([])
+  const [backendData, setBackendData]= useState([]);
   const [marketPlace, setMarketPlace] = useState(false);
   const [flatNFT, setFlatNFT] = useState(null);
 
@@ -49,7 +48,7 @@ function App() {
     fetchFlatNFT();
   }, []);
 
-
+  
 
   //to render array from server 
   // useEffect(()=>{
@@ -88,6 +87,9 @@ function App() {
     fetchData();
   }, []);//when adding function and states for button you may mention states inside the [] in the line
 
+
+
+  
   // event handler to update the user type when the user selects a type
   const handleUserTypeChange = (type) => {
     setShowGrid(true);
@@ -101,7 +103,7 @@ function App() {
   };
 
   
-  // get the plots data
+  // get the plot data
   const plots = generatePlots(flatNFT);
 
   // create the artifact JSON file
@@ -112,8 +114,8 @@ function App() {
   return (
     <div className="App">
       <Header onHomeClick={handleHomeClick} />
-      {/* <Grid backendData={backendData}/> */}
-      <Map backendData={backendData}  marketPlace={marketPlace}/>
+      {/* <Grid20 backendData={backendData}/> */}
+      <Map backendData={backendData}/>
       <a href={url} download="Meta_DeCentraland_Plots.json">Download JSON</a>
       <Footer />
     </div>

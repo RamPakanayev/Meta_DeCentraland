@@ -1,7 +1,5 @@
-import Web3 from 'web3';
-
 // plotsData.js
-const generatePlots = async (flatNft) => {
+const generatePlots = (flatNft) => {
   console.log("render");
   const getPlotType = (x, y) => {
     if (
@@ -30,38 +28,29 @@ const generatePlots = async (flatNft) => {
       // Rows 2-97 on the sides are roads
       return 'road';
     } else {
+
       return 'regular';
     }
   };
 
-  const web3 = new Web3(Web3.givenProvider);
+  const plots = Array(10000)
+    .fill()
+    .map((_, i) => {
+      const id = i + 1;
+      const x = i % 100;
+      const y = Math.floor(i / 100);
+      const type = getPlotType(x, y);
+      const nftId = null
+      
+      //ill need to deploy the flat and the marketplace json files and attach the nft id for each plot 
+      // const nftId =  (type==='regular')? do mint : null;
+      const owner = null;
+      const game = null;
+      const price = Math.floor(Math.random() * 101) + 100; // Set a random price between 100 and 200
+      return { id, type, owner, game, price, x, y };
+    });
 
-  const plots = await Promise.all(
-    Array(10000)
-      .fill()
-      .map(async (_, i) => {
-        const id = i + 1;
-        const x = i % 100;
-        const y = Math.floor(i / 100);
-        const type = getPlotType(x, y);
-
-        let nftId = null;
-
-        // if (type === 'regular' && flatNft) {
-        //   // Mint a new NFT for each regular plot
-        //   const flatNftContract = new web3.eth.Contract(flatNft.abi, flatNft.address);
-        //   const tx = await flatNftContract.methods.safeMint(ownerAddress, `https://example.com/${id}.json`).send({ from: ownerAddress });
-        //   const tokenId = tx.events.NFTMinted.returnValues[0];
-        //   nftId = tokenId;
-        // }
-
-        const owner = null;
-        const game = null;
-        const price = Math.floor(Math.random() * 101) + 100; // Set a random price between 100 and 200
-        return { id, nftId, type, owner, game, price, x, y };
-      })
-  );
-
+    //maybe map again the whole 
   return plots;
 };
 
