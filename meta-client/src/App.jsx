@@ -15,6 +15,7 @@ function App() {
   const [backendData, setBackendData]= useState([]);
   const [marketPlace, setMarketPlace] = useState(false);
   const [flatNFT, setFlatNFT] = useState(null);
+  const [showEntryPage, setShowEntryPage] = useState(true);
 
   useEffect(() => {
     async function fetchData() {
@@ -93,12 +94,14 @@ function App() {
   // event handler to update the user type when the user selects a type
   const handleUserTypeChange = (type) => {
     setShowGrid(true);
+    setShowEntryPage(false);
     setUserType(type);
   };
 
   // event handler to go back to the entry page and reset the user type
   const handleHomeClick = () => {
     setShowGrid(false);
+    setShowEntryPage(true);
     setUserType('');
   };
 
@@ -115,7 +118,12 @@ function App() {
     <div className="App">
       <Header onHomeClick={handleHomeClick} />
       {/* <Grid20 backendData={backendData}/> */}
-      <Map backendData={backendData}/>
+      {showEntryPage ? (
+        <EntryPage setUserType={handleUserTypeChange} />
+      ) : (
+        <Map backendData={backendData} userType={userType} />
+      )}
+      {/* <Map backendData={backendData}/> */}
       <a href={url} download="Meta_DeCentraland_Plots.json">Download JSON</a>
       <Footer />
     </div>
