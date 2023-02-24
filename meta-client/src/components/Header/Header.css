@@ -15,10 +15,10 @@
 .logo {
   height: 80px;
   width:90px;
-  margin-left: 10px;
+  margin-left: 30px;
 }
 .nav-menu{
-  margin-left: 2%;
+  margin-left: 1%;
 }
 .nav-menu ul {
   display: flex;
