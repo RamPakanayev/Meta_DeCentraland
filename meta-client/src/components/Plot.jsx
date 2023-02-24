@@ -42,8 +42,8 @@ const Plot = ({ id, type, owner, game, price, x, y, onBuy, onPlay, userType, bac
     gridColumn: x,
     gridRow: y,
     backgroundColor: color,
-    width: '7px',
-    height: '7px',
+    width: '10px',
+    height: '10px',
     margin: 0,
     padding: 0,
     cursor: type === 'regular' ? 'pointer' : 'default' // Disable the cursor for non-regular plots
