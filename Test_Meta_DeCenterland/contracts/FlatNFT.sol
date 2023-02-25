@@ -74,4 +74,17 @@ contract FlatNFT is ERC721, ERC721URIStorage, ERC721Enumerable, Ownable {
     {
         return super.supportsInterface(interfaceId);
     }
+
+    function tokensOfOwner(address owner)
+        external
+        view
+        returns (uint256[] memory)
+    {
+        uint256 tokenCount = balanceOf(owner);
+        uint256[] memory tokensId = new uint256[](tokenCount);
+        for (uint256 i = 0; i < tokenCount; i++) {
+            tokensId[i] = tokenOfOwnerByIndex(owner, i);
+        }
+        return tokensId;
+    }
 }
