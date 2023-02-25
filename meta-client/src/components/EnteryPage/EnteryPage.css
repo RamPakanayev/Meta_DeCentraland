@@ -27,6 +27,7 @@
   font-size: 26px;
   cursor: pointer;
   transition: all 0.3s ease;
+  /* transition: transform 0.5s ease; */
 }
 
 
@@ -40,6 +41,7 @@
 .guest-button:hover {
   filter: brightness(1.7);
   transform: scale(1.2);
+  /* transform: rotate(360deg); */
 }
 
 

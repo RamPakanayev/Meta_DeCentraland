@@ -1,24 +1,38 @@
 .header {
-  
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 5px;
   background-color: #06072b;
-  /* width: 100%; */
   margin-bottom: 3%;
   margin-top: 0;
   box-sizing: border-box;
-  /* border-radius: 10%; */
+  /* Add the following two properties */
+ 
 }
 
 .logo {
   height: 80px;
-  width:90px;
+  width: 90px;
   margin-left: 30px;
 }
-.nav-menu{
-  margin-left: 1%;
+
+p{
+  color: #21a292;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: bold;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 22px;
+  max-width: calc(50% - 190px);
+}
+
+.nav-menu {
+  margin-left: 0%; /* add a left margin of 2% to align the ul to the right of the logo */
+  flex: 1;
+  text-align: center; /* center the child elements */
 }
 .nav-menu ul {
   display: flex;
@@ -41,7 +55,7 @@
   padding: 10px;
   border-radius: 4px;
   position: relative;
-  margin-top:0px;
+  margin-top: 0px;
 }
 
 .nav-menu a::before {
@@ -65,22 +79,79 @@
   background-color: #0059b3;
 }
 
-.btn{
+.btn {
+  /* existing styles */
   padding: 10px 20px;
   border: none;
+  width: 190px;
   border-radius: 4px;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: bold;
   cursor: pointer;
-  margin: 0 2% 0px 50%;
+  margin: 0 40px 0 0;
   color: #fff;
   background-color: #21a292;
-  flex: 1;
+  
+  /* set initial rotation and perspective */
+  transform: perspective(1000px) rotateY(0deg);
+  transform-style: preserve-3d;
+  
+  /* set transition */
+  transition: transform 0.3s ease-in-out;
 }
 
-.btn:hover{
-  filter: brightness(1.2);
+.btn:hover {
+  /* rotate to the left */
+  transform: perspective(1000px) rotateY(-20deg);
+  /* start the animation and make it repeat indefinitely */
+  animation: rotate-back 1s linear infinite;
 }
-.btn:active{
+
+/* define the animation */
+@keyframes rotate-back {
+  /* rotate back to the right */
+  33% {
+    transform: perspective(1000px) rotateX(10deg)  ;
+  }
+  /* rotate to the left again */
+  66% {
+    transform: perspective(1000px) rotateX(-1 0deg) ;
+  }
+  /* rotate back to the right again */
+  100% {
+    /* transform: perspective(1000px) rotateY(0deg); */
+  }
+  /* rotate to the left again */
+  100% {
+    /* transform: perspective(1000px) rotateX(-20deg); */
+  }
+}
+
+
+.btn:hover {
+  filter: brightness(1.2);
+  
+}
+
+.btn:active {
   filter: brightness(0.8);
 }
+
+/* Added to make the header responsive */
+@media screen and (max-width: 768px) {
+  p {
+    margin-top: 0;
+    margin-right: 0;
+    order: 1;
+  }
+
+  .nav-menu {
+    order: 2;
+  }
+
+  .btn {
+    margin: 20px 0 0 0;
+    order: 3;
+  }
+}
+
