@@ -36,7 +36,7 @@ contract FlatNFT is ERC721, ERC721URIStorage, ERC721Enumerable, Ownable {
         _setTokenURI(tokenId, uri);
 
         setApprovalForAll(marketplaceContract, true);
-        emit NFTMinted(newTokenId);
+        emit NFTMinted(tokenId);
     }
 
     // The following functions are overrides required by Solidity.

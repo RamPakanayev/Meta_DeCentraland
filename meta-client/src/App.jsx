@@ -6,16 +6,17 @@ import Grid20 from './components/Grid copy/Grid20';
 import Grid from './components/Grid/Grid'
 import generatePlots from './components/Grid/plotsData';
 import Map from './components/Map/Map';
-
+import Web3 from 'web3';
 
 function App() {
-  // state variables to manage the visibility of the grid and the user type
   const [showGrid, setShowGrid] = useState(false);
   const [userType, setUserType] = useState('');
   const [backendData, setBackendData]= useState([]);
   const [marketPlace, setMarketPlace] = useState(false);
   const [flatNFT, setFlatNFT] = useState(null);
   const [showEntryPage, setShowEntryPage] = useState(true);
+  const [plots, setPlots] = useState(null);
+  const [web3, setWeb3] = useState(null);
 
   useEffect(() => {
     async function fetchData() {
@@ -33,44 +34,28 @@ function App() {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    async function fetchFlatNFT() {
-      try {
-        const response2 = await fetch('/api/flatNFT');
-        if (!response2.ok) {
-          throw new Error(response2.statusText);
-        }
-        const json = await response2.json();
-        setFlatNFT(json);
-      } catch (error) {
-        console.log(error);
+  const fetchFlatNFT = async () => {
+    try {
+      const response = await fetch('/api/flatNFT');
+      if (!response.ok) {
+        throw new Error(response.statusText);
       }
+      const json = await response.json();
+      setFlatNFT(json);
+      generatePlotsData(json, web3); // pass web3 as a parameter
+    } catch (error) {
+      console.log(error);
     }
-    fetchFlatNFT();
-  }, []);
+  };
 
-  
-
-  //to render array from server 
-  // useEffect(()=>{
-  //   fetch("/api").then(
-  //     response => response.json()  
-  //   ).then(
-  //     data=>{
-  //       setBackendData(data)
-  //     }
-  //   )
-  // },[])
-
-  //to render a json file from server
-  // useEffect(() => {
-  //   fetch("/api").then((response) => {
-  //     if (!response.ok) throw new Error(response.statusText);
-  //     return response.json();
-  //   }).then((json) => {
-  //     setBackendData(json.data);
-  //   }).catch((error) => console.log(error));
-  // }, []);
+  const generatePlotsData = async (flatNFT) => {
+    try {
+      const data = await generatePlots(flatNFT);
+      setPlots(data.plots);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     async function fetchData() {
@@ -86,44 +71,39 @@ function App() {
       }
     }
     fetchData();
-  }, []);//when adding function and states for button you may mention states inside the [] in the line
+  }, []);
 
+  useEffect(() => {
+    if (window.ethereum) {
+      setWeb3(new Web3(window.ethereum));
+    } else {
+      console.log('Please install the Metamask extension.');
+    }
+  }, []);
 
-
-  
-  // event handler to update the user type when the user selects a type
   const handleUserTypeChange = (type) => {
     setShowGrid(true);
     setShowEntryPage(false);
     setUserType(type);
   };
 
-  // event handler to go back to the entry page and reset the user type
   const handleHomeClick = () => {
     setShowGrid(false);
     setShowEntryPage(true);
     setUserType('');
   };
 
-  
-  // get the plot data
-  const plots = generatePlots(flatNFT);
-
-  // create the artifact JSON file
   const jsonFile = new Blob([JSON.stringify(plots, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(jsonFile);
 
-
   return (
     <div className="App">
-      <Header onHomeClick={handleHomeClick} />
-      {/* <Grid20 backendData={backendData}/> */}
+      <Header onHomeClick={handleHomeClick} web3={web3} />
       {showEntryPage ? (
         <EntryPage setUserType={handleUserTypeChange} />
       ) : (
-        <Map backendData={backendData} userType={userType} />
+        <Map backendData={backendData} userType={userType} web3={web3} />
       )}
-      {/* <Map backendData={backendData}/> */}
       <a href={url} download="Meta_DeCentraland_Plots.json">Download JSON</a>
       <Footer />
     </div>

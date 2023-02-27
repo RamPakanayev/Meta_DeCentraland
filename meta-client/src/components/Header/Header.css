@@ -92,39 +92,6 @@ p{
   color: #fff;
   background-color: #21a292;
   
-  /* set initial rotation and perspective */
-  transform: perspective(1000px) rotateY(0deg);
-  transform-style: preserve-3d;
-  
-  /* set transition */
-  transition: transform 0.3s ease-in-out;
-}
-
-.btn:hover {
-  /* rotate to the left */
-  transform: perspective(1000px) rotateY(-20deg);
-  /* start the animation and make it repeat indefinitely */
-  animation: rotate-back 1s linear infinite;
-}
-
-/* define the animation */
-@keyframes rotate-back {
-  /* rotate back to the right */
-  33% {
-    transform: perspective(1000px) rotateX(10deg)  ;
-  }
-  /* rotate to the left again */
-  66% {
-    transform: perspective(1000px) rotateX(-1 0deg) ;
-  }
-  /* rotate back to the right again */
-  100% {
-    /* transform: perspective(1000px) rotateY(0deg); */
-  }
-  /* rotate to the left again */
-  100% {
-    /* transform: perspective(1000px) rotateX(-20deg); */
-  }
 }
 
 
