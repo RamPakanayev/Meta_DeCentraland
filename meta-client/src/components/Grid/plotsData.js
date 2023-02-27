@@ -1,12 +1,14 @@
-import Web3 from 'web3'
+import Web3 from 'web3';
+
 
 const generatePlots = async (flatNft, web3) => {
-  if (!flatNft) {
+  console.log('in the generatePlots');
+  if (!flatNft || !web3) {
     return;
   }
 
   const flatNftContract = new web3.eth.Contract(flatNft.abi, flatNft.address);
-  const mintingAccount = "0x567ED905eFdD4eD8De787A2f12248ED267B0834f"; // Replace with your own account address
+  const mintingAccount = "0xA646334F2A3A1F18ae74E9E494580C57f6B0dFBA"; // Replace with your own account address
   const regularNftIds = [];
 
   const getPlotType = (x, y) => {
@@ -44,6 +46,7 @@ const generatePlots = async (flatNft, web3) => {
     Array(10000)
       .fill()
       .map(async (_, i) => {
+        console.log(i);
         const id = i + 1;
         const x = i % 100;
         const y = Math.floor(i / 100);

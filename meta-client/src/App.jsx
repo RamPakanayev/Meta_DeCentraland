@@ -1,22 +1,24 @@
-import React, { useEffect ,useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Footer from './components/Footer/Footer';
 import Header from './components/Header/Header';
 import EntryPage from './components/EnteryPage/EnteryPage';
 import Grid20 from './components/Grid copy/Grid20';
-import Grid from './components/Grid/Grid'
+import Grid from './components/Grid/Grid';
 import generatePlots from './components/Grid/plotsData';
 import Map from './components/Map/Map';
 import Web3 from 'web3';
+import Loading from 'react-loading-components';
 
 function App() {
   const [showGrid, setShowGrid] = useState(false);
   const [userType, setUserType] = useState('');
-  const [backendData, setBackendData]= useState([]);
+  const [backendData, setBackendData] = useState([]);
   const [marketPlace, setMarketPlace] = useState(false);
   const [flatNFT, setFlatNFT] = useState(null);
   const [showEntryPage, setShowEntryPage] = useState(true);
   const [plots, setPlots] = useState(null);
   const [web3, setWeb3] = useState(null);
+  const [isWeb3Connected, setIsWeb3Connected] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -42,15 +44,17 @@ function App() {
       }
       const json = await response.json();
       setFlatNFT(json);
-      generatePlotsData(json, web3); // pass web3 as a parameter
+      if (isWeb3Connected) {
+        generatePlotsData(json, web3);
+      }
     } catch (error) {
       console.log(error);
     }
   };
 
-  const generatePlotsData = async (flatNFT) => {
+  const generatePlotsData = async (flatNFT, web3) => {
     try {
-      const data = await generatePlots(flatNFT);
+      const data = await generatePlots(flatNFT, web3);
       setPlots(data.plots);
     } catch (error) {
       console.log(error);
@@ -58,28 +62,20 @@ function App() {
   };
 
   useEffect(() => {
-    async function fetchData() {
-      try {
-        const response = await fetch('/api');
-        if (!response.ok) {
-          throw new Error(response.statusText);
-        }
-        const json = await response.json();
-        setBackendData(json.data);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    fetchData();
-  }, []);
-
-  useEffect(() => {
     if (window.ethereum) {
       setWeb3(new Web3(window.ethereum));
+      window.ethereum.enable().then(() => {
+        setIsWeb3Connected(true);
+        fetchFlatNFT();
+      }).catch(console.log);
     } else {
       console.log('Please install the Metamask extension.');
     }
   }, []);
+
+  useEffect(() => {
+    fetchFlatNFT();
+  }, [isWeb3Connected]);
 
   const handleUserTypeChange = (type) => {
     setShowGrid(true);
@@ -104,7 +100,12 @@ function App() {
       ) : (
         <Map backendData={backendData} userType={userType} web3={web3} />
       )}
-      <a href={url} download="Meta_DeCentraland_Plots.json">Download JSON</a>
+      {isWeb3Connected && plots?  
+  (<a href={url} download="Meta_DeCentraland_Plots.json">
+    Download JSON
+  </a>):(<Loading type="spinning_circles" width={50} height={100} fill="#040123" />)
+}
+
       <Footer />
     </div>
   );
