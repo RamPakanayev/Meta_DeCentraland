@@ -1,6 +1,3 @@
-import Web3 from 'web3';
-
-
 const generatePlots = async (flatNft, web3) => {
   console.log('in the generatePlots');
   if (!flatNft || !web3) {
@@ -8,8 +5,8 @@ const generatePlots = async (flatNft, web3) => {
   }
 
   const flatNftContract = new web3.eth.Contract(flatNft.abi, flatNft.address);
-  const mintingAccount = "0xA646334F2A3A1F18ae74E9E494580C57f6B0dFBA"; // Replace with your own account address
-  const regularNftIds = [];
+  const mintingAccount = "0x8da101437B2Aa839c1811e4Efe19Db30D4d2Bc54"; // Replace with your own account address
+  const regularPlots = [];
 
   const getPlotType = (x, y) => {
     if (
@@ -42,38 +39,42 @@ const generatePlots = async (flatNft, web3) => {
     }
   };
 
-  const plots = await Promise.all(
-    Array(10000)
-      .fill()
-      .map(async (_, i) => {
-        console.log(i);
-        const id = i + 1;
-        const x = i % 100;
-        const y = Math.floor(i / 100);
-        const type = getPlotType(x, y);
+  for (let i = 0; i < 10000; i++) {
+    console.log(i);
+    const id = i + 1;
+    const x = i % 100;
+    const y = Math.floor(i / 100);
+    const type = getPlotType(x, y);
 
-        let nftId = null;
-        if (type === "regular") {
-          const receipt = await flatNftContract.methods.safeMint(mintingAccount, "").send({ from: mintingAccount });
-          nftId = receipt.events.Transfer.returnValues[2];
-          regularNftIds.push(nftId);
-        }
-
-        const owner = null;
-        const game = null;
-        const price = type === "regular" ? Math.floor(Math.random() * 101) + 100 : null;
-        return { id, nftId, type, owner, game, price, x, y };
-      })
-  );
-
-  return plots.map((plot) => {
-    if (plot.type === "regular") {
-      plot.nftId = regularNftIds.shift();
-    } else {
-      plot.nftId = null;
+    if (type === "regular") {
+      regularPlots.push(mintingAccount);
     }
-    return plot;
-  });
+  }
+
+  const receipt = await flatNftContract.methods.safeBatchMint(regularPlots, []).send({ from: mintingAccount });
+
+  const regularNftIds = receipt.events.Transfer ? receipt.events.Transfer.map(event => event.returnValues.tokenId) : [];
+
+
+  const plots = [];
+  for (let i = 0; i < 10000; i++) {
+    const id = i + 1;
+    const x = i % 100;
+    const y = Math.floor(i / 100);
+    const type = getPlotType(x, y);
+
+    let nftId = null;
+    if (type === "regular") {
+      nftId = regularNftIds.shift();
+    }
+
+    const owner = null;
+    const game = null;
+    const price = type === "regular" ? Math.floor(Math.random() * 101) + 100 : null;
+    plots.push({ id, nftId, type, owner, game, price, x, y });
+  }
+
+  return plots;
 };
 
 export default generatePlots;

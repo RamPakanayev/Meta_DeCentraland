@@ -16,7 +16,7 @@ function App() {
   const [marketPlace, setMarketPlace] = useState(false);
   const [flatNFT, setFlatNFT] = useState(null);
   const [showEntryPage, setShowEntryPage] = useState(true);
-  const [plots, setPlots] = useState(null);
+  const [plots, setPlots] = useState([]);
   const [web3, setWeb3] = useState(null);
   const [isWeb3Connected, setIsWeb3Connected] = useState(false);
 
