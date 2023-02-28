@@ -10,6 +10,7 @@ import Web3 from 'web3';
 import Loading from 'react-loading-components';
 
 function App() {
+  // State hooks
   const [showGrid, setShowGrid] = useState(false);
   const [userType, setUserType] = useState('');
   const [backendData, setBackendData] = useState([]);
@@ -20,6 +21,23 @@ function App() {
   const [web3, setWeb3] = useState(null);
   const [isWeb3Connected, setIsWeb3Connected] = useState(false);
 
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await fetch('/api');
+        if (!response.ok) {
+          throw new Error(response.statusText);
+        }
+        const json = await response.json();
+        setBackendData(json.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchData();
+  }, []);//when adding function and states for button you may mention states inside the [] in the line
+
+  // Fetch marketplace data from the server on component mount
   useEffect(() => {
     async function fetchData() {
       try {
@@ -35,7 +53,7 @@ function App() {
     }
     fetchData();
   }, []);
-
+ // Fetch flat NFT data from the server when Web3 is connected
   const fetchFlatNFT = async () => {
     try {
       const response = await fetch('/api/flatNFT');
@@ -43,15 +61,18 @@ function App() {
         throw new Error(response.statusText);
       }
       const json = await response.json();
-      setFlatNFT(json);
-      if (isWeb3Connected) {
-        generatePlotsData(json, web3);
-      }
+
+      //for the generation of the json plots !
+      // setFlatNFT(json);
+      // if (isWeb3Connected) {
+      //   generatePlotsData(json, web3);
+      // }
     } catch (error) {
       console.log(error);
     }
   };
 
+    // Generate data for the plots based on the flat NFT data and Web3
   const generatePlotsData = async (flatNFT, web3) => {
     try {
       const plots = await generatePlots(flatNFT, web3);
@@ -68,7 +89,7 @@ function App() {
   };
   
   
-
+  // Connect to Web3 when the component mounts
   useEffect(() => {
     if (window.ethereum) {
       setWeb3(new Web3(window.ethereum));
@@ -81,27 +102,31 @@ function App() {
     }
   }, []);
 
+  // Fetch flat NFT data when Web3 is connected or disconnected
   useEffect(() => {
     fetchFlatNFT();
   }, [isWeb3Connected]);
 
+  // Handler for when the user selects their user type
   const handleUserTypeChange = (type) => {
     setShowGrid(true);
     setShowEntryPage(false);
     setUserType(type);
   };
 
+ // Handler for when the home button is clicked
   const handleHomeClick = () => {
     setShowGrid(false);
     setShowEntryPage(true);
     setUserType('');
   };
 
+  // Create a JSON file of the plots data and generate a download link
   const jsonFile = new Blob([JSON.stringify(plots, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(jsonFile);
-  console.log('isWeb3Connected: ' + isWeb3Connected);
-  console.log('plots: ' + plots);
+ 
 
+  // Render the component
   return (
     <div className="App">
       <Header onHomeClick={handleHomeClick} web3={web3} />
