@@ -54,12 +54,20 @@ function App() {
 
   const generatePlotsData = async (flatNFT, web3) => {
     try {
-      const data = await generatePlots(flatNFT, web3);
-      setPlots(data.plots);
+      const plots = await generatePlots(flatNFT, web3);
+      // loop through the plots array and update the nftId for regular plots
+      plots.forEach((plot) => {
+        if (plot.type === 'regular') {
+          plot.nftId = `NFT-${plot.id}`;
+        }
+      });
+      setPlots(plots);
     } catch (error) {
       console.log(error);
     }
   };
+  
+  
 
   useEffect(() => {
     if (window.ethereum) {
@@ -91,6 +99,8 @@ function App() {
 
   const jsonFile = new Blob([JSON.stringify(plots, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(jsonFile);
+  console.log('isWeb3Connected: ' + isWeb3Connected);
+  console.log('plots: ' + plots);
 
   return (
     <div className="App">
@@ -100,15 +110,18 @@ function App() {
       ) : (
         <Map backendData={backendData} userType={userType} web3={web3} />
       )}
-      {isWeb3Connected && plots?  
-  (<a href={url} download="Meta_DeCentraland_Plots.json">
-    Download JSON
-  </a>):(<Loading type="spinning_circles" width={50} height={100} fill="#040123" />)
-}
-
+      {isWeb3Connected && plots ? (
+        <a href={url} download="Meta_DeCentraland_Plots.json">
+          Download JSON
+        </a>
+      ) : (
+        <Loading type="spinning_circles" width={50} height={100} fill="#040123" />
+      )}
       <Footer />
     </div>
   );
+  
+  
 }
 
 export default App;
