@@ -136,6 +136,7 @@ const PopUpPlotDetails = ({
 
   const ownerPlot = backendData.find(plot => plot.id === id);
   const onSale = backendData[id - 1].onSale
+  const NFTID = backendData[id - 1].nftId
   
   return (
     <>
@@ -174,6 +175,10 @@ const PopUpPlotDetails = ({
           <tr>
           <th>For Sale*</th>
           <td className={onSale ? 'green-text' : 'red-text'}>{onSale ? 'Yes' : 'No'}</td>
+          </tr>
+          <tr>
+          <th>NFT ID*</th>
+          <td>{NFTID}</td>
           </tr>
         </tbody>
       </table>
