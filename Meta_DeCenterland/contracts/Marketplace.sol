@@ -70,6 +70,25 @@ contract Marketplace is ReentrancyGuard {
         );
     }
 
+    function getNftDetails(uint256 _tokenId) public view returns (
+    address nftContract,
+    uint256 tokenId,
+    address seller,
+    address owner,
+    uint256 price,
+    bool listed
+) {
+    NFT storage nft = _idToNFT[_tokenId];
+    require(nft.owner != address(0), "Invalid token ID");
+    nftContract = nft.nftContract;
+    tokenId = nft.tokenId;
+    seller = nft.seller;
+    owner = nft.owner;
+    price = nft.price;
+    listed = nft.listed;
+}
+
+
     // Buy an NFT
     function buyNft(address _nftContract, uint256 _tokenId)
         public

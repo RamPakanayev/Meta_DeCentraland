@@ -10,10 +10,11 @@ const generatePlots = (backendData,num) => {
       const owner = plotbackendData ? plotbackendData.owner : 'none';
       const game = plotbackendData ? plotbackendData.game : 'none';
       const price = plotbackendData ? plotbackendData.price : 'none';
-      const forSale = plotbackendData ? plotbackendData.forSale : 'none';
+      const forSale = plotbackendData ? plotbackendData.onSale : 'none';// replace with onSale
       return { id, type, owner, game, price, x, y, forSale };
     });
 
   return plots;
 };
 export default generatePlots
+

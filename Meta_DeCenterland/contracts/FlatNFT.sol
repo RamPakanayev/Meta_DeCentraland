@@ -20,15 +20,6 @@ contract FlatNFT is ERC721, ERC721URIStorage, ERC721Enumerable, Ownable {
         marketplaceContract = _marketplaceContract;
     }
 
-    // function mint(string memory _tokenURI) public {
-    //     _tokenIds.increment();
-    //     uint256 newTokenId = _tokenIds.current();
-    //     _safeMint(msg.sender, newTokenId);
-    //     _setTokenURI(newTokenId, _tokenURI);
-    //     setApprovalForAll(marketplaceContract, true);
-    //     emit NFTMinted(newTokenId);
-    // }
-
     function safeMint(address to, string memory uri) public onlyOwner {
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
@@ -36,8 +27,18 @@ contract FlatNFT is ERC721, ERC721URIStorage, ERC721Enumerable, Ownable {
         _setTokenURI(tokenId, uri);
 
         setApprovalForAll(marketplaceContract, true);
-        emit NFTMinted(newTokenId);
+        emit NFTMinted(tokenId);
     }
+
+    function safeBatchMint(address[] memory to, string[] memory uri) public onlyOwner {
+        require(to.length == uri.length, "Arrays length mismatch");
+        for (uint256 i = 0; i < to.length; i++) {
+            safeMint(to[i], uri[i]);
+        }
+        emit BatchMinted(to, uri);
+    }
+
+    event BatchMinted(address[] to, string[] uri);
 
     // The following functions are overrides required by Solidity.
 

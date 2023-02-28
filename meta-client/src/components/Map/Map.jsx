@@ -4,9 +4,9 @@ import './Map.css';
 import generatePlots from './generateplots';
 import Loading from 'react-loading-components';
 
-const Map = ({ backendData,marketPlace,userType }) => {
-  const num=100;//can be 20 or 100
-  const plots = generatePlots(backendData,num);
+const Map = ({ backendData,setBackendData, marketPlace, userType, web3 }) => {
+  const num = 100; //can be 20 or 100
+  const plots = generatePlots(backendData, num);
   const [loading, setLoading] = useState(true);
 
   const handlePlotClick = (plotId) => {
@@ -22,17 +22,23 @@ const Map = ({ backendData,marketPlace,userType }) => {
       const index = i * num + j;
       const plot = plots[index];
 
-     
-        row.push(
-          <td key={`${j}-${i}`}>
-            <Plot {...plot} onClick={() => handlePlotClick(plot.id)} backendData={backendData} marketPlace={marketPlace} userType={userType}/>
-          </td>)
-     
+      row.push(
+        <td key={`${j}-${i}`}>
+          <Plot
+            {...plot}
+            onClick={() => handlePlotClick(plot.id)}
+            backendData={backendData}
+            marketPlace={marketPlace}
+            userType={userType}
+            web3={web3}
+            setBackendData={setBackendData}
+          />
+        </td>
+      );
     }
 
     plotTable.push(<tr key={i}>{row}</tr>);
   }
-
 
   useEffect(() => {
     setTimeout(() => {
@@ -40,23 +46,20 @@ const Map = ({ backendData,marketPlace,userType }) => {
     }, 800); // set the loading state to false after 2 seconds
   }, []);
 
-
   return (
-    
     <div className="Map">
-    {loading ? (
-      <div className="loading">
-        <Loading type="spinning_circles" width={100} height={100} fill="#040123" />
-        <h5>Loading, please wait...</h5>
-      </div>
-    ) : (
-      <table>
-        <tbody>{plotTable}</tbody>
-      </table>
-    )}
-  </div>
+      {loading ? (
+        <div className="loading">
+          <Loading type="spinning_circles" width={100} height={100} fill="#040123" />
+          <h5>Loading, please wait...</h5>
+        </div>
+      ) : (
+        <table>
+          <tbody>{plotTable}</tbody>
+        </table>
+      )}
+    </div>
   );
 };
-
 
 export default Map;
