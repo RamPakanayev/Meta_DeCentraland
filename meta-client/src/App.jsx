@@ -14,7 +14,7 @@ function App() {
   const [showGrid, setShowGrid] = useState(false);
   const [userType, setUserType] = useState('');
   const [backendData, setBackendData] = useState([]);
-  const [marketPlace, setMarketPlace] = useState(false);
+  const [marketPlace, setMarketPlace] = useState(null);
   const [flatNFT, setFlatNFT] = useState(null);
   const [showEntryPage, setShowEntryPage] = useState(true);
   const [plots, setPlots] = useState([]);
@@ -46,13 +46,24 @@ function App() {
           throw new Error(response1.statusText);
         }
         const json = await response1.json();
-        setMarketPlace(json.data);
+        setMarketPlace(json);
       } catch (error) {
         console.log(error);
       }
     }
     fetchData();
   }, []);
+  
+  useEffect(() => {
+    console.log(marketPlace);
+  }, [marketPlace]);
+  
+  // Add this callback function to setMarketPlace
+  const handleMarketPlaceChange = (newValue) => {
+    console.log(newValue);
+    setMarketPlace(newValue);
+  };
+  
  // Fetch flat NFT data from the server when Web3 is connected
   const fetchFlatNFT = async () => {
     try {
@@ -62,7 +73,7 @@ function App() {
       }
       const json = await response.json();
 
-      //for the generation of the json plots !
+      // for the generation of the json plots !
       // setFlatNFT(json);
       // if (isWeb3Connected) {
       //   generatePlotsData(json, web3);
@@ -133,7 +144,7 @@ function App() {
       {showEntryPage ? (
         <EntryPage setUserType={handleUserTypeChange} />
       ) : (
-        <Map backendData={backendData} userType={userType} web3={web3} />
+        <Map backendData={backendData} userType={userType} web3={web3} marketPlace={marketPlace} setBackendData={setBackendData} />
       )}
       {isWeb3Connected && plots ? (
         <a href={url} download="Meta_DeCentraland_Plots.json">

@@ -1,12 +1,7 @@
 import React, { useState } from 'react';
 import PopUpPlotDetails from './PlotDetails/PopUpPlotDetails';
-// import { ethers } from 'ethers';
-import Web3 from 'web3';
 
-// import Web3 from 'web3';
-
-
-const Plot = ({ id, type, owner, game, price, x, y, onBuy, onPlay, userType, backendData }) => {
+const Plot = ({ id, type, owner, game, price, x, y, onBuy, onPlay, userType, backendData,setBackendData, marketPlace, web3 }) => {
   const [showDetails, setShowDetails] = useState(false);
   const [purchased, setPurchased] = useState(false);
 
@@ -70,11 +65,13 @@ const Plot = ({ id, type, owner, game, price, x, y, onBuy, onPlay, userType, bac
           y={y}
           userType={userType}
           backendData={backendData}
+          setBackendData={setBackendData}
+          marketPlace={marketPlace}
+          web3={web3}
         />
       ) : null}
     </div>
   );
 };
-
 
 export default Plot;
