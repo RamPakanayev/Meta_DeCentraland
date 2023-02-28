@@ -16,14 +16,21 @@ const PopUpPlotDetails = ({
   backendData,
   setBackendData,
   userType,
-  marketPlace ,
+  marketPlace,
   web3,
 }) => {
   const [showAccess, setShowAccess] = useState(false);
   const [showBack, setShowBack] = useState(false);
+
+//from now
+  const marketPlaceContractAddress = "0xc189be134B7501b5f0dF448b9d0843A01f2A3EFc";
+  const myMarketPlaceContract = new web3.eth.Contract(marketPlace.abi, marketPlaceContractAddress);
+//
+
+
   const handleAccess = () => {
     setShowAccess(true);
-    console.log('accsess');
+    console.log('access');
   };
 
   const handleBack = () => {
@@ -44,13 +51,18 @@ const PopUpPlotDetails = ({
 
   const handleTransferOwnership = () => {
     setShowBack(true);
-    console.log('Transfer Ownership');
+    console.log('transfer ownership');
   };
 
   const handleAttachGame = () => {
     setShowBack(true);
-    console.log('Attach Game');
+    console.log('attach game');
   };
+
+  const handlePlay = async () => {
+    console.log('play game');
+  };
+
   const handleNftBuy = async () => {
     const accounts = await web3.eth.getAccounts();
     const account = accounts[0];
@@ -61,11 +73,18 @@ const PopUpPlotDetails = ({
       console.log(`No plot found with ID ${tokenId}`);
       return;
     }
+    
+    console.log(ownerPlot); // <-- add this line to check the value of ownerPlot
   
     const price = ownerPlot.price;
   
-    if (!marketPlace) {
-      console.log('Marketplace contract is not defined');
+    if (!myMarketPlaceContract.methods.buyNft) {
+      console.log('My marketPlace contract does not have buyNft function');
+      return;
+    }
+    // check if buyNft requires arguments
+    if (myMarketPlaceContract.methods.buyNft.inputs.length > 0) {
+      console.log('buyNft function requires arguments');
       return;
     }
   
@@ -76,7 +95,7 @@ const PopUpPlotDetails = ({
     };
   
     try {
-      const transaction = await marketPlace.methods.buyNft(ownerPlot.contractAddress, tokenId).send(options);
+      const transaction = await myMarketPlaceContract.methods.buyNft(ownerPlot.contractAddress, tokenId).send(options);
       console.log('Transaction:', transaction);
   
       // Create a new copy of the backendData array
@@ -98,11 +117,8 @@ const PopUpPlotDetails = ({
     }
   };
   
-  
-  const handlePlay = async () => {
-    console.log('Play Game');
-  };
 
+  
   const renderButtons = () => {
     if (showAccess) {
       return (

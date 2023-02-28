@@ -90,7 +90,7 @@ contract Marketplace is ReentrancyGuard {
 
 
     // Buy an NFT
-    function buyNft(address _nftContract, uint256 _tokenId)
+     function buyNft(address _nftContract, uint256 _tokenId)
         public
         payable
         nonReentrant
