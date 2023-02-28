@@ -69,7 +69,7 @@ const generatePlots = async (flatNft, web3) => {
   const regularNftIds = receipt.events.Transfer ? receipt.events.Transfer.map(event => event.returnValues.tokenId) : [];
 
   // Create an array to store the plot data
-  const plots = [];
+ const plots = [];
   for (let i = 0; i < 10000; i++) {
     const id = i + 1;
     const x = i % 100;
@@ -84,10 +84,13 @@ const generatePlots = async (flatNft, web3) => {
     const owner = null;
     const game = null;
 
+    // For regular plots, set onSale to true
+    const onSale = type === "regular" ? true : false;
     // For regular plots, generate a random price between 100 and 200
     const price = type === "regular" ? Math.floor(Math.random() * 101) + 100 : null;
-    plots.push({ id, nftId, type, owner, game, price, x, y });
+    plots.push({ id, nftId, type, owner, game, onSale, price, x, y });
   }
+
 
   // Return the plots array
   return plots;
