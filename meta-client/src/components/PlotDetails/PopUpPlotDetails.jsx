@@ -21,6 +21,7 @@ const PopUpPlotDetails = ({
 }) => {
   const [showAccess, setShowAccess] = useState(false);
   const [showBack, setShowBack] = useState(false);
+  
 
 //from now
   const marketPlaceContractAddress = "0xc189be134B7501b5f0dF448b9d0843A01f2A3EFc";

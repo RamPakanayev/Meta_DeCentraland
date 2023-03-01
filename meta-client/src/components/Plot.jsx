@@ -1,10 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect  } from 'react';
 import PopUpPlotDetails from './PlotDetails/PopUpPlotDetails';
 
 const Plot = ({ id, type, owner, game, price, x, y, onBuy, onPlay, userType, backendData,setBackendData, marketPlace, web3 }) => {
   const [showDetails, setShowDetails] = useState(false);
   const [purchased, setPurchased] = useState(false);
 
+  
+  useEffect(() => {
+    if (purchased) {
+      plotStyle.backgroundColor = 'red';
+    }
+  }, [purchased]);
+
+  
   const handleClick = () => {
     setShowDetails(!showDetails);
   };
@@ -12,7 +20,6 @@ const Plot = ({ id, type, owner, game, price, x, y, onBuy, onPlay, userType, bac
   const handlePurchase = () => {
     if (type !== 'park' && type !== 'road') {
       setPurchased(true);
-      onBuy(id);
     }
   };
 
@@ -68,6 +75,7 @@ const Plot = ({ id, type, owner, game, price, x, y, onBuy, onPlay, userType, bac
           setBackendData={setBackendData}
           marketPlace={marketPlace}
           web3={web3}
+          
         />
       ) : null}
     </div>
