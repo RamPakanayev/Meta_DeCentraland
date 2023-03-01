@@ -10,7 +10,7 @@ const generatePlots = async (flatNft, web3) => {
   const flatNftContract = new web3.eth.Contract(flatNft.abi, flatNft.address);
   
   // The address of the account that will be used to mint new NFTs
-  const mintingAccount = "0x8da101437B2Aa839c1811e4Efe19Db30D4d2Bc54"; // Replace with your own account address
+  const mintingAccount = "0x7BcEB50c0659D673b888FebFc72Eea0ABEabd42B"; // Replace with your own account address
   
   // An array to store the minting account for each regular plot
   const regularPlots = [];
@@ -76,9 +76,9 @@ const generatePlots = async (flatNft, web3) => {
     const y = Math.floor(i / 100);
     const type = getPlotType(x, y);
 
-    let nftId = null;
+    let tokenId = null;
     if (type === "regular") {
-      nftId = regularNftIds.shift();
+      tokenId = regularNftIds.shift();
     }
 
     const owner = null;
@@ -88,7 +88,7 @@ const generatePlots = async (flatNft, web3) => {
     const onSale = type === "regular" ? true : false;
     // For regular plots, generate a random price between 100 and 200
     const price = type === "regular" ? Math.floor(Math.random() * 101) + 100 : null;
-    plots.push({ id, nftId, type, owner, game, onSale, price, x, y });
+    plots.push({ id, tokenId, type, owner, game, onSale, price, x, y });
   }
 
 
@@ -99,12 +99,3 @@ const generatePlots = async (flatNft, web3) => {
 export default generatePlots;
 
 
-/*The `generatePlots` function generates plot data for the decentralized game using the `flatNft` and `web3` arguments. It creates new NFTs for regular plots and assigns each plot its corresponding NFT ID. The function determines the type of plot based on its position, and generates a random price for regular plots.
-
-The function loops through all 10,000 plots, and for each plot:
-- It determines the plot's x and y coordinates, and its type (park, road, or regular).
-- If the plot is a regular plot, it adds the minting account to the `regularPlots` array.
-- It generates an object containing the plot data, including its ID, type, owner, game, price, and coordinates.
-- If the plot is a regular plot, it assigns it the ID of the corresponding newly minted regular NFT.
-
-After the loop, the function returns an array of objects representing the plots.*/
