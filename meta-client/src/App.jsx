@@ -74,10 +74,10 @@ function App() {
       const json = await response.json();
 
       // for the generation of the json plots !
-      // setFlatNFT(json);
-      // if (isWeb3Connected) {
-      //   generatePlotsData(json, web3);
-      // }
+      setFlatNFT(json);
+      if (isWeb3Connected) {
+        // generatePlotsData(json, web3);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -90,7 +90,7 @@ function App() {
       // loop through the plots array and update the nftId for regular plots
       plots.forEach((plot) => {
         if (plot.type === 'regular') {
-          plot.nftId = `NFT-${plot.id}`;
+          plot.tokenId = `NFT-${plot.id}`;
         }
       });
       setPlots(plots);

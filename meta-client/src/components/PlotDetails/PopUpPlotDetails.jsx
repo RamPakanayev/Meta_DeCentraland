@@ -69,11 +69,12 @@ const PopUpPlotDetails = ({
   
     const tokenId = id;
     const ownerPlot = backendData.find(plot => plot.id === tokenId);
+    const flatNftContractAdress = "0x7BcEB50c0659D673b888FebFc72Eea0ABEabd42B";
     if (!ownerPlot) {
       console.log(`No plot found with ID ${tokenId}`);
       return;
     }
-    
+  
     console.log(ownerPlot); // <-- add this line to check the value of ownerPlot
   
     const price = ownerPlot.price;
@@ -83,10 +84,10 @@ const PopUpPlotDetails = ({
       return;
     }
     // check if buyNft requires arguments
-    if (myMarketPlaceContract.methods.buyNft.inputs.length > 0) {
-      console.log('buyNft function requires arguments');
-      return;
-    }
+    // if (myMarketPlaceContract.methods.buyNft.inputs.length > 0) {
+    //   console.log('buyNft function requires arguments');
+    //   return;
+    // }
   
     const options = {
       from: account,
@@ -95,7 +96,8 @@ const PopUpPlotDetails = ({
     };
   
     try {
-      const transaction = await myMarketPlaceContract.methods.buyNft(ownerPlot.contractAddress, tokenId).send(options);
+      console.log(ownerPlot);
+      const transaction = await myMarketPlaceContract.methods.buyNft(flatNftContractAdress, tokenId).send(options);
       console.log('Transaction:', transaction);
   
       // Create a new copy of the backendData array
@@ -111,11 +113,11 @@ const PopUpPlotDetails = ({
       setBackendData(updatedBackendData);
   
       console.log('NFT purchased successfully!');
-      onBuy();
+      // onBuy();
     } catch (error) {
       console.log('Error purchasing NFT:', error);
     }
-  };
+  };  
   
 
   
@@ -152,7 +154,8 @@ const PopUpPlotDetails = ({
 
   const ownerPlot = backendData.find(plot => plot.id === id);
   const onSale = backendData[id - 1].onSale
-  const NFTID = backendData[id - 1].nftId
+  const tokenId = backendData[id - 1].tokenId
+
   
   return (
     <>
@@ -168,6 +171,10 @@ const PopUpPlotDetails = ({
             <th>Plot ID*</th>
             <td>{ownerPlot.id}</td>
 
+          </tr>
+          <tr>
+          <th>Token ID*</th>
+          <td>{tokenId}</td>
           </tr>
           <tr>
             <th>Owner*</th>
@@ -192,10 +199,7 @@ const PopUpPlotDetails = ({
           <th>For Sale*</th>
           <td className={onSale ? 'green-text' : 'red-text'}>{onSale ? 'Yes' : 'No'}</td>
           </tr>
-          <tr>
-          <th>NFT ID*</th>
-          <td>{NFTID}</td>
-          </tr>
+         
         </tbody>
       </table>
       <div className="popup-buttons">

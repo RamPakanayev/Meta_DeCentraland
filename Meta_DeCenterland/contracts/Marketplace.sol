@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: MIT
+
 pragma solidity ^0.8.13;
 
 import "@openzeppelin/contracts/utils/Counters.sol";
@@ -18,7 +19,7 @@ contract Marketplace is ReentrancyGuard {
         address payable seller;
         address payable owner;
         uint256 price;
-        bool listed;
+        bool onSale;
     }
     event NFTListed(
         address nftContract,
@@ -76,7 +77,7 @@ contract Marketplace is ReentrancyGuard {
     address seller,
     address owner,
     uint256 price,
-    bool listed
+    bool onSale
 ) {
     NFT storage nft = _idToNFT[_tokenId];
     require(nft.owner != address(0), "Invalid token ID");
@@ -85,32 +86,37 @@ contract Marketplace is ReentrancyGuard {
     seller = nft.seller;
     owner = nft.owner;
     price = nft.price;
-    listed = nft.listed;
+    onSale = nft.onSale;
 }
 
 
     // Buy an NFT
-     function buyNft(address _nftContract, uint256 _tokenId)
-        public
-        payable
-        nonReentrant
-    {
-        NFT storage nft = _idToNFT[_tokenId];
-        require(
-            msg.value >= nft.price,
-            "Not enough ether to cover asking price"
-        );
+    function buyNft(address _nftContract, uint256 _tokenId)
+    public
+    payable
+    nonReentrant
+{
+    NFT storage nft = _idToNFT[_tokenId];
+    require(
+        nft.onSale == true,
+        "NFT not currently listed for sale"
+    );
+    require(
+        msg.value >= nft.price,
+        "Not enough ether to cover asking price"
+    );
 
-        address payable buyer = payable(msg.sender);
-        payable(nft.seller).transfer(msg.value);
-        IERC721(_nftContract).transferFrom(address(this), buyer, nft.tokenId);
-        _marketOwner.transfer(LISTING_FEE);
-        nft.owner = buyer;
-        nft.listed = false;
+    address payable buyer = payable(msg.sender);
+    payable(nft.seller).transfer(msg.value);
+    IERC721(_nftContract).transferFrom(address(this), buyer, nft.tokenId);
+    _marketOwner.transfer(LISTING_FEE);
+    nft.owner = buyer;
+    nft.onSale = false;
 
-        _nftsSold.increment();
-        emit NFTSold(_nftContract, nft.tokenId, nft.seller, buyer, msg.value);
-    }
+    _nftsSold.increment();
+    emit NFTSold(_nftContract, nft.tokenId, nft.seller, buyer, msg.value);
+}
+
 
     // Resell an NFT purchased from the marketplace
     function resellNft(
@@ -126,7 +132,7 @@ contract Marketplace is ReentrancyGuard {
         NFT storage nft = _idToNFT[_tokenId];
         nft.seller = payable(msg.sender);
         nft.owner = payable(address(this));
-        nft.listed = true;
+        nft.onSale = true; // Update the variable from "listed" to "onSale"
         nft.price = _price;
 
         _nftsSold.decrement();
@@ -139,6 +145,7 @@ contract Marketplace is ReentrancyGuard {
         );
     }
 
+
     function getListingFee() public view returns (uint256) {
         return LISTING_FEE;
     }
@@ -150,14 +157,13 @@ contract Marketplace is ReentrancyGuard {
         NFT[] memory nfts = new NFT[](unsoldNftsCount);
         uint256 nftsIndex = 0;
         for (uint256 i = 0; i < nftCount; i++) {
-            if (_idToNFT[i + 1].listed) {
+            if (_idToNFT[i + 1].onSale) {
                 nfts[nftsIndex] = _idToNFT[i + 1];
                 nftsIndex++;
             }
         }
         return nfts;
-    }
-
+}
     function getMyNfts() public view returns (NFT[] memory) {
         uint256 nftCount = _nftCount.current();
         uint256 myNftCount = 0;
@@ -183,7 +189,7 @@ contract Marketplace is ReentrancyGuard {
         uint256 myListedNftCount = 0;
         for (uint256 i = 0; i < nftCount; i++) {
             if (
-                _idToNFT[i + 1].seller == msg.sender && _idToNFT[i + 1].listed
+                _idToNFT[i + 1].seller == msg.sender && _idToNFT[i + 1].onSale
             ) {
                 myListedNftCount++;
             }
@@ -193,7 +199,7 @@ contract Marketplace is ReentrancyGuard {
         uint256 nftsIndex = 0;
         for (uint256 i = 0; i < nftCount; i++) {
             if (
-                _idToNFT[i + 1].seller == msg.sender && _idToNFT[i + 1].listed
+                _idToNFT[i + 1].seller == msg.sender && _idToNFT[i + 1].onSale
             ) {
                 nfts[nftsIndex] = _idToNFT[i + 1];
                 nftsIndex++;
