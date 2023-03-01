@@ -77,41 +77,27 @@ const PopUpPlotDetails = ({
       return;
     }
   
-    console.log(ownerPlot); // <-- add this line to check the value of ownerPlot
+    console.log(ownerPlot);
   
     const price = ownerPlot.price;
-  
-    if (!myMarketPlaceContract.methods.buyNft) {
-      console.log('My marketPlace contract does not have buyNft function');
-      return;
-    }
-    // check if buyNft requires arguments
-    // if (myMarketPlaceContract.methods.buyNft.inputs.length > 0) {
-    //   console.log('buyNft function requires arguments');
-    //   return;
-    // }
+    console.log(price);
   
     const options = {
       from: account,
-      value: price,
+      value: price + web3.utils.toWei('0.1', 'ether'), // Add the price to the listing fee
       gasPrice: web3.utils.toWei('30', 'gwei').toString(),
     };
   
     try {
-      console.log(ownerPlot);
-      const transaction = await myMarketPlaceContract.methods.buyNft(flatNftContractAdress, tokenId).send(options);
+      const transaction = await myMarketPlaceContract.methods.buyNft(flatNftContractAdress, tokenId, price).send(options);
       console.log('Transaction:', transaction);
   
-      // Create a new copy of the backendData array
       const updatedBackendData = [...backendData];
-      // Find the index of the purchased plot in the backendData array
       const index = updatedBackendData.findIndex(plot => plot.id === id);
-      // Update the owner of the purchased plot if ownerPlot is defined
       if (ownerPlot) {
         updatedBackendData[index].owner = account;
         updatedBackendData[index].forSale = false;
       }
-      // Set the state of backendData to the updated array
       setBackendData(updatedBackendData);
   
       console.log('NFT purchased successfully!');
@@ -119,7 +105,7 @@ const PopUpPlotDetails = ({
     } catch (error) {
       console.log('Error purchasing NFT:', error);
     }
-  };  
+  };
   
 
   

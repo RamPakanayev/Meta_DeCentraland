@@ -41,35 +41,30 @@ contract Marketplace is ReentrancyGuard {
     }
 
     // List the NFT on the marketplace
-    function listNft(
-        address _nftContract,
-        uint256 _tokenId,
-        uint256 _price
-    ) public payable nonReentrant {
-        require(_price > 0, "Price must be at least 1 wei");
-        require(msg.value == LISTING_FEE, "Not enough ether for listing fee");
+ function listNft(
+    address _nftContract,
+    uint256 _tokenId,
+    uint256 _price
+) public payable nonReentrant {
+    require(_price > 0, "Price must be at least 1 wei");
+    require(msg.value == LISTING_FEE, "Not enough ether for listing fee");
 
-        IERC721(_nftContract).transferFrom(msg.sender, address(this), _tokenId);
+    IERC721(_nftContract).transferFrom(msg.sender, address(this), _tokenId);
 
-        _nftCount.increment();
+    _nftCount.increment();
 
-        _idToNFT[_tokenId] = NFT(
-            _nftContract,
-            _tokenId,
-            payable(msg.sender),
-            payable(address(this)),
-            _price,
-            true
-        );
+    _idToNFT[_tokenId] = NFT(
+        _nftContract,
+        _tokenId,
+        payable(msg.sender),
+        payable(address(this)),
+        _price,
+        true
+    );
 
-        emit NFTListed(
-            _nftContract,
-            _tokenId,
-            msg.sender,
-            address(this),
-            _price
-        );
-    }
+    emit NFTListed(_nftContract, _tokenId, msg.sender, address(this), _price);
+}
+
 
     function getNftDetails(uint256 _tokenId) public view returns (
     address nftContract,
@@ -91,7 +86,7 @@ contract Marketplace is ReentrancyGuard {
 
 
     // Buy an NFT
-    function buyNft(address _nftContract, uint256 _tokenId)
+ function buyNft(address _nftContract, uint256 _tokenId, uint256 _price)
     public
     payable
     nonReentrant
@@ -102,20 +97,21 @@ contract Marketplace is ReentrancyGuard {
         "NFT not currently listed for sale"
     );
     require(
-        msg.value >= nft.price,
-        "Not enough ether to cover asking price"
+        msg.value == _price + LISTING_FEE,
+        "Please send the exact amount of ether required to buy the NFT"
     );
 
     address payable buyer = payable(msg.sender);
-    payable(nft.seller).transfer(msg.value);
+    payable(nft.seller).transfer(_price);
     IERC721(_nftContract).transferFrom(address(this), buyer, nft.tokenId);
     _marketOwner.transfer(LISTING_FEE);
     nft.owner = buyer;
     nft.onSale = false;
 
     _nftsSold.increment();
-    emit NFTSold(_nftContract, nft.tokenId, nft.seller, buyer, msg.value);
+    emit NFTSold(_nftContract, nft.tokenId, nft.seller, buyer, _price);
 }
+
 
 
     // Resell an NFT purchased from the marketplace
