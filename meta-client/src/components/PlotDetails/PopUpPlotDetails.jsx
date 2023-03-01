@@ -18,6 +18,7 @@ const PopUpPlotDetails = ({
   userType,
   marketPlace,
   web3,
+  setPurchased,
 }) => {
   const [showAccess, setShowAccess] = useState(false);
   const [showBack, setShowBack] = useState(false);
@@ -114,7 +115,7 @@ const PopUpPlotDetails = ({
       setBackendData(updatedBackendData);
   
       console.log('NFT purchased successfully!');
-      // onBuy();
+      setPurchased(true);
     } catch (error) {
       console.log('Error purchasing NFT:', error);
     }

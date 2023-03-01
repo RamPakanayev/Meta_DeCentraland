@@ -1,31 +1,19 @@
-import React, { useState, useEffect  } from 'react';
+import React, { useState,useEffect } from 'react';
 import PopUpPlotDetails from './PlotDetails/PopUpPlotDetails';
 
-const Plot = ({ id, type, owner, game, price, x, y, onBuy, onPlay, userType, backendData,setBackendData, marketPlace, web3 }) => {
+const Plot = ({ id, type, owner, game, price, x, y, onBuy, onPlay, userType, backendData, setBackendData, marketPlace, web3 }) => {
   const [showDetails, setShowDetails] = useState(false);
   const [purchased, setPurchased] = useState(false);
+  const [plotStyle, setPlotStyle] = useState(false);
 
   
   useEffect(() => {
-    if (purchased) {
-      plotStyle.backgroundColor = 'red';
-    }
+    setPlotStyle({
+      ...plotStyle,
+      backgroundColor: purchased ? 'red' : getColor(type),
+    });
   }, [purchased]);
-
   
-  const handleClick = () => {
-    setShowDetails(!showDetails);
-  };
-
-  const handlePurchase = () => {
-    if (type !== 'park' && type !== 'road') {
-      setPurchased(true);
-    }
-  };
-
-  const handleClose = () => {
-    setShowDetails(false);
-  };
 
   const getColor = (type) => {
     switch (type) {
@@ -38,17 +26,14 @@ const Plot = ({ id, type, owner, game, price, x, y, onBuy, onPlay, userType, bac
     }
   };
 
-  const color = purchased ? 'red' : getColor(type);
+  const handlePurchase = () => {
+    if (type !== 'park' && type !== 'road') {
+      setPurchased(true);
+    }
+  };
 
-  const plotStyle = {
-    gridColumn: x,
-    gridRow: y,
-    backgroundColor: color,
-    width: '10px',
-    height: '10px',
-    margin: 0,
-    padding: 0,
-    cursor: type === 'regular' ? 'pointer' : 'default' // Disable the cursor for non-regular plots
+  const handleClose = () => {
+    setShowDetails(false);
   };
 
   const handlePlay = () => {
@@ -57,8 +42,23 @@ const Plot = ({ id, type, owner, game, price, x, y, onBuy, onPlay, userType, bac
     }
   };
 
+  const style = {
+    gridColumn: x,
+    gridRow: y,
+    backgroundColor: purchased ? 'red' : getColor(type),
+    width: '10px',
+    height: '10px',
+    margin: 0,
+    padding: 0,
+    cursor: type === 'regular' ? 'pointer' : 'default' // Disable the cursor for non-regular plots
+  };
+
+  const handleClick = () => {
+    setShowDetails(!showDetails);
+  };
+
   return (
-    <div className="plot" style={plotStyle} onClick={type === 'regular' ? handleClick : null}>
+    <div className="plot" style={style} onClick={type === 'regular' ? handleClick : null}>
       {showDetails ? (
         <PopUpPlotDetails
           id={id}
@@ -75,7 +75,7 @@ const Plot = ({ id, type, owner, game, price, x, y, onBuy, onPlay, userType, bac
           setBackendData={setBackendData}
           marketPlace={marketPlace}
           web3={web3}
-          
+          setPurchased={setPurchased}
         />
       ) : null}
     </div>
