@@ -10,7 +10,10 @@ const generatePlots = async (flatNft, web3) => {
   const flatNftContract = new web3.eth.Contract(flatNft.abi, flatNft.address);
   
   // The address of the account that will be used to mint new NFTs
-  const mintingAccount = "0x8da101437B2Aa839c1811e4Efe19Db30D4d2Bc54"; // Replace with your own account address
+    // get accounts straight from Ganache using the following:
+  var accounts;
+  accounts = (await web3.eth.getAccounts())
+  const mintingAccount = accounts[0]; // Replace with your own account address. Owner by default is in array 0.
   
   // An array to store the minting account for each regular plot
   const regularPlots = [];
