@@ -84,7 +84,7 @@ const PopUpPlotDetails = ({
         <>
           <button className="popup-play-btn" onClick={handlePlay}>Play</button>
           <button className="popup-buy-btn" onClick={handleNftBuy}>Buy</button>
-          <button className="popup-access-btn" onClick={handleAccess}>Access</button>
+         
         </>
       )
     }else if(userType === 'buyer/seller' && !backendData[id - 1].onSale) {
