@@ -7,12 +7,6 @@ import Web3 from 'web3'
 const PopUpPlotDetails = ({
   id,
   onClose,
-  onBuy,
-  onSell,
-  onSetPrice,
-  onTransferOwnership,
-  onAttachGame,
-  forSale,
   backendData,
   setBackendData,
   userType,
@@ -23,13 +17,93 @@ const PopUpPlotDetails = ({
   const [showAccess, setShowAccess] = useState(false);
   const [showBack, setShowBack] = useState(false);
   
-
-//from now
   const marketPlaceContractAddress = "0xc189be134B7501b5f0dF448b9d0843A01f2A3EFc";
   const myMarketPlaceContract = new web3.eth.Contract(marketPlace.abi, marketPlaceContractAddress);
-//
 
+  const handleNftBuy = async () => {
+    const accounts = await web3.eth.getAccounts();
+    const account = accounts[0];
+  
+    const tokenId = id;
+    const ownerPlot = backendData.find((plot) => plot.id === tokenId);
+    const flatNftContractAddress = "0x7BcEB50c0659D673b888FebFc72Eea0ABEabd42B";
+    if (!ownerPlot) {
+      console.log(`No plot found with ID ${tokenId}`);
+      return;
+    }
+  
+    console.log(ownerPlot);
+  
+    const price = ownerPlot.price;
+    console.log(price);
+    const options = {
+      from: account,
+      value: price + web3.utils.toWei('0.1', 'ether'), // Add the price to the listing fee
+      gasPrice: web3.utils.toWei('30', 'gwei').toString(),
+    };
+  
+    try {
+      const myMarketPlaceContract = new web3.eth.Contract(marketPlace.abi, marketPlaceContractAddress);
+  
+      const transaction = await myMarketPlaceContract.methods
+        .buyNft(flatNftContractAddress, tokenId, price)
+        .send(options);
+      console.log('Transaction:', transaction);
+  
+      const updatedBackendData = [...backendData];
+      const index = updatedBackendData.findIndex((plot) => plot.id === id);
+      if (ownerPlot) {
+        updatedBackendData[index].owner = account;
+        updatedBackendData[index].onSale = false; // Update onSale to false once the plot is purchased
+      }
+      setBackendData(updatedBackendData);
+  
+      console.log('NFT purchased successfully!');
+      setPurchased(true);
+    } catch (error) {
+      console.log('Error purchasing NFT:', error);
+    }
+  };
+  
+  
 
+  
+  const renderButtons = () => {
+    if (showAccess) {
+      return (
+        <>
+          <button className="popup-sell-btn" onClick={handleSell}>Sell</button>
+          <button className="popup-price-btn btn" onClick={handleSetPrice}>Set Price</button>
+          <button className="popup-transfer-btn btn" onClick={handleTransferOwnership}>Transfer Ownership</button>
+          <button className="popup-game-btn btn" onClick={handleAttachGame}>Attach Game</button>
+          <button className="popup-back-btn" onClick={handleBack}>Back</button>
+        </>
+      );
+    } else if(userType === 'buyer/seller' && backendData[id - 1].onSale) {
+      return (
+        <>
+          <button className="popup-play-btn" onClick={handlePlay}>Play</button>
+          <button className="popup-buy-btn" onClick={handleNftBuy}>Buy</button>
+          <button className="popup-access-btn" onClick={handleAccess}>Access</button>
+        </>
+      )
+    }else if(userType === 'buyer/seller' && !backendData[id - 1].onSale) {
+      return (
+        <>
+          <button className="popup-play-btn" onClick={handlePlay}>Play</button>
+          <button className="popup-access-btn" onClick={handleAccess}>Access</button>
+        </>
+      )
+    } 
+    else {
+      return (
+        <>
+          <button className="popup-play-btn" onClick={handlePlay}>Play</button>
+        </>
+      );
+    }
+  };
+  
   const handleAccess = () => {
     setShowAccess(true);
     console.log('access');
@@ -65,79 +139,6 @@ const PopUpPlotDetails = ({
     console.log('play game');
   };
 
-  const handleNftBuy = async () => {
-    const accounts = await web3.eth.getAccounts();
-    const account = accounts[0];
-  
-    const tokenId = id;
-    const ownerPlot = backendData.find(plot => plot.id === tokenId);
-    const flatNftContractAdress = "0x7BcEB50c0659D673b888FebFc72Eea0ABEabd42B";
-    if (!ownerPlot) {
-      console.log(`No plot found with ID ${tokenId}`);
-      return;
-    }
-  
-    console.log(ownerPlot);
-  
-    const price = ownerPlot.price;
-    console.log(price);
-  
-    const options = {
-      from: account,
-      value: price + web3.utils.toWei('0.1', 'ether'), // Add the price to the listing fee
-      gasPrice: web3.utils.toWei('30', 'gwei').toString(),
-    };
-  
-    try {
-      const transaction = await myMarketPlaceContract.methods.buyNft(flatNftContractAdress, tokenId, price).send(options);
-      console.log('Transaction:', transaction);
-  
-      const updatedBackendData = [...backendData];
-      const index = updatedBackendData.findIndex(plot => plot.id === id);
-      if (ownerPlot) {
-        updatedBackendData[index].owner = account;
-        updatedBackendData[index].forSale = false;
-      }
-      setBackendData(updatedBackendData);
-  
-      console.log('NFT purchased successfully!');
-      setPurchased(true);
-    } catch (error) {
-      console.log('Error purchasing NFT:', error);
-    }
-  };
-  
-
-  
-  const renderButtons = () => {
-    if (showAccess) {
-      return (
-        <>
-          <button className="popup-sell-btn" onClick={handleSell}>Sell</button>
-          <button className="popup-price-btn btn" onClick={handleSetPrice}>Set Price</button>
-          <button className="popup-transfer-btn btn" onClick={handleTransferOwnership}>Transfer Ownership</button>
-          <button className="popup-game-btn btn" onClick={handleAttachGame}>Attach Game</button>
-          <button className="popup-back-btn" onClick={handleBack}>Back</button>
-        </>
-      );
-    } else if(userType === 'buyer/seller'){
-      return (
-        <>
-          <button className="popup-play-btn" onClick={handlePlay}>Play</button>
-          <button className="popup-buy-btn" onClick={handleNftBuy}>Buy</button>
-          <button className="popup-access-btn" onClick={handleAccess}>Access</button>
-        </>
-      )
-    }
-    else {
-      return (
-        <>
-          <button className="popup-play-btn" onClick={handlePlay}>Play</button>
-        </>
-      );
-    }
-  };
-  
   
 
   const ownerPlot = backendData.find(plot => plot.id === id);

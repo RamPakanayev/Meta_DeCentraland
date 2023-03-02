@@ -110,7 +110,11 @@ contract Marketplace is ReentrancyGuard {
 
     _nftsSold.increment();
     emit NFTSold(_nftContract, nft.tokenId, nft.seller, buyer, _price);
+
+    // Set the onSale variable to false
+    nft.onSale = false;
 }
+
 
 
 
