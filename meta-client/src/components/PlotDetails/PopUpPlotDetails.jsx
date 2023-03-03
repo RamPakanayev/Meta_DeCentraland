@@ -19,7 +19,8 @@ const PopUpPlotDetails = ({
   const [myAddress, setMyAddress] = useState(null);
   const [gameUrl, setGameUrl] = useState('');
   const [attachGameClicked, setAttachGameClicked] = useState(false);
-
+  const [newPrice, setNewPrice] = useState(0);
+  const [SellClicked, setSellClicked] = useState(false);
 
   
   const marketPlaceContractAddress = "0xc189be134B7501b5f0dF448b9d0843A01f2A3EFc";
@@ -95,17 +96,33 @@ const PopUpPlotDetails = ({
     setAttachGameClicked(false);
   };
   
+  const handleSetPriceOk = (url) => {
+    const updatedBackendData = [...backendData];
+    const index = updatedBackendData.findIndex((plot) => plot.id === id);
+    if (index !== -1) {
+      updatedBackendData[index].price = newPrice;
+      setBackendData(updatedBackendData);
+    }
+    setNewPrice();
+    setSellClicked(false);
+  };
   
   const renderButtons = () => {
     if (showAccess) {
       return (
         <>
           <button className="popup-sell-btn" onClick={handleSell}>Sell</button>
-          <button className="popup-price-btn btn" onClick={handleSetPrice}>Set Price</button>
+          {SellClicked && (
+          <div className="sell-div">
+            <input className="set-price-input" type="number" placeholder="Set a price" value={newPrice} onChange={(e) => setNewPrice(e.target.value)} />
+            <button onClick={() => handleSetPriceOk(newPrice)}>OK</button>
+          </div>
+        )}
+          {/* <button className="popup-price-btn btn" onClick={handleSetPrice}>Set Price</button> */}
           <button className="popup-transfer-btn btn" onClick={handleTransferOwnership}>Transfer Ownership</button>
           <button className="popup-game-btn btn" onClick={handleAttachGame}>Attach Game</button>
         {attachGameClicked && (
-          <div>
+          <div className="attach-game-div">
             <input className="game-input" type="text" placeholder="Enter game URL" value={gameUrl} onChange={(e) => setGameUrl(e.target.value)} />
             <button onClick={() => handleOk(gameUrl)}>OK</button>
           </div>
@@ -152,6 +169,7 @@ const PopUpPlotDetails = ({
 
   const handleSell = () => {
     setShowBack(true);
+    setSellClicked(true);
     console.log('sell');
   };
 
