@@ -17,6 +17,10 @@ const PopUpPlotDetails = ({
   const [showAccess, setShowAccess] = useState(false);
   const [showBack, setShowBack] = useState(false);
   const [myAddress, setMyAddress] = useState(null);
+  const [gameUrl, setGameUrl] = useState('');
+  const [attachGameClicked, setAttachGameClicked] = useState(false);
+
+
   
   const marketPlaceContractAddress = "0xc189be134B7501b5f0dF448b9d0843A01f2A3EFc";
   const myMarketPlaceContract = new web3.eth.Contract(marketPlace.abi, marketPlaceContractAddress);
@@ -48,10 +52,9 @@ const PopUpPlotDetails = ({
       return;
     }
   
-    console.log(ownerPlot);
-  
+    // console.log(ownerPlot);
     const price = ownerPlot.price;
-    console.log(price);
+    // console.log(price);
     const options = {
       from: account,
       value: price + web3.utils.toWei('0.1', 'ether'), // Add the price to the listing fee
@@ -81,6 +84,17 @@ const PopUpPlotDetails = ({
     }
   };
   
+  const handleOk = (url) => {
+    const updatedBackendData = [...backendData];
+    const index = updatedBackendData.findIndex((plot) => plot.id === id);
+    if (index !== -1) {
+      updatedBackendData[index].game = url;
+      setBackendData(updatedBackendData);
+    }
+    setGameUrl('');
+    setAttachGameClicked(false);
+  };
+  
   
   const renderButtons = () => {
     if (showAccess) {
@@ -90,6 +104,12 @@ const PopUpPlotDetails = ({
           <button className="popup-price-btn btn" onClick={handleSetPrice}>Set Price</button>
           <button className="popup-transfer-btn btn" onClick={handleTransferOwnership}>Transfer Ownership</button>
           <button className="popup-game-btn btn" onClick={handleAttachGame}>Attach Game</button>
+        {attachGameClicked && (
+          <div>
+            <input type="text" placeholder="Enter game URL" value={gameUrl} onChange={(e) => setGameUrl(e.target.value)} />
+            <button onClick={() => handleOk(gameUrl)}>OK</button>
+          </div>
+        )}
           <button className="popup-back-btn" onClick={handleBack}>Back</button>
         </>
       );
@@ -146,11 +166,17 @@ const PopUpPlotDetails = ({
 
   const handleAttachGame = () => {
     setShowBack(true);
+    setAttachGameClicked(true);
     console.log('attach game');
   };
 
   const handlePlay = async () => {
     console.log('play game');
+    if (backendData[id - 1].game) {
+      window.open(backendData[id - 1].game, '_blank');
+    } else {
+      console.log('No game URL found for this plot');
+    }
   };
 
   
