@@ -55,7 +55,7 @@ function App() {
   }, []);
   
   useEffect(() => {
-    console.log(marketPlace);
+    // console.log(marketPlace);
   }, [marketPlace]);
   
   // Add this callback function to setMarketPlace

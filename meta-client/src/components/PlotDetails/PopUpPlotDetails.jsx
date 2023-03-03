@@ -21,16 +21,20 @@ const PopUpPlotDetails = ({
   const marketPlaceContractAddress = "0xc189be134B7501b5f0dF448b9d0843A01f2A3EFc";
   const myMarketPlaceContract = new web3.eth.Contract(marketPlace.abi, marketPlaceContractAddress);
 
-  const toggleConnection = async () => {
-    try {
-      if (window.ethereum) {
-        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-        setMyAddress(accounts[0]);
+  useEffect(() => {
+    const toggleConnection = async () => {
+      try {
+        if (window.ethereum) {
+          const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+          setMyAddress(accounts[0]);
+        }
+      } catch (error) {
+        console.error('Error connecting to Metamask:', error);
       }
-    } catch (error) {
-      console.error('Error connecting to Metamask:', error);
-    }
-  };
+    };
+    toggleConnection();
+  }, [setMyAddress]);
+  
 
   const handleNftBuy = async () => {
     const accounts = await web3.eth.getAccounts();
@@ -76,11 +80,7 @@ const PopUpPlotDetails = ({
       console.log('Error purchasing NFT:', error);
     }
   };
-  toggleConnection();
   
-  console.log(backendData[id - 1].owner);
-  console.log("===");
-  console.log(myAddress)
   
   const renderButtons = () => {
     if (showAccess) {
@@ -101,7 +101,7 @@ const PopUpPlotDetails = ({
          
         </>
       )
-    }else if(userType === 'buyer/seller' && backendData[id - 1].owner.toLowerCase() == myAddress.toLowerCase())  {
+    }else if(userType === 'buyer/seller' && backendData[id - 1]?.owner?.toLowerCase() == myAddress?.toLowerCase())  {
       return (
         <>
           <button className="popup-play-btn" onClick={handlePlay}>Play</button>
