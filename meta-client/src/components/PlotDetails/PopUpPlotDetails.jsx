@@ -96,7 +96,11 @@ const PopUpPlotDetails = ({
     setAttachGameClicked(false);
   };
   
-  const handleSetPriceOk = (url) => {
+  const handleSetPriceOk = (newPrice) => {
+    if(newPrice<0){
+      window.alert("The price must be greater than 0 ! ");
+      return;
+    }
     const updatedBackendData = [...backendData];
     const index = updatedBackendData.findIndex((plot) => plot.id === id);
     if (index !== -1) {
@@ -106,6 +110,50 @@ const PopUpPlotDetails = ({
     setNewPrice();
     setSellClicked(false);
   };
+  
+  const handleAccess = () => {
+    setShowAccess(true);
+    console.log('access');
+  };
+
+  const handleBack = () => {
+    setShowAccess(false);
+    setShowBack(false);
+    setAttachGameClicked(false);
+    console.log('back');
+  };
+
+  const handleSell = () => {
+    setShowBack(true);
+    setSellClicked(true);
+    console.log('sell');
+  };
+
+  const handleSetPrice = () => {
+    setShowBack(true);
+    console.log('set price');
+  };
+
+  const handleTransferOwnership = () => {
+    setShowBack(true);
+    console.log('transfer ownership');
+  };
+
+  const handleAttachGame = () => {
+    setShowBack(true);
+    setAttachGameClicked(true);
+    console.log('attach game');
+  };
+
+  const handlePlay = async () => {
+    console.log('play game');
+    if (backendData[id - 1].game) {
+      window.open(backendData[id - 1].game, '_blank');
+    } else {
+      console.log('No game URL found for this plot');
+    }
+  };
+
   
   const renderButtons = () => {
     if (showAccess) {
@@ -154,51 +202,6 @@ const PopUpPlotDetails = ({
       );
     }
   };
-  
-  const handleAccess = () => {
-    setShowAccess(true);
-    console.log('access');
-  };
-
-  const handleBack = () => {
-    setShowAccess(false);
-    setShowBack(false);
-    setAttachGameClicked(false);
-    console.log('back');
-  };
-
-  const handleSell = () => {
-    setShowBack(true);
-    setSellClicked(true);
-    console.log('sell');
-  };
-
-  const handleSetPrice = () => {
-    setShowBack(true);
-    console.log('set price');
-  };
-
-  const handleTransferOwnership = () => {
-    setShowBack(true);
-    console.log('transfer ownership');
-  };
-
-  const handleAttachGame = () => {
-    setShowBack(true);
-    setAttachGameClicked(true);
-    console.log('attach game');
-  };
-
-  const handlePlay = async () => {
-    console.log('play game');
-    if (backendData[id - 1].game) {
-      window.open(backendData[id - 1].game, '_blank');
-    } else {
-      console.log('No game URL found for this plot');
-    }
-  };
-
-  
 
   const ownerPlot = backendData.find(plot => plot.id === id);
   const onSale = backendData[id - 1].onSale
