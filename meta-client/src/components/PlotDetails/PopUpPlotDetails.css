@@ -176,3 +176,31 @@
     max-width: 90%;
   }
 }
+
+
+.game-input {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.game-input input[type="text"] {
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  margin-right: 10px;
+  flex: 1;
+}
+
+.game-input button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #fff;
+  background-color: #9b59b6;
+}

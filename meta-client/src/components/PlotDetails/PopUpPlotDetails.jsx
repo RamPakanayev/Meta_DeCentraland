@@ -106,7 +106,7 @@ const PopUpPlotDetails = ({
           <button className="popup-game-btn btn" onClick={handleAttachGame}>Attach Game</button>
         {attachGameClicked && (
           <div>
-            <input type="text" placeholder="Enter game URL" value={gameUrl} onChange={(e) => setGameUrl(e.target.value)} />
+            <input className="game-input" type="text" placeholder="Enter game URL" value={gameUrl} onChange={(e) => setGameUrl(e.target.value)} />
             <button onClick={() => handleOk(gameUrl)}>OK</button>
           </div>
         )}
@@ -146,6 +146,7 @@ const PopUpPlotDetails = ({
   const handleBack = () => {
     setShowAccess(false);
     setShowBack(false);
+    setAttachGameClicked(false);
     console.log('back');
   };
 
