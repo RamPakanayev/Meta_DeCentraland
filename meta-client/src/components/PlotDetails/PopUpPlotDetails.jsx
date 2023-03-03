@@ -86,6 +86,18 @@ const PopUpPlotDetails = ({
   };
   
   const handleOk = (url) => {
+    if (!url) {
+      window.alert("Please enter a game URL!");
+      return;
+    }
+  
+    const urlRegex = /^(ftp|http|https):\/\/[^ "]+$/;
+  
+    if (!urlRegex.test(url)) {
+      window.alert("Please enter a valid URL!");
+      return;
+    }
+  
     const updatedBackendData = [...backendData];
     const index = updatedBackendData.findIndex((plot) => plot.id === id);
     if (index !== -1) {
@@ -96,15 +108,21 @@ const PopUpPlotDetails = ({
     setAttachGameClicked(false);
   };
   
+  
   const handleSetPriceOk = (newPrice) => {
     if(newPrice<0){
       window.alert("The price must be greater than 0 ! ");
+      return;
+    }
+    if(!newPrice){
+      window.alert("Please enter a price ");
       return;
     }
     const updatedBackendData = [...backendData];
     const index = updatedBackendData.findIndex((plot) => plot.id === id);
     if (index !== -1) {
       updatedBackendData[index].price = newPrice;
+      updatedBackendData[index].onSale = true;
       setBackendData(updatedBackendData);
     }
     setNewPrice();
@@ -120,6 +138,8 @@ const PopUpPlotDetails = ({
     setShowAccess(false);
     setShowBack(false);
     setAttachGameClicked(false);
+    setSellClicked(false);
+
     console.log('back');
   };
 
@@ -178,7 +198,7 @@ const PopUpPlotDetails = ({
           <button className="popup-back-btn" onClick={handleBack}>Back</button>
         </>
       );
-    } else if(userType === 'buyer/seller' && backendData[id - 1].onSale) {
+    } else if(userType === 'buyer/seller' && backendData[id - 1].onSale && backendData[id - 1]?.owner?.toLowerCase() !== myAddress?.toLowerCase()) {
       return (
         <>
           <button className="popup-play-btn" onClick={handlePlay}>Play</button>
