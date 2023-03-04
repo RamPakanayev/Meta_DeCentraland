@@ -23649,15 +23649,34 @@
           ],
           "name": "Transfer",
           "type": "event"
+        },
+        "0xaa49f8ffba600023d408ee31e63dce9f73928f32dd21bf7ce8c3b5cab21ac099": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address[]",
+              "name": "to",
+              "type": "address[]"
+            },
+            {
+              "indexed": false,
+              "internalType": "string[]",
+              "name": "uri",
+              "type": "string[]"
+            }
+          ],
+          "name": "BatchMinted",
+          "type": "event"
         }
       },
       "links": {},
-      "address": "0x72d1A4EBF630cfC5739Ab6A7f6bcF0d68148A8ea",
-      "transactionHash": "0x355b5b485cee2a43dadf1d1cb840727970f2ae0ec1885cf044c9897033134f10"
+      "address": "0xF5ea76aeB9DA5AA0d1c021C775D99B2272e63119",
+      "transactionHash": "0xb97186c268234334d221c899dcbff8d407e98a3f4ed42d175f4e5049573dc31b"
     }
   },
   "schemaVersion": "3.4.11",
-  "updatedAt": "2023-03-02T18:08:38.582Z",
+  "updatedAt": "2023-03-04T15:59:14.752Z",
   "devdoc": {
     "kind": "dev",
     "methods": {
