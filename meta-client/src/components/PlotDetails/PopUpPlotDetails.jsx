@@ -66,7 +66,7 @@ const PopUpPlotDetails = ({
       const myMarketPlaceContract = new web3.eth.Contract(marketPlace.abi, marketPlaceContractAddress);
   
       const transaction = await myMarketPlaceContract.methods
-        .buyNft(flatNftContractAddress, tokenId)
+        .buyNft(flatNftContractAddress, tokenId, price)
         .send(options);
       console.log('Transaction:', transaction);
   
@@ -107,65 +107,60 @@ const PopUpPlotDetails = ({
     setGameUrl('');
     setAttachGameClicked(false);
   };
+  
+  
+ 
+const handleSetPriceOk = async (newPrice) => {
+  // Check if newPrice is greater than 0
+  if (newPrice <= 0) {
+    window.alert("The price must be greater than 0!");
+    return;
+  }
+  // Check if newPrice is not null or undefined
+  if (!newPrice && newPrice !== 0) {
+    window.alert("Please enter a price.");
+    return;
+  }
 
-
-
-  const handleSetPriceOk = async (newPrice) => {
-    // Check if newPrice is greater than 0
-    if (newPrice <= 0) {
-      window.alert("The price must be greater than 0!");
-      return;
-    }
-    // Check if newPrice is not null or undefined
-    if (!newPrice && newPrice !== 0) {
-      window.alert("Please enter a price.");
-      return;
-    }
-  
-    try {
-      const accounts = await web3.eth.getAccounts();
-      const myMarketPlaceContract = new web3.eth.Contract(marketPlace.abi, marketPlaceContractAddress);
-      const flatNftContractAddress = "0x7BcEB50c0659D673b888FebFc72Eea0ABEabd42B";
-      // Call the resellNft method in the smart contract
-      await myMarketPlaceContract.methods.resellNft(id, web3.utils.toWei(newPrice.toString(), "ether")).send({
-        from: accounts[0],
-        gasPrice: web3.utils.toWei('30', 'gwei').toString(),
-      }, (error, transactionHash) => {
-        if (error) {
-          console.log('Error setting price:', error);
-        } else {
-          console.log('Transaction submitted:', transactionHash);
-        }
-      });
-  
-      // Update the backend data with the new price
-      const updatedBackendData = [...backendData];
-      const index = updatedBackendData.findIndex((plot) => plot.id === id);
-      if (index !== -1) {
-        updatedBackendData[index].price = newPrice;
-        updatedBackendData[index].onSale = true;
-        setBackendData(updatedBackendData);
-      }
-  
-      // Reset state variables
-      setNewPrice();
-      setSellClicked(false);
-  
-      console.log('Price set successfully:', newPrice);
-    } catch (error) {
-      // Handle errors
-      if (error.message.includes("User denied transaction")) {
-        console.log("User denied transaction");
-      } else {
+  try {
+    const accounts = await web3.eth.getAccounts();
+    const myMarketPlaceContract = new web3.eth.Contract(marketPlace.abi, marketPlaceContractAddress);
+    const flatNftContractAddress = "0x7BcEB50c0659D673b888FebFc72Eea0ABEabd42B";
+    // Call the resellNft method in the smart contract
+    await myMarketPlaceContract.methods.resellNft(id, web3.utils.toWei(newPrice.toString(), "ether")).send({
+      from: accounts[0],
+      gasPrice: web3.utils.toWei('30', 'gwei').toString(),
+    }, (error, transactionHash) => {
+      if (error) {
         console.log('Error setting price:', error);
+      } else {
+        console.log('Transaction submitted:', transactionHash);
       }
+    });
+
+    // Update the backend data with the new price
+    const updatedBackendData = [...backendData];
+    const index = updatedBackendData.findIndex((plot) => plot.id === id);
+    if (index !== -1) {
+      updatedBackendData[index].price = newPrice;
+      updatedBackendData[index].onSale = true;
+      setBackendData(updatedBackendData);
     }
-  };
-  
-  
-  
-  
-  
+
+    // Reset state variables
+    setNewPrice();
+    setSellClicked(false);
+
+    console.log('Price set successfully:', newPrice);
+  } catch (error) {
+    // Handle errors
+    if (error.message.includes("User denied transaction")) {
+      console.log("User denied transaction");
+    } else {
+      console.log('Error setting price:', error);
+    }
+  }
+};
 
   const handleSell = () => {
     setShowBack(true);
@@ -197,6 +192,7 @@ const PopUpPlotDetails = ({
       console.log('No game URL found for this plot');
     }
   };
+
   const handleAccess = () => {
     setShowAccess(true);
     console.log('access');
@@ -277,35 +273,35 @@ const PopUpPlotDetails = ({
       <table className="popup-table">
         <tbody>
           <tr>
-            <th>Plot ID</th>
+            <th>Plot ID*</th>
             <td>{ownerPlot.id}</td>
 
           </tr>
           <tr>
-          <th>Token ID</th>
+          <th>Token ID*</th>
           <td>{tokenId}</td>
           </tr>
           <tr>
-            <th>Owner</th>
+            <th>Owner*</th>
           
             <td>{ownerPlot && ownerPlot.owner ? ownerPlot.owner : 'Null'}</td>
 
             {/* <td>{owner || 'None'}</td> */}
           </tr>
           <tr>
-            <th>Game</th>
+            <th>Game*</th>
             <td>{ownerPlot && ownerPlot.game ? ownerPlot.game : 'Null'}</td>
           </tr>
           <tr>
-            <th>Price</th>
+            <th>Price*</th>
             <td>{ownerPlot.price}</td>
           </tr>
           <tr>
-            <th>Coordinates</th>
+            <th>Coordinates*</th>
             <td>({ownerPlot.x}, {ownerPlot.y})</td>
           </tr>
           <tr>
-          <th>For Sale</th>
+          <th>For Sale*</th>
           <td className={onSale ? 'green-text' : 'red-text'}>{onSale ? 'Yes' : 'No'}</td>
           </tr>
          
