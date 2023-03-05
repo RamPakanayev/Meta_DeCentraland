@@ -85,15 +85,10 @@ const PopUpPlotDetails = ({
     }
   };
   
-  const handleOk = (url) => {
-    if (!url) {
-      window.alert("Please enter a game URL!");
-      return;
-    }
-  
+  const handleOk = (url) => {  
     const urlRegex = /^(ftp|http|https):\/\/[^ "]+$/;
   
-    if (!urlRegex.test(url)) {
+    if (url && !urlRegex.test(url)) {
       window.alert("Please enter a valid URL!");
       return;
     }
