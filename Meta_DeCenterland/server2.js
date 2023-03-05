@@ -56,6 +56,29 @@ app.get("/api/flatNFT", async (req, res) => {
   }
 });
 
+// Update the game property in the Meta_DeCentraland_Plots.json file
+app.post("/api/updateGame", async (req, res) => {
+  try {
+    const { id, gameUrl } = req.body;
+
+    // Find the plot with the specified ID in the JSON file
+    const plotIndex = jsn.findIndex((plot) => plot.id === id);
+    if (plotIndex === -1) {
+      res.status(404).json({ error: `No plot found with ID ${id}` });
+      return;
+    }
+
+    // Update the game property for the plot and save the changes to the JSON file
+    jsn[plotIndex].game = gameUrl;
+    fs.writeFileSync("./Meta_DeCentraland_Plots.json", JSON.stringify(jsn, null, 2));
+
+    res.json({ success: true });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 
 app.listen(5001, () => {
   console.log("Server started on port 5001");
