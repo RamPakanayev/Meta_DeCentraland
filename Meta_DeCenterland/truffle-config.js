@@ -48,7 +48,7 @@ module.exports = {
      network_id: "*",       // Any network (default: none)
     },
     develop: {
-      port: 8545
+      port: 7545
     }
     //
     // goerli: {

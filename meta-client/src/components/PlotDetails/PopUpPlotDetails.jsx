@@ -174,10 +174,62 @@ const PopUpPlotDetails = ({
     console.log('set price');
   };
 
-  const handleTransferOwnership = () => {
+  const handleShowHistory = async () => {
     setShowBack(true);
-    console.log('transfer ownership');
+    console.log('showing history');
+  
+    try {
+      // Get the list of transaction hashes for the plot from the smart contract
+      const accounts = await web3.eth.getAccounts();
+      const myMarketPlaceContract = new web3.eth.Contract(marketPlace.abi, marketPlaceContractAddress, {
+        gasPrice: '1000000000', // 1 gwei (in wei)
+        gas: 500000 // set gas limit to 500,000
+      });
+      
+      const flatNftContractAddress = "0x7BcEB50c0659D673b888FebFc72Eea0ABEabd42B";
+      const transactionHashes = await myMarketPlaceContract.methods.getOwnershipHistory(id).call();
+      console.log('Transaction hashes:', transactionHashes);
+  
+      // Get the details for each transaction from the Ethereum blockchain
+      const transactions = await Promise.all(transactionHashes.map(async (hash) => {
+        const transaction = await web3.eth.getTransaction(hash);
+        return transaction;
+      }));
+      console.log('Transactions:', transactions);
+  
+      // Display the transaction details in a new div in the popup
+      const transactionDiv = document.createElement('div');
+      transactionDiv.className = 'transaction-div';
+  
+      const title = document.createElement('h3');
+      title.innerHTML = 'Transaction History';
+      transactionDiv.appendChild(title);
+  
+      if (transactions.length === 0) {
+        const message = document.createElement('p');
+        message.innerHTML = 'No transactions found for this plot.';
+        transactionDiv.appendChild(message);
+      } else {
+        transactions.forEach((transaction) => {
+          const fromAddress = transaction.from;
+          const toAddress = transaction.to;
+          const value = web3.utils.fromWei(transaction.value, 'ether');
+          const date = new Date(transaction.timestamp * 1000);
+  
+          const details = document.createElement('p');
+          details.innerHTML = `From: ${fromAddress}<br>To: ${toAddress}<br>Value: ${value} ETH<br>Date: ${date.toDateString()} ${date.toLocaleTimeString()}`;
+          transactionDiv.appendChild(details);
+        });
+      }
+  
+      const popupContent = document.querySelector('.popup-content');
+      popupContent.appendChild(transactionDiv);
+    } catch (error) {
+      console.log('Error getting transaction history:', error);
+    }
   };
+
+  
 
   const handleAttachGame = () => {
     setShowBack(true);
@@ -222,7 +274,7 @@ const PopUpPlotDetails = ({
           </div>
         )}
           {/* <button className="popup-price-btn btn" onClick={handleSetPrice}>Set Price</button> */}
-          <button className="popup-transfer-btn btn" onClick={handleTransferOwnership}>Transfer Ownership</button>
+          <button className="popup-transfer-btn btn" onClick={handleShowHistory}>Show History</button>
           <button className="popup-game-btn btn" onClick={handleAttachGame}>Attach Game</button>
         {attachGameClicked && (
           <div className="attach-game-div">

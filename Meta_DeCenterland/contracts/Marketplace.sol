@@ -35,6 +35,13 @@ contract Marketplace is ReentrancyGuard {
         address owner,
         uint256 price
     );
+    struct OwnershipHistory {
+        address buyer;
+        address seller;
+        uint256 price;
+        uint256 timestamp;
+    }
+
 
     constructor() {
         _marketOwner = payable(msg.sender);
@@ -68,7 +75,7 @@ contract Marketplace is ReentrancyGuard {
     event NFTDetailsUpdated(address indexed owner, address indexed seller, uint256 price);
 
 
-   function buyNft(address _nftContract, uint256 _tokenId) public payable nonReentrant {
+  function buyNft(address _nftContract, uint256 _tokenId) public payable nonReentrant {
     NFT storage nft = _idToNFT[_tokenId];
     require(nft.onSale == true, "NFT not currently listed for sale");
     require(
@@ -87,6 +94,9 @@ contract Marketplace is ReentrancyGuard {
     _marketOwner.transfer(LISTING_FEE);
     nft.owner = buyer;
 
+    // Save the ownership history for the NFT
+    addOwnershipHistory(nft.tokenId, buyer, seller, nft.price, block.timestamp);
+
     emit NFTSold(_nftContract, nft.tokenId, seller, buyer, nft.price);
 
     // Set the onSale variable to false
@@ -95,6 +105,8 @@ contract Marketplace is ReentrancyGuard {
     // Remove the NFT from the marketplace
     delete _idToNFT[_tokenId];
 }
+
+
 
     
 function resellNft(uint256 _tokenId, uint256 _newPrice) external {
@@ -196,5 +208,29 @@ function resellNft(uint256 _tokenId, uint256 _newPrice) external {
             }
         }
         return nfts;
+    }
+    mapping(uint256 => OwnershipHistory[]) private _nftOwnershipHistory;
+
+    function addOwnershipHistory(uint256 _tokenId, address _buyer, address _seller, uint256 _price, uint256 _timestamp) private {
+        _nftOwnershipHistory[_tokenId].push(OwnershipHistory(_buyer, _seller, _price, _timestamp));
+    }
+
+    function getOwnershipHistory(uint256 _tokenId) public view returns (OwnershipHistory[] memory) {
+        return _nftOwnershipHistory[_tokenId];
+    }
+
+
+   function transferFrom(address _from, address _to, uint256 _tokenId) public {
+        // Call the transferFrom function from the ERC721 contract
+        IERC721(_idToNFT[_tokenId].nftContract).transferFrom(_from, _to, _tokenId);
+
+        // Add the new owner to the ownership history
+        addOwnershipHistory(
+            _tokenId, 
+            _to, 
+            _idToNFT[_tokenId].seller, 
+            _idToNFT[_tokenId].price, 
+            block.timestamp
+        );
     }
 }
