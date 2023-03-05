@@ -21332,79 +21332,79 @@
     "id": 1940,
     "tokenId": "NFT-1940",
     "type": "regular",
-    "owner": "0xc59A706E67f7B1873383e154AA1AD47e948ad1b2",
-    "game": "https://example.com/game",
+    "owner": null,
+    "game": null,
     "onSale": true,
     "price": 185,
     "x": 39,
     "y": 19
-},
-{
+  },
+  {
     "id": 1941,
     "tokenId": "NFT-1941",
     "type": "regular",
-    "owner": "0x42a99139DF79973bD74f43974E03b2BD98744358",
+    "owner": null,
     "game": null,
     "onSale": true,
     "price": 116,
     "x": 40,
     "y": 19
-},
-{
+  },
+  {
     "id": 1942,
     "tokenId": "NFT-1942",
     "type": "regular",
-    "owner": "0x256632A9683bC7b55c32B643dA4E23c2862a2411",
-    "game": "https://example.com/game",
+    "owner": null,
+    "game": null,
     "onSale": true,
     "price": 189,
     "x": 41,
     "y": 19
-},
-{
+  },
+  {
     "id": 1943,
     "tokenId": "NFT-1943",
     "type": "regular",
-    "owner": "0xc59A706E67f7B1873383e154AA1AD47e948ad1b2",
+    "owner": null,
     "game": null,
     "onSale": true,
     "price": 175,
     "x": 42,
     "y": 19
-},
-{
+  },
+  {
     "id": 1944,
     "tokenId": "NFT-1944",
     "type": "regular",
-    "owner": "0x42a99139DF79973bD74f43974E03b2BD98744358",
-    "game": "https://example.com/game",
+    "owner": null,
+    "game": null,
     "onSale": true,
     "price": 103,
     "x": 43,
     "y": 19
-},
-{
+  },
+  {
     "id": 1945,
     "tokenId": "NFT-1945",
     "type": "regular",
-    "owner": "0x256632A9683bC7b55c32B643dA4E23c2862a2411",
+    "owner": null,
     "game": null,
-    "onSale": false,
+    "onSale": true,
     "price": 171,
     "x": 44,
     "y": 19
-},
-{
+  },
+  {
     "id": 1946,
     "tokenId": "NFT-1946",
     "type": "regular",
-    "owner": "0xc59A706E67f7B1873383e154AA1AD47e948ad1b2",
-    "game": "https://example.com/game",
-    "onSale": false,
+    "owner": null,
+    "game": null,
+    "onSale": true,
     "price": 130,
     "x": 45,
     "y": 19
-},
+  },
   {
     "id": 1947,
     "tokenId": "NFT-1947",

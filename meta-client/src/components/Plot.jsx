@@ -8,11 +8,18 @@ const Plot = ({ id, type, owner, game, price, x, y, onBuy, onPlay, userType, bac
 
   
   useEffect(() => {
+    const plot = backendData.find(plot => plot.id === id);
+    const isPurchased = plot.owner !== null && plot !== null;
+    
+    
+    setPurchased(isPurchased);
+    
     setPlotStyle({
       ...plotStyle,
-      backgroundColor: purchased ? 'red' : getColor(type),
+      backgroundColor: isPurchased ? 'red' : getColor(type),
     });
-  }, [purchased]);
+  }, [backendData, id, type]);
+  
   
 
   const getColor = (type) => {
