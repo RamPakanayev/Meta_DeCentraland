@@ -45,13 +45,14 @@ const Plot = ({ id, type, owner, game, price, x, y, onBuy, onPlay, userType, bac
   const style = {
     gridColumn: x,
     gridRow: y,
-    backgroundColor: purchased ? 'red' : getColor(type),
+    backgroundColor: purchased && game ? 'blue' : (purchased ? 'red' : getColor(type)),
     width: '10px',
     height: '10px',
     margin: 0,
     padding: 0,
     cursor: type === 'regular' ? 'pointer' : 'default' // Disable the cursor for non-regular plots
   };
+  
 
   const handleClick = () => {
     setShowDetails(!showDetails);
