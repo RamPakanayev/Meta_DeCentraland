@@ -190,7 +190,7 @@ const PopUpPlotDetails = ({
     if (backendData[id - 1].game) {
       window.open(backendData[id - 1].game, '_blank');
     } else {
-      console.log('No game URL found for this plot');
+      window.alert('No game URL found for this plot, So there are nothing to play here    :-(   ');
     }
   };
 
