@@ -5,18 +5,14 @@ const Plot = ({ id, type, owner, game, price, x, y, onBuy, onPlay, userType, bac
   const [showDetails, setShowDetails] = useState(false);
   const [purchased, setPurchased] = useState(false);
   const [plotStyle, setPlotStyle] = useState(false);
-
   
   useEffect(() => {
     const plot = backendData.find(plot => plot.id === id);
-    const isPurchased = plot.owner !== null && plot !== null;
-    
-    
+    const isPurchased = plot.owner !== null && plot !== null;    
     setPurchased(isPurchased);
-    
     setPlotStyle({
       ...plotStyle,
-      backgroundColor: isPurchased ? 'red' : getColor(type),
+      
     });
   }, [backendData, id, type]);
   
@@ -52,7 +48,7 @@ const Plot = ({ id, type, owner, game, price, x, y, onBuy, onPlay, userType, bac
   const style = {
     gridColumn: x,
     gridRow: y,
-    backgroundColor: purchased && game ? 'blue' : (purchased ? 'red' : getColor(type)),
+    backgroundColor:  backendData.find(plot => plot.id === id).onSale && purchased ?'fuchsia':(purchased && game ? 'blue' : (purchased ? 'red' : getColor(type))),
     width: '10px',
     height: '10px',
     margin: 0,

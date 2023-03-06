@@ -8,6 +8,7 @@ import generatePlots from './components/Grid/plotsData';
 import Map from './components/Map/Map';
 import Web3 from 'web3';
 import Loading from 'react-loading-components';
+import MapGuide from './components/MapGuide/MapGuide';
 
 function App() {
   // State hooks
@@ -144,7 +145,10 @@ function App() {
       {showEntryPage ? (
         <EntryPage setUserType={handleUserTypeChange} />
       ) : (
+        <>
+        <MapGuide/>
         <Map backendData={backendData} userType={userType} web3={web3} marketPlace={marketPlace} setBackendData={setBackendData} />
+        </>
       )}
       {isWeb3Connected && plots ? (
         <a href={url} download="Meta_DeCentraland_Plots.json">
