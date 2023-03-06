@@ -3,6 +3,7 @@ import Plot from '../Plot';
 import './Map.css';
 import generatePlots from './generateplots';
 import Loading from 'react-loading-components';
+import MapGuide from '../MapGuide/MapGuide';
 
 const Map = ({ backendData,setBackendData, marketPlace, userType, web3 }) => {
   const num = 100; //can be 20 or 100
@@ -53,10 +54,12 @@ const Map = ({ backendData,setBackendData, marketPlace, userType, web3 }) => {
           <Loading type="spinning_circles" width={100} height={100} fill="#040123" />
           <h5>Loading, please wait...</h5>
         </div>
-      ) : (
+      ) : (<>
+        <MapGuide/>
         <table>
           <tbody>{plotTable}</tbody>
         </table>
+        </>
       )}
     </div>
   );
