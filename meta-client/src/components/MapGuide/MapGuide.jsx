@@ -14,7 +14,7 @@ const MapGuide = () => {
       <div className="plot-description">Owned</div>
       <div className="plot" style={{ backgroundColor: 'blue' }}></div>
       <div className="plot-description">Owned with game</div>
-      <div className="plot" style={{ backgroundColor: 'fuchsia' }}></div>
+      <div className="plot" style={{ backgroundColor: 'darkorange' }}></div>
       <div className="plot-description">Owned and on sale</div>
     </div>
   );

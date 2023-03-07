@@ -48,7 +48,7 @@ const Plot = ({ id, type, owner, game, price, x, y, onBuy, onPlay, userType, bac
   const style = {
     gridColumn: x,
     gridRow: y,
-    backgroundColor:  backendData.find(plot => plot.id === id).onSale && purchased ?'fuchsia':(purchased && game ? 'blue' : (purchased ? 'red' : getColor(type))),
+    backgroundColor:  backendData.find(plot => plot.id === id).onSale && purchased ?'darkorange':(purchased && game ? 'blue' : (purchased ? 'red' : getColor(type))),
     width: '10px',
     height: '10px',
     margin: 0,
