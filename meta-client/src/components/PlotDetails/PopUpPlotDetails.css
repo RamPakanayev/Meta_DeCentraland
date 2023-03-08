@@ -57,6 +57,8 @@
   border-bottom: 1px solid #ddd;
   text-align: center;
   font-size: 18px;
+  padding-right: 30px;
+  padding-left: 30px;
 }
 
 .popup-table th {
