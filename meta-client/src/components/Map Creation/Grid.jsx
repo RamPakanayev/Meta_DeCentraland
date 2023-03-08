@@ -1,6 +1,6 @@
 import React from 'react';
 import Plot from '../Plot';
-import generatePlots from './plotsData';
+import generatePlots from './MapAndNFTGenerator';
 import './Grid.css';
 
 const Grid = ({ userType }) => {

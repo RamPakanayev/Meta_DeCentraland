@@ -2,9 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Footer from './components/Footer/Footer';
 import Header from './components/Header/Header';
 import EntryPage from './components/EnteryPage/EnteryPage';
-import Grid20 from './components/Grid copy/Grid20';
-import Grid from './components/Grid/Grid';
-import generatePlots from './components/Grid/plotsData';
+import MapAndNFTGenerator from './components/Map Creation/MapAndNFTGenerator';
 import Map from './components/Map/Map';
 import Web3 from 'web3';
 import Loading from 'react-loading-components';
@@ -77,7 +75,7 @@ function App() {
       // for the generation of the json plots !
       setFlatNFT(json);
       if (isWeb3Connected) {
-        // generatePlotsData(json, web3);
+          MapAndNFTGenerator(json, web3);
       }
     } catch (error) {
       console.log(error);
@@ -87,7 +85,7 @@ function App() {
     // Generate data for the plots based on the flat NFT data and Web3
   const generatePlotsData = async (flatNFT, web3) => {
     try {
-      const plots = await generatePlots(flatNFT, web3);
+      const plots = await MapAndNFTGenerator(flatNFT, web3);
       // loop through the plots array and update the nftId for regular plots
       plots.forEach((plot) => {
         if (plot.type === 'regular') {

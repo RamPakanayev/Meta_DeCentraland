@@ -1,5 +1,5 @@
 // This function generates data for the plots
-const generatePlots = async (flatNft, web3) => {
+const MapAndNFTGenerator = async (flatNft, web3) => {
   // console.log('in the generatePlots');
   // Check if the flatNft or web3 arguments are missing
   if (!flatNft || !web3) {
@@ -10,7 +10,7 @@ const generatePlots = async (flatNft, web3) => {
   const flatNftContract = new web3.eth.Contract(flatNft.abi, flatNft.address);
   
   // The address of the account that will be used to mint new NFTs
-  const mintingAccount = "0x7BcEB50c0659D673b888FebFc72Eea0ABEabd42B"; // Replace with your own account address
+  const mintingAccount = "0x9092adcc3c3D2085034f7762127447343ec4046e"; // Replace with your own account address
   
   // An array to store the minting account for each regular plot
   const regularPlots = [];
@@ -96,6 +96,6 @@ const generatePlots = async (flatNft, web3) => {
   return plots;
 };
 
-export default generatePlots;
+export default MapAndNFTGenerator;
 
 
