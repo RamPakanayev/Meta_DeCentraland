@@ -75,7 +75,8 @@ function App() {
       // for the generation of the json plots !
       setFlatNFT(json);
       if (isWeb3Connected) {
-          // MapAndNFTGenerator(json, web3);
+          console.log("hi");
+          generatePlotsData(json, web3);
       }
     } catch (error) {
       console.log(error);

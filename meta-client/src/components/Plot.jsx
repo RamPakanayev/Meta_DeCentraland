@@ -44,11 +44,21 @@ const Plot = ({ id, type, owner, game, price, x, y, onBuy, onPlay, userType, bac
       onPlay(game);
     }
   };
+  function getBackGroungColor(){
+    if(backendData.find(plot => plot.id === id).onSale && backendData.find(plot => plot.id === id).owner!=="R&L LTD"){
+      return 'darkorange';
+    }else if(backendData.find(plot => plot.id === id).owner!=="R&L LTD" && game){
+      return 'blue';
+    }else if(backendData.find(plot => plot.id === id).owner!=="R&L LTD"&&backendData.find(plot => plot.id === id).type==='regular'){
+      return 'red';
+    }
+    return getColor(type);
+  }
 
   const style = {
     gridColumn: x,
     gridRow: y,
-    backgroundColor:  backendData.find(plot => plot.id === id).onSale && purchased ?'darkorange':(purchased && game ? 'blue' : (purchased ? 'red' : getColor(type))),
+    backgroundColor: getBackGroungColor(),
     width: '10px',
     height: '10px',
     margin: 0,

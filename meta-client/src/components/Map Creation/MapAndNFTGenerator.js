@@ -10,8 +10,9 @@ const MapAndNFTGenerator = async (flatNft, web3) => {
   const flatNftContract = new web3.eth.Contract(flatNft.abi, flatNft.address);
   
   // The address of the account that will be used to mint new NFTs
-  const mintingAccount = "0x9092adcc3c3D2085034f7762127447343ec4046e"; // Replace with your own account address
-  
+  const  accounts = await web3.eth.getAccounts();
+  const mintingAccount =accounts[0];; // Replace with your own account address
+    
   // An array to store the minting account for each regular plot
   const regularPlots = [];
 
@@ -81,7 +82,7 @@ const MapAndNFTGenerator = async (flatNft, web3) => {
       tokenId = regularNftIds.shift();
     }
 
-    const owner = null;
+    const owner = (type === "regular") ?'R&L LTD': null;
     const game = null;
 
     // For regular plots, set onSale to true
@@ -97,5 +98,4 @@ const MapAndNFTGenerator = async (flatNft, web3) => {
 };
 
 export default MapAndNFTGenerator;
-
 
