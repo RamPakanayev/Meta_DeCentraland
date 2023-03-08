@@ -274,35 +274,35 @@ const PopUpPlotDetails = ({
       <table className="popup-table">
         <tbody>
           <tr>
-            <th>Plot ID*</th>
+            <th>Plot ID</th>
             <td>{ownerPlot.id}</td>
 
           </tr>
           <tr>
-          <th>Token ID*</th>
+          <th>Token ID</th>
           <td>{tokenId}</td>
           </tr>
           <tr>
-            <th>Owner*</th>
+            <th>Owner</th>
           
             <td>{ownerPlot && ownerPlot.owner ? ownerPlot.owner : 'Null'}</td>
 
             {/* <td>{owner || 'None'}</td> */}
           </tr>
           <tr>
-            <th>Game*</th>
+            <th>Game</th>
             <td>{ownerPlot && ownerPlot.game ? ownerPlot.game : 'Null'}</td>
           </tr>
           <tr>
-            <th>Price*</th>
+            <th>Price</th>
             <td>{ownerPlot.price}</td>
           </tr>
           <tr>
-            <th>Coordinates*</th>
+            <th>(x,y)</th>
             <td>({ownerPlot.x}, {ownerPlot.y})</td>
           </tr>
           <tr>
-          <th>For Sale*</th>
+          <th>For Sale</th>
           <td className={onSale ? 'green-text' : 'red-text'}>{onSale ? 'Yes' : 'No'}</td>
           </tr>
          

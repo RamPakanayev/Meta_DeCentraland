@@ -16,18 +16,6 @@ const Plot = ({ id, type, owner, game, price, x, y, onBuy, onPlay, userType, bac
     });
   }, [backendData, id, type]);
   
-  
-
-  const getColor = (type) => {
-    switch (type) {
-      case 'park':
-        return 'green';
-      case 'road':
-        return 'rgb(58, 56, 56)';
-      default:
-        return 'rgb(196, 196, 197)';
-    }
-  };
 
   const handlePurchase = () => {
     if (type !== 'park' && type !== 'road') {
@@ -44,7 +32,8 @@ const Plot = ({ id, type, owner, game, price, x, y, onBuy, onPlay, userType, bac
       onPlay(game);
     }
   };
-  function getBackGroungColor(){
+
+  function getBackGroundColor(){
     if(backendData.find(plot => plot.id === id).onSale && backendData.find(plot => plot.id === id).owner!=="R&L LTD"){
       return 'darkorange';
     }else if(backendData.find(plot => plot.id === id).owner!=="R&L LTD" && game){
@@ -55,10 +44,21 @@ const Plot = ({ id, type, owner, game, price, x, y, onBuy, onPlay, userType, bac
     return getColor(type);
   }
 
+  const getColor = (type) => {
+    switch (type) {
+      case 'park':
+        return 'green';
+      case 'road':
+        return 'rgb(58, 56, 56)';
+      default:
+        return 'rgb(196, 196, 197)';
+    }
+  };
+
   const style = {
     gridColumn: x,
     gridRow: y,
-    backgroundColor: getBackGroungColor(),
+    backgroundColor: getBackGroundColor(),
     width: '10px',
     height: '10px',
     margin: 0,
