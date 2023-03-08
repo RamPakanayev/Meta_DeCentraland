@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const jsn = require("./Meta_DeCentraland_Plots.json");
+const jsn = require("./db/Meta_DeCentraland_Plots.json");
 const fs = require("fs");
 const Web3 = require("web3");
 
