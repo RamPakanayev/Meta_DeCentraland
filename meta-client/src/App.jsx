@@ -6,6 +6,7 @@ import MapAndNFTGenerator from './components/Map Creation/MapAndNFTGenerator';
 import Map from './components/Map/Map';
 import Web3 from 'web3';
 import Loading from 'react-loading-components';
+import './App.css'
 
 
 function App() {
@@ -76,7 +77,7 @@ function App() {
       setFlatNFT(json);
       if (isWeb3Connected) {
           console.log("hi");
-          generatePlotsData(json, web3);
+          // generatePlotsData(json, web3);
       }
     } catch (error) {
       console.log(error);
@@ -148,14 +149,20 @@ function App() {
         <Map backendData={backendData} userType={userType} web3={web3} marketPlace={marketPlace} setBackendData={setBackendData} />
         
       )}
-      {isWeb3Connected && plots ? (
+       <Footer />
+      {isWeb3Connected && plots.length ? (
         <a href={url} download="Meta_DeCentraland_Plots.json">
           Download JSON
         </a>
       ) : (
+        <>
+        <p>loading json metadata map file</p>
+        <br/><br/>
+
         <Loading type="spinning_circles" width={50} height={100} fill="#040123" />
+        </>
       )}
-      <Footer />
+     
     </div>
   );
   
