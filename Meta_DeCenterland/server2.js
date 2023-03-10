@@ -14,7 +14,7 @@ app.get("/api", (req, res) => {
 // Set up Web3 and the Marketplace contract instance
 const web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:7545")); // Replace this with the actual RPC endpoint of your Ethereum node
 const marketplaceJSON = JSON.parse(fs.readFileSync("./build/contracts/Marketplace.json", "utf8"));
-const marketplaceAddress = "0x63710a4855b055ef95585B6E2341949287cB177a"; // Replace this with the actual deployed contract address
+const marketplaceAddress = "0x438D1DaE74f1f6e6606A78ea66D6CAfB7b0550CD" //"0x63710a4855b055ef95585B6E2341949287cB177a"; // Replace this with the actual deployed contract address
 const marketplaceABI = marketplaceJSON.abi;
 const marketplaceContractInstance = new web3.eth.Contract(marketplaceABI, marketplaceAddress);
 
@@ -35,7 +35,7 @@ app.get("/api/marketplace", async (req, res) => {
 });
 
 const flatNftJSON = JSON.parse(fs.readFileSync("./build/contracts/flatNFT.json", "utf8"));
-const flatNftAddress = "0x726fc3Aa434f53e2698ad2fa32437CB167bfADc2"; // Replace this with the actual deployed contract address
+const flatNftAddress = "0xCFf68daA3c94D906b576aD1dD44Af185e5568e8e" //"0x726fc3Aa434f53e2698ad2fa32437CB167bfADc2"; // Replace this with the actual deployed contract address
 const flatNftABI = flatNftJSON.abi;
 const flatNftContractInstance = new web3.eth.Contract(flatNftABI, flatNftAddress);
 
@@ -50,6 +50,26 @@ app.get("/api/flatNFT", async (req, res) => {
       events: Object.keys(flatNftContractInstance.events),
     };
     res.json(flatNftDetails);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+const PixelZJSON = JSON.parse(fs.readFileSync("./build/contracts/PixelZ.json", "utf8"));
+const PixelZAddress = "0x00B4aDa69E2079E7714D2aeBcAcA6716B4561B00"; // Replace this with the actual deployed contract address
+const PixelZABI = PixelZJSON.abi;
+const PixelZContractInstance = new web3.eth.Contract(PixelZABI, PixelZAddress);
+// Serve the PixelZ.json file
+app.get("/api/PixelZ", async (req, res) => {
+  try {
+    const PixelZDetails = {
+      address: PixelZAddress,
+      abi: PixelZABI,
+      functions: Object.keys(PixelZContractInstance.methods),
+      events: Object.keys(PixelZContractInstance.events),
+    };
+    res.json(PixelZDetails);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal Server Error" });

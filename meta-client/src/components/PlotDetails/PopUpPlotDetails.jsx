@@ -22,8 +22,9 @@ const PopUpPlotDetails = ({
   const [newPrice, setNewPrice] = useState(0);
   const [SellClicked, setSellClicked] = useState(false);
 
-  
-  const marketPlaceContractAddress = "0xc189be134B7501b5f0dF448b9d0843A01f2A3EFc";
+  const pixelzContractAddress = "0x5aec2259da30379016d0ef6a19e0573e58f8191f71469befba1fcfe2411e192c";
+  const flatNftContractAddress = "0xCFf68daA3c94D906b576aD1dD44Af185e5568e8e"//"0x7BcEB50c0659D673b888FebFc72Eea0ABEabd42B";
+  const marketPlaceContractAddress = "0xce7fdf79a1b34d9695bd1556a9d5f4baeb7263dadc6be5ffa0201bb21aacad8b"//"0xc189be134B7501b5f0dF448b9d0843A01f2A3EFc";
   const myMarketPlaceContract = new web3.eth.Contract(marketPlace.abi, marketPlaceContractAddress);
 
   useEffect(() => {
@@ -47,7 +48,6 @@ const PopUpPlotDetails = ({
   
     const tokenId = id;
     const ownerPlot = backendData.find((plot) => plot.id === tokenId);
-    const flatNftContractAddress = "0x7BcEB50c0659D673b888FebFc72Eea0ABEabd42B";
     if (!ownerPlot) {
       console.log(`No plot found with ID ${tokenId}`);
       return;
@@ -64,7 +64,6 @@ const PopUpPlotDetails = ({
   
     try {
       const myMarketPlaceContract = new web3.eth.Contract(marketPlace.abi, marketPlaceContractAddress);
-  
       const transaction = await myMarketPlaceContract.methods
         .buyNft(flatNftContractAddress, tokenId)
         .send(options);
@@ -124,7 +123,6 @@ const PopUpPlotDetails = ({
     try {
       const accounts = await web3.eth.getAccounts();
       const myMarketPlaceContract = new web3.eth.Contract(marketPlace.abi, marketPlaceContractAddress);
-      const flatNftContractAddress = "0x7BcEB50c0659D673b888FebFc72Eea0ABEabd42B";
       // Call the resellNft method in the smart contract
       await myMarketPlaceContract.methods.resellNft(id, web3.utils.toWei(newPrice.toString(), "ether")).send({
         from: accounts[0],

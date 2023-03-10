@@ -10,8 +10,8 @@ const MapAndNFTGenerator = async (flatNft, web3) => {
   const flatNftContract = new web3.eth.Contract(flatNft.abi, flatNft.address);
   
   // The address of the account that will be used to mint new NFTs
-  const  accounts = await web3.eth.getAccounts();
-  const mintingAccount =accounts[0];; // Replace with your own account address
+  const accounts = await web3.eth.getAccounts();
+  const mintingAccount = accounts[0]; // Replace with your own account address
     
   // An array to store the minting account for each regular plot
   const regularPlots = [];

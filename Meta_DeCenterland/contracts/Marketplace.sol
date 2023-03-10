@@ -62,42 +62,53 @@ contract Marketplace is ReentrancyGuard {
             true
         );
 
-        emit NFTListed(_nftContract, tokenId, msg.sender, address(this), _price);
+        emit NFTListed(
+            _nftContract,
+            tokenId,
+            msg.sender,
+            address(this),
+            _price
+        );
     }
 
-    event NFTDetailsUpdated(address indexed owner, address indexed seller, uint256 price);
-
-
-   function buyNft(address _nftContract, uint256 _tokenId) public payable nonReentrant {
-    NFT storage nft = _idToNFT[_tokenId];
-    require(nft.onSale == true, "NFT not currently listed for sale");
-    require(
-        msg.value == nft.price + LISTING_FEE,
-        "Please send the exact amount of ether required to buy the NFT"
+    event NFTDetailsUpdated(
+        address indexed owner,
+        address indexed seller,
+        uint256 price
     );
 
-    address payable seller = nft.seller;
-    address payable buyer = payable(msg.sender);
+    function buyNft(
+        address _nftContract,
+        uint256 _tokenId
+    ) public payable nonReentrant {
+        NFT storage nft = _idToNFT[_tokenId];
+        require(nft.onSale == true, "NFT not currently listed for sale");
+        require(
+            msg.value == nft.price + LISTING_FEE,
+            "Please send the exact amount of ether required to buy the NFT"
+        );
 
-    IERC721(_nftContract).transferFrom(address(this), buyer, nft.tokenId);
+        address payable seller = nft.seller;
+        address payable buyer = payable(msg.sender);
 
-    (bool sent, ) = seller.call{value: nft.price}("");
-    require(sent, "Failed to send ether to seller");
+        IERC721(_nftContract).transferFrom(address(this), buyer, nft.tokenId);
 
-    _marketOwner.transfer(LISTING_FEE);
-    nft.owner = buyer;
+        (bool sent, ) = seller.call{value: nft.price}("");
+        require(sent, "Failed to send ether to seller");
 
-    emit NFTSold(_nftContract, nft.tokenId, seller, buyer, nft.price);
+        _marketOwner.transfer(LISTING_FEE);
+        nft.owner = buyer;
 
-    // Set the onSale variable to false
-    nft.onSale = false;
+        emit NFTSold(_nftContract, nft.tokenId, seller, buyer, nft.price);
 
-    // Remove the NFT from the marketplace
-    delete _idToNFT[_tokenId];
-}
+        // Set the onSale variable to false
+        nft.onSale = false;
 
-    
-function resellNft(uint256 _tokenId, uint256 _newPrice) external {
+        // Remove the NFT from the marketplace
+        delete _idToNFT[_tokenId];
+    }
+
+    function resellNft(uint256 _tokenId, uint256 _newPrice) external {
         // Get the NFT struct for the specified token ID
         NFT storage nft = _idToNFT[_tokenId];
 
@@ -111,13 +122,20 @@ function resellNft(uint256 _tokenId, uint256 _newPrice) external {
         require(_newPrice > 0, "New price must be greater than 0");
 
         // Ensure that the new price is different from the current price
-        require(_newPrice != nft.price, "New price must be different from current price");
+        require(
+            _newPrice != nft.price,
+            "New price must be different from current price"
+        );
 
         // Calculate the commission
         uint256 commission = (_newPrice * 10) / 100;
 
         // Transfer the NFT back to the seller
-        IERC721(nft.nftContract).safeTransferFrom(address(this), nft.seller, _tokenId);
+        IERC721(nft.nftContract).safeTransferFrom(
+            address(this),
+            nft.seller,
+            _tokenId
+        );
 
         // Transfer the funds from the buyer to the seller
         (bool sent, ) = nft.owner.call{value: _newPrice}("");
@@ -132,9 +150,14 @@ function resellNft(uint256 _tokenId, uint256 _newPrice) external {
         nft.onSale = true;
 
         emit NFTDetailsUpdated(nft.owner, nft.seller, nft.price);
-        emit NFTListed(nft.nftContract, nft.tokenId, nft.seller, address(this), nft.price);
+        emit NFTListed(
+            nft.nftContract,
+            nft.tokenId,
+            nft.seller,
+            address(this),
+            nft.price
+        );
     }
-
 
     function getListingFee() public view returns (uint256) {
         return LISTING_FEE;
@@ -178,9 +201,7 @@ function resellNft(uint256 _tokenId, uint256 _newPrice) external {
         uint256 nftCount = _tokenIdCounter.current();
         uint256 myListedNftCount = 0;
         for (uint256 i = 1; i <= nftCount; i++) {
-            if (
-                _idToNFT[i].seller == msg.sender && _idToNFT[i].onSale
-            ) {
+            if (_idToNFT[i].seller == msg.sender && _idToNFT[i].onSale) {
                 myListedNftCount++;
             }
         }
@@ -188,9 +209,7 @@ function resellNft(uint256 _tokenId, uint256 _newPrice) external {
         NFT[] memory nfts = new NFT[](myListedNftCount);
         uint256 nftsIndex = 0;
         for (uint256 i = 1; i <= nftCount; i++) {
-            if (
-                _idToNFT[i].seller == msg.sender && _idToNFT[i].onSale
-            ) {
+            if (_idToNFT[i].seller == msg.sender && _idToNFT[i].onSale) {
                 nfts[nftsIndex] = _idToNFT[i];
                 nftsIndex++;
             }
