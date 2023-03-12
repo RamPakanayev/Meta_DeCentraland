@@ -174,11 +174,6 @@ const PopUpPlotDetails = ({
     console.log('set price');
   };
 
-  const handleTransferOwnership = () => {
-    setShowBack(true);
-    console.log('transfer ownership');
-  };
-
   const handleAttachGame = () => {
     setShowBack(true);
     setAttachGameClicked(true);
@@ -221,8 +216,6 @@ const PopUpPlotDetails = ({
             <button onClick={() => handleSetPriceOk(newPrice)}>OK</button>
           </div>
         )}
-          {/* <button className="popup-price-btn btn" onClick={handleSetPrice}>Set Price</button> */}
-          <button className="popup-transfer-btn btn" onClick={handleTransferOwnership}>Transfer Ownership</button>
           <button className="popup-game-btn btn" onClick={handleAttachGame}>Attach Game</button>
         {attachGameClicked && (
           <div className="attach-game-div">

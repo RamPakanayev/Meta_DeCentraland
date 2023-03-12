@@ -77,7 +77,7 @@ function App() {
       setFlatNFT(json);
       if (isWeb3Connected) {
           console.log("hi");
-          // generatePlotsData(json, web3);
+           generatePlotsData(json, web3);
       }
     } catch (error) {
       console.log(error);
@@ -157,8 +157,6 @@ function App() {
       ) : (
         <>
         <p>loading json metadata map file</p>
-        <br/><br/>
-
         <Loading type="spinning_circles" width={50} height={100} fill="#040123" />
         </>
       )}

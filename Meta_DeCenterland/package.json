@@ -9,8 +9,7 @@
   },
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon server",
-    "dev2": "nodemon server2"
+    "dev": "nodemon server"
   },
   "name": "meta_decenterland",
   "version": "1.0.0",
