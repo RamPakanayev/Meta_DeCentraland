@@ -21,6 +21,8 @@ function App() {
   const [web3, setWeb3] = useState(null);
   const [isWeb3Connected, setIsWeb3Connected] = useState(false);
 
+
+  // Use effect hook to fetch backend data from server on component mount
   useEffect(() => {
     async function fetchData() {
       try {
@@ -76,15 +78,14 @@ function App() {
       // for the generation of the json plots !
       setFlatNFT(json);
       if (isWeb3Connected) {
-          console.log("hi");
-           generatePlotsData(json, web3);
+          //  generatePlotsData(json, web3);
       }
     } catch (error) {
       console.log(error);
     }
   };
 
-    // Generate data for the plots based on the flat NFT data and Web3
+  // Function to generate plot data based on the flat NFT data and Web3
   const generatePlotsData = async (flatNFT, web3) => {
     try {
       const plots = await MapAndNFTGenerator(flatNFT, web3);

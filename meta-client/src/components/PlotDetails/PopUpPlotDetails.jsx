@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import Popup from 'reactjs-popup';
 import './PopUpPlotDetails.css';
-import Web3 from 'web3'
 
 const PopUpPlotDetails = ({
   id,
@@ -14,6 +12,7 @@ const PopUpPlotDetails = ({
   web3,
   setPurchased,
 }) => {
+  // State variables to handle different popup states
   const [showAccess, setShowAccess] = useState(false);
   const [showBack, setShowBack] = useState(false);
   const [myAddress, setMyAddress] = useState(null);
@@ -22,10 +21,12 @@ const PopUpPlotDetails = ({
   const [newPrice, setNewPrice] = useState(0);
   const [SellClicked, setSellClicked] = useState(false);
 
-  
+  // Contract address for the marketplace contract
   const marketPlaceContractAddress = "0xc189be134B7501b5f0dF448b9d0843A01f2A3EFc";
+  // Create an instance of the marketplace contract using web3 and the contract ABI
   const myMarketPlaceContract = new web3.eth.Contract(marketPlace.abi, marketPlaceContractAddress);
 
+  // Use the useEffect hook to connect to the user's MetaMask account
   useEffect(() => {
     const toggleConnection = async () => {
       try {
@@ -40,22 +41,24 @@ const PopUpPlotDetails = ({
     toggleConnection();
   }, [setMyAddress]);
   
-
+  // Function to handle buying an NFT plot
   const handleNftBuy = async () => {
+    // Get the user's MetaMask account
     const accounts = await web3.eth.getAccounts();
     const account = accounts[0];
   
     const tokenId = id;
     const ownerPlot = backendData.find((plot) => plot.id === tokenId);
+    // Contract address of the NFT contract for the plots
     const flatNftContractAddress = "0x7BcEB50c0659D673b888FebFc72Eea0ABEabd42B";
     if (!ownerPlot) {
       console.log(`No plot found with ID ${tokenId}`);
       return;
     }
   
-    // console.log(ownerPlot);
+    // Get the price of the plot
     const price = ownerPlot.price;
-    // console.log(price);
+    // Calculate the value to send with the transaction
     const options = {
       from: account,
       value: price + web3.utils.toWei('0.1', 'ether'), // Add the price to the listing fee
@@ -63,19 +66,20 @@ const PopUpPlotDetails = ({
     };
   
     try {
-      const myMarketPlaceContract = new web3.eth.Contract(marketPlace.abi, marketPlaceContractAddress);
-  
+      // Call the buyNft method in the marketplace contract
       const transaction = await myMarketPlaceContract.methods
         .buyNft(flatNftContractAddress, tokenId)
         .send(options);
       console.log('Transaction:', transaction);
   
+      // Update the backend data to reflect the new owner and remove the onSale flag
       const updatedBackendData = [...backendData];
       const index = updatedBackendData.findIndex((plot) => plot.id === id);
       if (ownerPlot) {
         updatedBackendData[index].owner = account;
         updatedBackendData[index].onSale = false; // Update onSale to false once the plot is purchased
       }
+       
       setBackendData(updatedBackendData);
   
       console.log('NFT purchased successfully!');
@@ -85,7 +89,8 @@ const PopUpPlotDetails = ({
     }
   };
   
-  const handleOk = (url) => {  
+  // Function to handle attaching game URL to the NFT
+  const handleAttachOk = (url) => {  
     const urlRegex = /^(ftp|http|https):\/\/[^ "]+$/;
   
     if (url && !urlRegex.test(url)) {
@@ -104,7 +109,9 @@ const PopUpPlotDetails = ({
   };
   
   
- 
+ // This function is called when the user clicks the "Set Price" button in the popup
+// It validates the input price and calls the resellNft method in the smart contract to set the price of the NFT
+// It then updates the backend data with the new price and updates the state variables
   const handleSetPriceOk = async (newPrice) => {
     // Check if newPrice is a valid integer string
     if (!/^\d+$/.test(newPrice)) {
@@ -160,26 +167,25 @@ const PopUpPlotDetails = ({
       }
     }
   };
-  
-  
 
+  // This function is called when the user clicks the "Sell" button in the popup
+  // It sets the sellClicked state variable to true and shows the "Set Price" and "Attach Game" 
   const handleSell = () => {
     setShowBack(true);
     setSellClicked(true);
     console.log('sell');
   };
 
-  const handleSetPrice = () => {
-    setShowBack(true);
-    console.log('set price');
-  };
-
+  // This function is called when the user clicks the "Attach Game" button in the popup
+  // It sets the attachGameClicked state variable to true and shows the "OK" button and input 
   const handleAttachGame = () => {
     setShowBack(true);
     setAttachGameClicked(true);
     console.log('attach game');
   };
 
+  // This function is called when the user clicks the "Play" button in the popup
+  // It checks if there is a game URL associated with the plot and opens it in a new window if there is
   const handlePlay = async () => {
     console.log('play game');
     if (backendData[id - 1].game) {
@@ -189,11 +195,14 @@ const PopUpPlotDetails = ({
     }
   };
 
+  // This function is responsible for handling the "Access" button click event and setting the "setShowAccess" state to true,
+  // which will display the "Sell" and "Attach Game" buttons.
   const handleAccess = () => {
     setShowAccess(true);
     console.log('access');
   };
 
+  // This function is responsible for handling the "Back" button click event and resetting the state variables.
   const handleBack = () => {
     setShowAccess(false);
     setShowBack(false);
@@ -204,9 +213,11 @@ const PopUpPlotDetails = ({
   };
 
 
-  
+  // This function is responsible for rendering the buttons in the popup based on different conditions such as user type, plot owner, and plot status.
   const renderButtons = () => {
+    // If the showAccess state is true
     if (showAccess) {
+      // Render the sell, attach game, and back buttons
       return (
         <>
           <button className="popup-sell-btn" onClick={handleSell}>Sell</button>
@@ -220,13 +231,15 @@ const PopUpPlotDetails = ({
         {attachGameClicked && (
           <div className="attach-game-div">
             <input className="game-input" type="text" placeholder="Enter game URL" value={gameUrl} onChange={(e) => setGameUrl(e.target.value)} />
-            <button onClick={() => handleOk(gameUrl)}>OK</button>
+            <button onClick={() => handleAttachOk(gameUrl)}>OK</button>
           </div>
         )}
           <button className="popup-back-btn" onClick={handleBack}>Back</button>
         </>
       );
-    } else if(userType === 'buyer/seller' && backendData[id - 1].onSale && backendData[id - 1]?.owner?.toLowerCase() !== myAddress?.toLowerCase()) {
+    }
+    // If the user is a buyer/seller and the plot is on sale and is not owned by the current user 
+    else if(userType === 'buyer/seller' && backendData[id - 1].onSale && backendData[id - 1]?.owner?.toLowerCase() !== myAddress?.toLowerCase()) {
       return (
         <>
           <button className="popup-play-btn" onClick={handlePlay}>Play</button>
@@ -234,7 +247,9 @@ const PopUpPlotDetails = ({
          
         </>
       )
-    }else if(userType === 'buyer/seller' && backendData[id - 1]?.owner?.toLowerCase() == myAddress?.toLowerCase())  {
+    }
+    // If the user is a buyer/seller and the plot is owned by the current user
+    else if(userType === 'buyer/seller' && backendData[id - 1]?.owner?.toLowerCase() == myAddress?.toLowerCase())  {
       return (
         <>
           <button className="popup-play-btn" onClick={handlePlay}>Play</button>
@@ -242,6 +257,7 @@ const PopUpPlotDetails = ({
         </>
       )
     } 
+    // Otherwise, render the play button
     else {
       return (
         <>
@@ -251,11 +267,13 @@ const PopUpPlotDetails = ({
     }
   };
 
+  // Find the plot with the given ID in the backend data
   const ownerPlot = backendData.find(plot => plot.id === id);
+  // Get the onSale and tokenId values of the plot
   const onSale = backendData[id - 1].onSale
   const tokenId = backendData[id - 1].tokenId
 
-  
+  // Render the popup component
   return (
     <>
     <div className="overlay" />

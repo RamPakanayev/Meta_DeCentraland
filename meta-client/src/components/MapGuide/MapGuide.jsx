@@ -1,6 +1,8 @@
 import React from 'react';
 import './MapGuide.css';
 
+/* This component is responsible for rendering the map guide legend at the bottom of the screen to
+help users understand the different plot colors and their meanings. */
 const MapGuide = () => {
   return (
     <div className="map-guide">

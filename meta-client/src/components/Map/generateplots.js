@@ -1,3 +1,6 @@
+/*This function takes in backendData and num as inputs and generates an array of plots
+ with specific properties such as id, tokenId, type, owner, game, price, x, y, and forSale.*/
+
 const generatePlots = (backendData,num) => {
   const plots = Array(num*num)
     .fill()
@@ -11,7 +14,7 @@ const generatePlots = (backendData,num) => {
       const owner = plotbackendData ? plotbackendData.owner : 'none';
       const game = plotbackendData ? plotbackendData.game : 'none';
       const price = plotbackendData ? plotbackendData.price : 'none';
-      const forSale = plotbackendData ? plotbackendData.onSale : 'none';// replace with onSale
+      const forSale = plotbackendData ? plotbackendData.onSale : 'none';
       return { id,tokenId, type, owner, game, price, x, y, forSale };
     });
 
