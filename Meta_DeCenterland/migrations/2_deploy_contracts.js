@@ -7,5 +7,5 @@ module.exports = async function(deployer) {
   await deployer.deploy(FlatNFT, marketplace.address);
 }
 
-//Because BoredPetsNFT requires the Marketplace contract address, order matters here!
+//Because FlatNFT requires the Marketplace contract address, order matters here!
 // Truffle allows us to deploy contracts in order using Promise or await/async.

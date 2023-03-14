@@ -22,7 +22,7 @@ const PopUpPlotDetails = ({
   const [SellClicked, setSellClicked] = useState(false);
 
   // Contract address for the marketplace contract
-  const marketPlaceContractAddress = "0xc189be134B7501b5f0dF448b9d0843A01f2A3EFc";
+  const marketPlaceContractAddress = "0x0151Ee79bbf88eFB0D26e8E4b0dFbf7Cda729ADB";
   // Create an instance of the marketplace contract using web3 and the contract ABI
   const myMarketPlaceContract = new web3.eth.Contract(marketPlace.abi, marketPlaceContractAddress);
 
@@ -50,7 +50,7 @@ const PopUpPlotDetails = ({
     const tokenId = id;
     const ownerPlot = backendData.find((plot) => plot.id === tokenId);
     // Contract address of the NFT contract for the plots
-    const flatNftContractAddress = "0x7BcEB50c0659D673b888FebFc72Eea0ABEabd42B";
+    const flatNftContractAddress = "0xF5ea76aeB9DA5AA0d1c021C775D99B2272e63119";
     if (!ownerPlot) {
       console.log(`No plot found with ID ${tokenId}`);
       return;

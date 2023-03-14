@@ -20,6 +20,8 @@ contract Marketplace is ReentrancyGuard {
         uint256 price; // price of the NFT
         bool onSale; // indicates whether the NFT is currently for sale
     }
+
+    // An event is emitted, it stores the arguments passed in transaction logs. These logs are stored on blockchain
     event NFTListed(
         address nftContract,
         uint256 tokenId,
@@ -40,9 +42,9 @@ contract Marketplace is ReentrancyGuard {
     }
 
     function listNft(
-        address _nftContract,
-        uint256 _tokenId,
-        uint256 _price
+        address _nftContract, // aka FlatNFT.sol
+        uint256 _tokenId, // NFT ID
+        uint256 _price // price is price
     ) public payable nonReentrant {
         require(_price > 0, "Price must be at least 1 wei"); // ensures that the NFT price is greater than 0
         require(msg.value == LISTING_FEE, "Not enough ether for listing fee"); // ensures that the caller has sent enough ether to cover the listing fee
@@ -55,19 +57,33 @@ contract Marketplace is ReentrancyGuard {
         _idToNFT[tokenId] = NFT( // creates a new NFT struct for the listed NFT
             _nftContract,
             tokenId,
-            payable(msg.sender),
+            payable(msg.sender), // payable - can recieve ether in the contract
             payable(address(this)),
             _price,
             true
         );
 
-        emit NFTListed(_nftContract, tokenId, msg.sender, address(this), _price); // emits an event indicating that a new NFT has been listed for sale
+        emit NFTListed(
+            _nftContract,
+            tokenId,
+            msg.sender,
+            address(this),
+            _price
+        ); // emits an event indicating that a new NFT has been listed for sale
     }
 
     // Event emitted when an NFT's details are updated
-    event NFTDetailsUpdated(address indexed owner, address indexed seller, uint256 price);
+    event NFTDetailsUpdated(
+        address indexed owner,
+        address indexed seller,
+        uint256 price
+    );
 
-    function buyNft(address _nftContract, uint256 _tokenId) public payable nonReentrant {
+    function buyNft(
+        address _nftContract, //FlatNFT.sol
+        uint256 _tokenId
+    ) public payable nonReentrant {
+        // nonReentrant makes sure counter encrement is up by only 1
         // Retrieve the NFT with the specified token ID
         NFT storage nft = _idToNFT[_tokenId];
 
@@ -105,8 +121,7 @@ contract Marketplace is ReentrancyGuard {
         delete _idToNFT[_tokenId];
     }
 
-        
-   function resellNft(uint256 _tokenId, uint256 _newPrice) external {
+    function resellNft(uint256 _tokenId, uint256 _newPrice) external {
         // Get the NFT struct for the specified token ID
         NFT storage nft = _idToNFT[_tokenId];
 
@@ -120,13 +135,20 @@ contract Marketplace is ReentrancyGuard {
         require(_newPrice > 0, "New price must be greater than 0");
 
         // Ensure that the new price is different from the current price
-        require(_newPrice != nft.price, "New price must be different from current price");
+        require(
+            _newPrice != nft.price,
+            "New price must be different from current price"
+        );
 
         // Calculate the commission
-        uint256 commission = (_newPrice * 10) / 100;
+        uint256 commission = (_newPrice * 10) / 100; // dynamic method to set LISTING_FEE for a particular sale based on percentage to charge for successful sale
 
         // Transfer the NFT back to the seller
-        IERC721(nft.nftContract).safeTransferFrom(address(this), nft.seller, _tokenId);
+        IERC721(nft.nftContract).safeTransferFrom(
+            address(this),
+            nft.seller,
+            _tokenId
+        );
 
         // Transfer the funds from the buyer to the seller
         (bool sent, ) = nft.owner.call{value: _newPrice}("");
@@ -144,66 +166,69 @@ contract Marketplace is ReentrancyGuard {
         emit NFTDetailsUpdated(nft.owner, nft.seller, nft.price);
 
         // Emit an event to notify listeners that the NFT has been listed for sale
-        emit NFTListed(nft.nftContract, nft.tokenId, nft.seller, address(this), nft.price);
+        emit NFTListed(
+            nft.nftContract,
+            nft.tokenId,
+            nft.seller,
+            address(this),
+            nft.price
+        );
     }
-
 
     function getListingFee() public view returns (uint256) {
         // Returns the listing fee charged by the marketplace to list an NFT.
         return LISTING_FEE;
     }
 
-   function getListedNfts() public view returns (NFT[] memory) {
-    // Get the total number of NFTs in the marketplace
-    uint256 nftCount = _tokenIdCounter.current();
+    function getListedNfts() public view returns (NFT[] memory) {
+        // Get the total number of NFTs in the marketplace
+        uint256 nftCount = _tokenIdCounter.current();
 
-    // Create an array to hold the NFTs listed for sale
-    NFT[] memory nfts = new NFT[](nftCount);
-    uint256 nftsIndex = 0;
+        // Create an array to hold the NFTs listed for sale
+        NFT[] memory nfts = new NFT[](nftCount);
+        uint256 nftsIndex = 0;
 
-    // Loop through all NFTs and add the ones listed for sale to the array
-    for (uint256 i = 1; i <= nftCount; i++) {
-        if (_idToNFT[i].onSale) {
-            nfts[nftsIndex] = _idToNFT[i];
-            nftsIndex++;
+        // Loop through all NFTs and add the ones listed for sale to the array
+        for (uint256 i = 1; i <= nftCount; i++) {
+            if (_idToNFT[i].onSale) {
+                nfts[nftsIndex] = _idToNFT[i];
+                nftsIndex++;
+            }
         }
+
+        // Return the array of NFTs listed for sale
+        return nfts;
     }
 
-    // Return the array of NFTs listed for sale
-    return nfts;
-}
+    function getMyNfts() public view returns (NFT[] memory) {
+        // Get the total number of NFTs in the marketplace
+        uint256 nftCount = _tokenIdCounter.current();
 
-
-  function getMyNfts() public view returns (NFT[] memory) {
-    // Get the total number of NFTs in the marketplace
-    uint256 nftCount = _tokenIdCounter.current();
-
-    // Count how many NFTs the caller owns
-    uint256 myNftCount = 0;
-    for (uint256 i = 1; i <= nftCount; i++) {
-        if (_idToNFT[i].owner == msg.sender) {
-            myNftCount++;
+        // Count how many NFTs the caller owns
+        uint256 myNftCount = 0;
+        for (uint256 i = 1; i <= nftCount; i++) {
+            if (_idToNFT[i].owner == msg.sender) {
+                myNftCount++;
+            }
         }
+
+        // Create an array to hold the caller's NFTs
+        NFT[] memory nfts = new NFT[](myNftCount);
+        uint256 nftsIndex = 0;
+
+        // Loop through all NFTs and add the ones owned by the caller to the array
+        for (uint256 i = 1; i <= nftCount; i++) {
+            if (_idToNFT[i].owner == msg.sender) {
+                nfts[nftsIndex] = _idToNFT[i];
+                nftsIndex++;
+            }
+        }
+
+        // Return the array of the caller's NFTs
+        return nfts;
     }
 
-    // Create an array to hold the caller's NFTs
-    NFT[] memory nfts = new NFT[](myNftCount);
-    uint256 nftsIndex = 0;
-
-    // Loop through all NFTs and add the ones owned by the caller to the array
-    for (uint256 i = 1; i <= nftCount; i++) {
-        if (_idToNFT[i].owner == msg.sender) {
-            nfts[nftsIndex] = _idToNFT[i];
-            nftsIndex++;
-        }
-    }
-
-    // Return the array of the caller's NFTs
-    return nfts;
-}
-
-
-   function getMyListedNfts() public view returns (NFT[] memory) {
+    function getMyListedNfts() public view returns (NFT[] memory) {
         // Get the total number of NFTs in the marketplace
         uint256 nftCount = _tokenIdCounter.current();
 
@@ -231,4 +256,7 @@ contract Marketplace is ReentrancyGuard {
         return nfts;
     }
 
+    function getContractAddress() public view returns (address) {
+        return address(this);
+    }
 }

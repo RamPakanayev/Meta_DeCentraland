@@ -11,13 +11,13 @@ import "@openzeppelin/contracts/utils/Counters.sol"; // We use a counter to trac
 contract FlatNFT is ERC721, ERC721URIStorage, ERC721Enumerable, Ownable {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIdCounter; // might change to tokenID or tokenIdCounter if decide to keep counter
-    address marketplaceContract;// The address of the marketplace contract where this NFT can be sold.
-    event NFTMinted(uint256);// An event that is emitted when an NFT is minted.
+    address marketplaceContract; // The address of the marketplace contract where this NFT can be sold.
+    event NFTMinted(uint256); // An event that is emitted when an NFT is minted.
 
-// Constructor for the ERC721 contract, which sets the name and symbol of the NFT.
-    constructor(address _marketplaceContract)
-        ERC721("Meta DeCenterland", "MDCL")
-    {
+    // Constructor for the ERC721 contract, which sets the name and symbol of the NFT.
+    constructor(
+        address _marketplaceContract
+    ) ERC721("Meta DeCenterland", "MDCL") {
         marketplaceContract = _marketplaceContract;
     }
 
@@ -31,19 +31,26 @@ contract FlatNFT is ERC721, ERC721URIStorage, ERC721Enumerable, Ownable {
         emit NFTMinted(tokenId); // Emit the NFTMinted event with the new token id.
     }
 
+    // Event emitted when a batch of NFTs is minted.
+    event BatchMinted(address[] to, string[] uri);
+
     // A function to safely batch mint NFTs and assign them to the specified addresses.
-    function safeBatchMint(address[] memory to, string[] memory uri) public onlyOwner {
+    function safeBatchMint(
+        address[] memory to,
+        string[] memory uri
+    ) public onlyOwner {
         require(to.length == uri.length, "Arrays length mismatch"); // Check that the length of the to and uri arrays is the same.
-        for (uint256 i = 0; i < to.length; i++) { // Loop through each element in the to and uri arrays.
+        for (uint256 i = 0; i < to.length; i++) {
+            // Loop through each element in the to and uri arrays.
             safeMint(to[i], uri[i]); // Mint the NFT and assign it to the specified address.
         }
         emit BatchMinted(to, uri); // Emit the BatchMinted event with the new token ids.
     }
 
-    // Event emitted when a batch of NFTs is minted.
-    event BatchMinted(address[] to, string[] uri);
+    function getContractAddress() public view returns (address) {
+        return address(this);
+    }
 
-    
     // The following functions are overrides required by Solidity.
 
     // Function that is called before a token is transferred..
@@ -57,30 +64,23 @@ contract FlatNFT is ERC721, ERC721URIStorage, ERC721Enumerable, Ownable {
     }
 
     // Function to burn an NFT.
-    function _burn(uint256 tokenId)
-        internal
-        override(ERC721, ERC721URIStorage)
-    {
+    function _burn(
+        uint256 tokenId
+    ) internal override(ERC721, ERC721URIStorage) {
         super._burn(tokenId);
     }
 
     // Function to get the URI of an NFT.
-    function tokenURI(uint256 tokenId)
-        public
-        view
-        override(ERC721, ERC721URIStorage)
-        returns (string memory)
-    {
+    function tokenURI(
+        uint256 tokenId
+    ) public view override(ERC721, ERC721URIStorage) returns (string memory) {
         return super.tokenURI(tokenId);
     }
 
     // Function to check if a given interface is supported by this contract.
-    function supportsInterface(bytes4 interfaceId)
-        public
-        view
-        override(ERC721, ERC721Enumerable)
-        returns (bool)
-    {
+    function supportsInterface(
+        bytes4 interfaceId
+    ) public view override(ERC721, ERC721Enumerable) returns (bool) {
         return super.supportsInterface(interfaceId);
     }
 }

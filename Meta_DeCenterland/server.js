@@ -14,7 +14,7 @@ app.get("/api", (req, res) => {
 // Set up Web3 and the Marketplace contract instance
 const web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:7545")); // Replace this with the actual RPC endpoint of your Ethereum node
 const marketplaceJSON = JSON.parse(fs.readFileSync("./build/contracts/Marketplace.json", "utf8"));
-const marketplaceAddress = "0x63710a4855b055ef95585B6E2341949287cB177a"; // Replace this with the actual deployed contract address
+const marketplaceAddress = "0x0151Ee79bbf88eFB0D26e8E4b0dFbf7Cda729ADB"; // Replace this with the actual deployed contract address
 const marketplaceABI = marketplaceJSON.abi;
 const marketplaceContractInstance = new web3.eth.Contract(marketplaceABI, marketplaceAddress);
 
@@ -35,7 +35,7 @@ app.get("/api/marketplace", async (req, res) => {
 });
 
 const flatNftJSON = JSON.parse(fs.readFileSync("./build/contracts/flatNFT.json", "utf8"));
-const flatNftAddress = "0x726fc3Aa434f53e2698ad2fa32437CB167bfADc2"; // Replace this with the actual deployed contract address
+const flatNftAddress = "0xF5ea76aeB9DA5AA0d1c021C775D99B2272e63119"; // Replace this with the actual deployed contract address
 const flatNftABI = flatNftJSON.abi;
 const flatNftContractInstance = new web3.eth.Contract(flatNftABI, flatNftAddress);
 
