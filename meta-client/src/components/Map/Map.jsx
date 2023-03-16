@@ -44,7 +44,7 @@ const Map = ({ backendData,setBackendData, marketPlace, userType, web3 }) => {
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
-    }, 500); // set the loading state to false after 2 seconds
+    }, 500); // set the loading state to false after 0.5 seconds
   }, []);
 
   return (

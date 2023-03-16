@@ -1,7 +1,7 @@
 import React, { useState,useEffect } from 'react';
 import PopUpPlotDetails from './PlotDetails/PopUpPlotDetails';
 
-const Plot = ({ id, type, owner, game, price, x, y, onBuy, onPlay, userType, backendData, setBackendData, marketPlace, web3 }) => {
+const Plot = ({ id, type, owner, game, price, x, y, onPlay, userType, backendData, setBackendData, marketPlace, web3 }) => {
   const [showDetails, setShowDetails] = useState(false);
   const [purchased, setPurchased] = useState(false);
   const [plotStyle, setPlotStyle] = useState(false);
