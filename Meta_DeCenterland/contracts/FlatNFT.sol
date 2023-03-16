@@ -3,9 +3,9 @@
 pragma solidity ^0.8.13;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol"; // implements the ERC721 standard
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol"; // Enums tokens and owners
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol"; // store the tokenURIs on chain in storage, which is what allows us to store the metadata we upload to IPFS off-chain.
-import "@openzeppelin/contracts/access/Ownable.sol"; // Allows me and Ram modify the contract
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol"; // enumrate the tokens inside an array 
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol"; // store the tokenURIs on chain in storage, which is what allows us to store the metadata.
+import "@openzeppelin/contracts/access/Ownable.sol"; // giving access the contract
 import "@openzeppelin/contracts/utils/Counters.sol"; // We use a counter to track the total number of NFTs and assign a unique token id to each NFT.
 
 contract FlatNFT is ERC721, ERC721URIStorage, ERC721Enumerable, Ownable {

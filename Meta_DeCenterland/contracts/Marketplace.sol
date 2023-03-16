@@ -141,7 +141,7 @@ contract Marketplace is ReentrancyGuard {
         );
 
         // Calculate the commission
-        uint256 commission = (_newPrice * 10) / 100; // dynamic method to set LISTING_FEE for a particular sale based on percentage to charge for successful sale
+        uint256 commission = (_newPrice * 10) / 100; // marketplace contract recives 10% of the price for succeful purchase
 
         // Transfer the NFT back to the seller
         IERC721(nft.nftContract).safeTransferFrom(
